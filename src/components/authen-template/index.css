@@ -1,0 +1,101 @@
+
+.authen-template-container {
+  overflow: hidden;
+}
+.authen-template {
+  width: 100vw;
+  height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/pham-an-PS42dsNG7yE-unsplash.jpg?alt=media&token=1d9c1c22-4955-425f-be5d-77882fd2c74c");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.authen-template__form {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 20px;
+  width: 350px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #1a2b47;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.ant-form-item {
+  margin-bottom: 15px;
+}
+
+.ant-form-item-explain-error {
+  margin-bottom: 10px;
+}
+
+.ant-form button {
+  width: 100%;
+  padding: 8px;
+  background-color: #1a2b47;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+a,
+a:hover {
+  color: #1a2b47;
+  text-decoration: none;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.prompt {
+  margin-top: 10px;
+  font-size: 14px;
+  font-style: italic;
+  text-align: center;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.divider hr {
+    flex-grow: 1;
+    border: none;
+    height: 1px;
+    background-color: #7777778f;
+    margin: 0 10px;
+}
+
+.divider span {
+    padding: 0 10px;
+    font-size: 14px;
+    color: #0d0d0d8f;
+}
+
+.google-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 7px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
