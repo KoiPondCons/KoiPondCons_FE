@@ -12,12 +12,13 @@ import { IoHomeSharp } from "react-icons/io5";
 const Footer = () => {
   const address = "Đường  D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh";
   const factoryAddress = "cái này ghi gì??";
-  const phone = "0909090909";
-  const fax = "0909090909";
+  const phone = "0823 132 452";
+  const fax = "(024) 22202525";
   const email = "koinhathang@gmail.com";
-  const codeBusiness = "hong bik ghi gì";
+  const codeBusiness =
+    "0378884849 cấp ngày 5/09/2024 tại Sở Kế hoạch và Đầu tư Thành phố Hồ Chí Minh";
   const description =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.";
+    "Chứng chỉ Năng lực Hoạt động Xây dựng Cấp III. Số: HCM-00046954, cấp ngày 19/10/2020 tại Sở Kế hoạch và Đầu tư Thành phố Hồ Chí Minh.";
   return (
     <footer className="footer">
       <div className="footer-content">
