@@ -1,24 +1,24 @@
 .authen-template-dashboard {
     display: flex;
-    justify-content: center; /* Căn giữa toàn bộ nội dung */
+    justify-content: center; 
   }
   
   .sidebar {
-    width: 300px; /* Chiều rộng của thanh bên trái */
+    width: 300px; 
     height: 100vh;
     background: url('https://cdn.discordapp.com/attachments/1281613412111225009/1289920595529830500/SU_CHUNG-MING.png?ex=66fa93ab&is=66f9422b&hm=c1be9cafb9df75fcff62c35c7b86479647cc65b59db5a1568010a2fac38d9419&');
     background-color: rgba(6, 21, 41,0.8);
     background-blend-mode: overlay;
-    padding: 20px; /* Khoảng cách bên trong */
+    padding: 20px;
   }
   
   
   .sidebar ul,a {
-    color: white; /* Màu chữ */
+    color: white; 
     font-weight: 200;
-    list-style-type: none; /* Bỏ dấu chấm đầu dòng */
-    padding: 0 ; /* Bỏ khoảng cách bên trong */
-    cursor: pointer; /* Con trỏ khi di chuột qua */
+    list-style-type: none; 
+    padding: 0 ; 
+    cursor: pointer; 
   }
   .sidebar ul    :hover{
     color: gray;
@@ -27,8 +27,8 @@
   
   .sidebar li {
     padding: 5px 0;    
-    margin: 10px 0; /* Khoảng cách giữa các mục */
-    cursor: pointer; /* Con trỏ khi di chuột qua */
+    margin: 10px 0; 
+    cursor: pointer;
   }
   .dashboard{
     width: 250px;
@@ -37,7 +37,8 @@
   }
   
   .content {
-    flex: 1; /* Chiếm không gian còn lại */
-    padding: 20px; /* Khoảng cách bên trong */
-    background-color: white; /* Màu nền của nội dung chính */
+    flex: 1; 
+    padding: 20px; 
+    background-color: white; 
+    max-height: 100vh;
   }
