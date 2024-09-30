@@ -1,4 +1,58 @@
+.authen-template-dashboard {
+    display: flex;
+    justify-content: center; /* Căn giữa toàn bộ nội dung */
+  }
+  
+  .sidebar {
+    width: 300px; /* Chiều rộng của thanh bên trái */
+    height: 100vh;
+    background: url('https://cdn.discordapp.com/attachments/1281613412111225009/1289920595529830500/SU_CHUNG-MING.png?ex=66fa93ab&is=66f9422b&hm=c1be9cafb9df75fcff62c35c7b86479647cc65b59db5a1568010a2fac38d9419&');
+    background-color: rgba(6, 21, 41,0.8);
+    background-blend-mode: overlay;
+    padding: 20px; /* Khoảng cách bên trong *\display: flex; /* Sử dụng Flexbox */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .sidebar ul,a {
+    color: white; /* Màu chữ */
+    font-weight: 200;
+    list-style-type: none; /* Bỏ dấu chấm đầu dòng */
+    padding: 0 ; /* Bỏ khoảng cách bên trong */
+    cursor: pointer; /* Con trỏ khi di chuột qua */
+    
+  }
+  .sidebar ul :hover{
+    color: gray;
+    font-weight: bold;
+  }
+  .sidebar ul {
+    padding: 5px 0;  
+  }
 
+  
+  .sidebar li {
+    
+    margin: 10px 0; /* Khoảng cách giữa các mục */
+    cursor: pointer; /* Con trỏ khi di chuột qua */
+    
+  }
+  .sidebar li.selected {
+    border: 2px solid gray; /* Khung bo viền */
+    background-color: rgba(200, 200, 200, 0.3); /* Màu nền khi được chọn */
+}
+  .dashboard{
+    width: 250px;
+    height: auto;
+    margin: auto;
+  }
+  
+  .content {
+    flex: 1; /* Chiếm không gian còn lại */
+    padding: 20px; /* Khoảng cách bên trong */
+    background-color: white; /* Màu nền của nội dung chính */
+  }
 .navbar-admin {
     display: flex; /* Sử dụng Flexbox */
     justify-content: space-between; /* Căn đều không gian giữa các phần tử */

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import AuthenTemplateDashboard from "../../components/authen-template-dashboard";
 import { Button, Modal, Table } from "antd";
 import axios from "axios";
 import "./index.css";
+import NavDashboard from "../../components/navbar-dashboard";
 function ConsultationRequests() {
   const [requests, setRequests] = useState([]);
   const api =
@@ -76,14 +76,16 @@ function ConsultationRequests() {
 
   return (
     <div>
-      <AuthenTemplateDashboard>
+      <NavDashboard>
+        <h1>Khách hàng cần tư vấn</h1>
+        <hr className="divider"></hr>
         <Table
           className="consultation-requests__table"
           columns={columns}
           dataSource={requests}
           pagination={{ pageSize: 9 }}
         />
-      </AuthenTemplateDashboard>
+      </NavDashboard>
     </div>
   );
 }
