@@ -36,7 +36,10 @@
     font-weight: 400;
   }
   .navbar-auth a {
-
+    color: white;
+  }
+  .navbar-auth a:hover{
+    color: gray;
   }
   
   .navbar-menu a:hover {

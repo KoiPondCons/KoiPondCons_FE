@@ -7,7 +7,7 @@ function Header() {
       <div className="navbar-container">
         <ul className="navbar-menu">
           <li>
-            <a href="home">TRANG CHỦ</a>
+            <a href="">TRANG CHỦ</a>
           </li>
           <li>
             <a href="about">GIỚI THIỆU</a>

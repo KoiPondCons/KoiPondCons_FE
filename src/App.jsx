@@ -26,7 +26,7 @@ function App() {
     {
       path:"admin",
       element: <Admin/>,
-    }
+    },
   ]);
 
   return <RouterProvider router={router} />;
