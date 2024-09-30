@@ -1,7 +1,6 @@
 body {
   background-image: url('https://t3.ftcdn.net/jpg/02/77/30/98/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg');
   background-color: rgb(6, 21, 41);
-  /* Blue background with transparency */
   background-blend-mode: overlay;
 }
 
