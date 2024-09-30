@@ -7,6 +7,10 @@ function App() {
       path: "consultation-requests",
       element: <ConsultationRequests />,
     },
+    {
+      path: "admin",
+      element: <Admin />,
+    },
   ]);
 
   return <RouterProvider router={router} />;

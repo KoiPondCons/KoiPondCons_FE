@@ -1,0 +1,48 @@
+
+.navbar-admin {
+    display: flex; /* Sử dụng Flexbox */
+    justify-content: space-between; /* Căn đều không gian giữa các phần tử */
+    background-color: white; /* Màu nền */
+    padding: 10px 20px; /* Khoảng cách bên trong */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); /* Đổ bóng */
+    margin-bottom: 30px;
+}
+
+.menu-icon {
+    font-size: 24px; /* Kích thước biểu tượng menu */
+    cursor: pointer; /* Con trỏ khi di chuột qua */
+}
+
+.greeting {
+    font-size: 18px; /* Kích thước chữ */
+    color: #333; /* Màu chữ */
+    margin: auto;
+}
+
+.icons {
+    display: flex; /* Sử dụng Flexbox cho các biểu tượng */
+    align-items: center; /* Căn giữa theo chiều dọc */ 
+}
+.icon{
+    margin-left: 15px; /* Khoảng cách giữa các biểu tượng */
+    cursor: pointer; /* Con trỏ khi di chuột qua */
+    font-size: 22px;
+    color: black;
+}
+.noti :hover{
+    color: rgb(187, 187, 32);
+}
+.setting:hover{
+    color: green;
+    
+}
+
+
+.logout {
+    margin-left: 20px;
+    color: rgb(0, 0, 0); /* Màu chữ cho nút đăng xuất */
+    font-weight: bold; /* Đậm chữ */
+}
+.logout:hover{
+    color: red;
+}

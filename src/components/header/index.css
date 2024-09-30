@@ -1,0 +1,85 @@
+.navbar {
+    background-color: #1a2b47;
+    padding: 20px 0;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .navbar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    position: relative;
+  }
+  
+  .navbar-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  .navbar-menu li {
+    margin: 0 15px;
+  }
+  
+  .navbar-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .navbar-auth a {
+    color: white;
+  }
+  .navbar-auth a:hover{
+    color: gray;
+  }
+  
+  .navbar-menu a:hover {
+    text-decoration: underline;
+  }
+  
+  .navbar-auth {
+    position: absolute;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    
+  }
+  
+  .auth-button {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 0px 15px;
+    background: none;
+    border: none;
+  
+  }
+  
+  .auth-button:first-child::after {
+    content: '|';
+    text-decoration: none;
+    margin-left: 15px;
+    color: white;
+    opacity: 0.5;
+  }
+  
+  /* Loại bỏ các styles không cần thiết */
+  .auth-button {
+    border-radius: 0;
+  }
+  .navbar-menu :hover {
+    text-decoration: none;
+    font-weight: 600;
+    color: gray;
+  } 
