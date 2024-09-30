@@ -17,11 +17,12 @@
   
   .sidebar ul,a {
     color: white; /* Màu chữ */
+    font-size: 17px;
     font-weight: 200;
     list-style-type: none; /* Bỏ dấu chấm đầu dòng */
     padding: 0 ; /* Bỏ khoảng cách bên trong */
     cursor: pointer; /* Con trỏ khi di chuột qua */
-    
+    text-decoration: none;
   }
   .sidebar ul :hover{
     color: gray;
@@ -33,10 +34,8 @@
 
   
   .sidebar li {
-    
-    margin: 10px 0; /* Khoảng cách giữa các mục */
+    margin: 20px 0; /* Khoảng cách giữa các mục */
     cursor: pointer; /* Con trỏ khi di chuột qua */
-    
   }
   .sidebar li.selected {
     border: 2px solid gray; /* Khung bo viền */
@@ -52,6 +51,7 @@
     flex: 1; /* Chiếm không gian còn lại */
     padding: 20px; /* Khoảng cách bên trong */
     background-color: white; /* Màu nền của nội dung chính */
+    height: 100vh;
   }
 .navbar-admin {
     display: flex; /* Sử dụng Flexbox */
@@ -59,7 +59,7 @@
     background-color: white; /* Màu nền */
     padding: 10px 20px; /* Khoảng cách bên trong */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); /* Đổ bóng */
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .menu-icon {
@@ -82,12 +82,25 @@
     cursor: pointer; /* Con trỏ khi di chuột qua */
     font-size: 22px;
     color: black;
+    transition: transform 1s;
 }
 .noti :hover{
     color: rgb(187, 187, 32);
+    animation: shake 0.5s; /* Thời gian lắc là 0.5 giây */
+    animation-iteration-count: infinite; /* Lặp lại vô hạn (nếu cần) */
+
 }
 .setting:hover{
     color: green;
+    transform: rotate(180deg);
+
+}
+@keyframes shake {
+    0% { transform: translate(1px, 0); }
+    25% { transform: translate(-1px, 0); }
+    50% { transform: translate(1px, 0); }
+    75% { transform: translate(-1px, 0); }
+    100% { transform: translate(0, 0); }
 }
 
 

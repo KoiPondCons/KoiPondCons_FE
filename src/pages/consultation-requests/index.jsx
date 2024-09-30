@@ -78,7 +78,6 @@ function ConsultationRequests() {
     <div>
       <NavDashboard>
         <h1>Khách hàng cần tư vấn</h1>
-        <hr className="divider"></hr>
         <Table
           className="consultation-requests__table"
           columns={columns}
