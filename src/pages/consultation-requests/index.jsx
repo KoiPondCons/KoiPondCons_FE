@@ -49,7 +49,7 @@ function ConsultationRequests() {
       key: "description",
     },
     {
-      title: "", // Tên cột
+      title: "",
       key: "actions",
       render: (_, record) => (
         <>
