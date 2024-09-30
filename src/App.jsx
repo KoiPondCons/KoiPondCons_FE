@@ -1,32 +1,12 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginPage from "./pages/login";
-import RegisterPage from "./pages/register";
-import HomePage from "./pages/home";
-import ContactPage from "./pages/contact";
-import Admin from "./pages/admin"
+import ConsultationRequests from "./pages/consultation-requests";
 function App() {
   const router = createBrowserRouter([
     {
-      path: "", //trang mặc định
-      element: <HomePage />,
+      path: "consultation-requests",
+      element: <ConsultationRequests />,
     },
-    {
-      path: "login",
-      element: <LoginPage />,
-    },
-    {
-      path: "register",
-      element: <RegisterPage />,
-    },
-    {
-      path: "contact",
-      element: <ContactPage />,
-    },
-    {
-      path:"admin",
-      element: <Admin/>,
-    }
   ]);
 
   return <RouterProvider router={router} />;
