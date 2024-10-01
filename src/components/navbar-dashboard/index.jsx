@@ -21,16 +21,19 @@ const NavDashboard = ({ children }) => {
           </a>
           <ul>
             <li>
-              <a href="consultation-requests">Khách hàng cần tư vấn</a>
+              <a href="design-management">Quản lý mẫu thiết kế</a>
             </li>
             <li>
-              <a href="ongoing-consultation">Khách hàng đang tư vấn</a>
+              <a href="staff-management">Quản lý nhân sự</a>
             </li>
             <li>
-              <a href="created-orders">Đơn hàng đã tạo</a>
+              <a href="order-management">Quản lý đơn hàng</a>
             </li>
             <li>
-              <a href="my-profile">Hồ sơ của tôi</a>
+              <a href="quote-management">Quản lý báo giá</a>
+            </li>
+            <li>
+              <a href="customer-profile-management">Quản lý hồ sơ khách hàng</a>
             </li>
           </ul>
           <div></div>
