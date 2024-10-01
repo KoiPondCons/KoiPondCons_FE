@@ -1,6 +1,5 @@
 import React from "react";
-import { Col, Form, Input, Row, Select } from "antd";
-import FormItem from "antd/es/form/FormItem";
+import { Row } from "antd";
 function OrderDetail() {
   return (
     <div>
