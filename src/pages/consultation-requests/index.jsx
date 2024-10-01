@@ -6,8 +6,7 @@ import "../../utils/table.css";
 import NavDashboard from "../../components/navbar-dashboard";
 function ConsultationRequests() {
   const [requests, setRequests] = useState([]);
-  const api =
-    "https://66fa4cd2afc569e13a9b1aed.mockapi.io/Consultation-requests";
+  const api = "https://66fa4cd2afc569e13a9b1aed.mockapi.io/ConstructionOrder";
   const fetchConsultationRequests = async () => {
     const response = await axios.get(api);
     console.log(response.data);
@@ -33,25 +32,31 @@ function ConsultationRequests() {
       title: "ID",
       dataIndex: "id",
       key: "id",
+      width: 30,
     },
     {
       title: "Họ tên",
       dataIndex: "customer_name",
       key: "customer_name",
+      width: 200,
     },
     {
-      title: "Dịch vụ",
-      dataIndex: "service",
-      key: "service",
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      width: 100,
     },
     {
       title: "Nội dung",
       dataIndex: "description",
       key: "description",
+      render: (text) => <div className="description-cell">{text}</div>,
+      width: 300,
     },
     {
       title: "",
       key: "actions",
+      width: 100,
       render: (_, record) => (
         <>
           <Button

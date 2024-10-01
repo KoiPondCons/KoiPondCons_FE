@@ -7,8 +7,7 @@ import "../../utils/table.css";
 import "./index.css";
 function OngoingConsultations() {
   const [requests, setRequests] = useState([]);
-  const api =
-    "https://66fa4cd2afc569e13a9b1aed.mockapi.io/Consultation-requests";
+  const api = "https://66fa4cd2afc569e13a9b1aed.mockapi.io/ConstructionOrder";
   const fetchConsultationRequests = async () => {
     const response = await axios.get(api);
     console.log(response.data);
@@ -31,13 +30,13 @@ function OngoingConsultations() {
     },
     {
       title: "Số điện thoại",
-      dataIndex: "phone",
-      key: "phone",
+      dataIndex: "customer_phone",
+      key: "customer_phone",
     },
     {
-      title: "Dịch vụ",
-      dataIndex: "service",
-      key: "service",
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
     },
     {
       title: "",
