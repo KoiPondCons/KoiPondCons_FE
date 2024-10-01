@@ -1,0 +1,6 @@
+.ant-input[readonly] {
+    background-color: #C7D1D9; /* Màu xám nhạt */
+    border-radius: 10px;
+    color: black;
+    text-align: center;
+  }
