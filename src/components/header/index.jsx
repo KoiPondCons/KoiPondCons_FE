@@ -1,13 +1,14 @@
 import React from "react";
 import "./index.css";
 
+
 function Header() {
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <ul className="navbar-menu">
           <li>
-            <a href="home">TRANG CHỦ</a>
+            <a href="">TRANG CHỦ</a>
           </li>
           <li>
             <a href="about">GIỚI THIỆU</a>
