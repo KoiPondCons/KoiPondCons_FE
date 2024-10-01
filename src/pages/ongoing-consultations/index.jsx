@@ -3,7 +3,8 @@ import NavDashboard from "../../components/navbar-dashboard";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { Button, Table } from "antd";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+
+
 function OngoingConsultations() {
   const [requests, setRequests] = useState([]);
   const api =
