@@ -21,7 +21,7 @@ const NavDashboard = ({ children }) => {
           </a>
           <ul>
             <li>
-              <a href="">Khách hàng cần tư vấn</a>
+              <a href="consultation-requests">Khách hàng cần tư vấn</a>
             </li>
             <li>
               <a href="ongoing-consultation">Khách hàng đang tư vấn</a>

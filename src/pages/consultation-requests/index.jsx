@@ -78,6 +78,7 @@ function ConsultationRequests() {
     <div>
       <NavDashboard>
         <h1>Khách hàng cần tư vấn</h1>
+
         <Table
           className="consultation-requests__table"
           columns={columns}
