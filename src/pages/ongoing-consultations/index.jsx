@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import NavDashboard from "../../components/navbar-dashboard";
-import { AiOutlineUnorderedList } from "react-icons/ai";
-import { Button, Table } from "antd";
+import { Table } from "antd";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { AiOutlineUnorderedList } from "react-icons/ai";
+import "../../utils/table.css";
+import "./index.css";
 function OngoingConsultations() {
   const [requests, setRequests] = useState([]);
   const api =
@@ -39,18 +40,10 @@ function OngoingConsultations() {
       key: "service",
     },
     {
-      title: "Chi tiết",
-      key: "actions",
+      title: "",
+      key: "",
       render: (record) => {
-        const history = useHistory();
-        const handleDetailClick = () => {
-          history.push(`/order-detail/${record.id}`);
-        };
-        return (
-          <Button onClick={handleDetailClick} style={{ cursor: `pointer` }}>
-            <AiOutlineUnorderedList />
-          </Button>
-        );
+        return <AiOutlineUnorderedList onClick={""} />;
       },
     },
   ];
@@ -59,7 +52,12 @@ function OngoingConsultations() {
     <div>
       <NavDashboard>
         <h1>Khách hàng đang tư vấn</h1>
-        <Table columns={columns} dataSource={requests} />
+        <Table
+          className="table-template"
+          columns={columns}
+          dataSource={requests}
+          pagination={{ pageSize: 8 }}
+        />
       </NavDashboard>
     </div>
   );

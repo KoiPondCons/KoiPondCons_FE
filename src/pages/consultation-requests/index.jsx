@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, Table } from "antd";
 import axios from "axios";
 import "./index.css";
+import "../../utils/table.css";
 import NavDashboard from "../../components/navbar-dashboard";
 function ConsultationRequests() {
   const [requests, setRequests] = useState([]);
@@ -54,7 +55,7 @@ function ConsultationRequests() {
       render: (_, record) => (
         <>
           <Button
-            className="consultation__button"
+            className="button-template"
             type="primary"
             onClick={showModal}
           >
@@ -80,10 +81,10 @@ function ConsultationRequests() {
         <h1>Khách hàng cần tư vấn</h1>
 
         <Table
-          className="consultation-requests__table"
+          className="table-template"
           columns={columns}
           dataSource={requests}
-          pagination={{ pageSize: 9 }}
+          pagination={{ pageSize: 8 }}
         />
       </NavDashboard>
     </div>
