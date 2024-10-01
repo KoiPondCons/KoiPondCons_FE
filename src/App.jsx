@@ -11,6 +11,10 @@ function App() {
       element: <ConsultationRequests />,
     },
     {
+      path: "consultation-requests",
+      element: <ConsultationRequests />,
+    },
+    {
       path: "created-orders",
       element: <CreatedOrders />,
     },
