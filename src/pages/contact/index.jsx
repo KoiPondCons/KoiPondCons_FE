@@ -9,8 +9,11 @@ function ContactPage() {
   const address = "Đường D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh";
   const email = "koinhathang@gmail.com";
   const phoneNumber = "0823 132 452";
+  const title = "Liên hệ";
+  const banner = "https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/banner-contact.avif?alt=media&token=457aeca2-4a4d-48e0-b9da-2764712f4118";
+
   return (
-    <CommonPageTemplate>
+    <CommonPageTemplate title={title} banner={banner}>
       <Row>
         <Col span={10}>
           <div className="container-input">
