@@ -12,6 +12,10 @@ function App() {
       element: <HomePage />,
     },
     {
+      path: "homepage",
+      element: <HomePage />,
+    },
+    {
       path: "login",
       element: <LoginPage />,
     },
