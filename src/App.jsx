@@ -33,7 +33,7 @@ function App() {
       element: <OrderDetail />,
     },
     {
-      path: "order",
+      path: "order/:id",
       element: <Order />,
     },
   ]);
