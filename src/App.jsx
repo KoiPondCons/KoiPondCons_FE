@@ -4,6 +4,7 @@ import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import HomePage from "./pages/home";
 import ContactPage from "./pages/contact";
+import HistoryPage from "./pages/history";
 function App() {
   const router = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ function App() {
     {
       path: "contact",
       element: <ContactPage />,
+    },
+    {
+      path: "history",
+      element: <HistoryPage />,
     },
   ]);
 
