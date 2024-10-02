@@ -21,16 +21,16 @@ const NavDashboard = ({ children }) => {
           </a>
           <ul>
             <li>
-              <a href="consultation-requests">Khách hàng cần tư vấn</a>
+              <a href="/consultation-requests">Khách hàng cần tư vấn</a>
             </li>
             <li>
-              <a href="ongoing-consultation">Khách hàng đang tư vấn</a>
+              <a href="/ongoing-consultation">Khách hàng đang tư vấn</a>
             </li>
             <li>
-              <a href="created-orders">Đơn hàng đã tạo</a>
+              <a href="/created-orders">Đơn hàng đã tạo</a>
             </li>
             <li>
-              <a href="my-profile">Hồ sơ của tôi</a>
+              <a href="/my-profile">Hồ sơ của tôi</a>
             </li>
           </ul>
           <div></div>
