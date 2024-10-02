@@ -1,3 +1,7 @@
 .history-page-container {
   padding: 30px;
 }
+.history-construction-order-info p {
+font-size: 1.2rem;
+font-weight: 600;
+}

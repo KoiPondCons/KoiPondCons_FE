@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'; // Giữ lại khai báo nà
 import Header from '../../components/header'
 import Footer from '../../components/footer'
 import './index.css'; // Assuming you have a CSS file for styles
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // Hoặc biểu tượng bạn muốn sử dụng
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; 
 
 function HomePage() {
   const images = [ // Danh sách hình ảnh

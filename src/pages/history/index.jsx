@@ -6,7 +6,8 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 
 function HistoryPage() {
   const title = "Lịch sử đơn hàng";
-  const banner = "https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/banner-contact.avif?alt=media&token=457aeca2-4a4d-48e0-b9da-2764712f4118";
+  const banner = "https://images.unsplash.com/photo-1627884849665-8c74468f6037?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
   const constructionOrder = [
     {
       id: 1,
@@ -36,10 +37,10 @@ function HistoryPage() {
       </Col>
       <Col span={16}>
       <div className="history-construction-order-info">
-      <p>Mã đơn: {constructionOrder.id}</p>
-      <p>Số tư vấn: {consultingStaff.phone}</p>
-      <p>Trạng thái: {constructionOrder.status}</p>
-      <p>Ngày gửi đơn: {constructionOrder.date}</p>
+      <p>Mã đơn: {constructionOrder[0].id}</p>
+      <p>Số tư vấn: {consultingStaff[0].phone}</p>
+      <p>Trạng thái: {constructionOrder[0].status}</p>
+      <time dateTime={constructionOrder[0].date}>Ngày gửi đơn: {constructionOrder[0].date}</time>
       </div>
       </Col>
       <Col span={4}>
