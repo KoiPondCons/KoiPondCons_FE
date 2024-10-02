@@ -5,7 +5,9 @@ import axios from "axios";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import "../../utils/table.css";
 import "./index.css";
+import { useNavigate } from "react-router-dom";
 function OngoingConsultations() {
+  const navigate = useNavigate(); 
   const [requests, setRequests] = useState([]);
   const api = "https://66fa4cd2afc569e13a9b1aed.mockapi.io/ConstructionOrder";
   const fetchConsultationRequests = async () => {
@@ -42,7 +44,7 @@ function OngoingConsultations() {
       title: "",
       key: "",
       render: (record) => {
-        return <AiOutlineUnorderedList onClick={""} />;
+        return <AiOutlineUnorderedList onClick={() => navigate(`/order/${record.id}`)} />;
       },
     },
   ];
