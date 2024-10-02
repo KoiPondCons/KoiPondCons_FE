@@ -7,25 +7,25 @@ function Header() {
       <div className="navbar-container">
         <ul className="navbar-menu">
           <li>
-            <a href="home">TRANG CHỦ</a>
+            <a href="/homepage">TRANG CHỦ</a>
           </li>
           <li>
-            <a href="about">GIỚI THIỆU</a>
+            <a href="/about">GIỚI THIỆU</a>
           </li>
           <li>
-            <a href="projects">DỰ ÁN</a>
+            <a href="/projects">DỰ ÁN</a>
           </li>
           <li>
-            <a href="services">DỊCH VỤ</a>
+            <a href="/services">DỊCH VỤ</a>
           </li>
           <li>
-            <a href="pricing">BÁO GIÁ</a>
+            <a href="/pricing">BÁO GIÁ</a>
           </li>
           <li>
-            <a href="blog">BLOG</a>
+            <a href="/blog">BLOG</a>
           </li>
           <li>
-            <a href="contact">LIÊN HỆ</a>
+            <a href="/contact">LIÊN HỆ</a>
           </li>
         </ul>
         <div className="navbar-auth">
