@@ -5,6 +5,7 @@ import MyProfile from "./pages/my-profile";
 import CreatedOrders from "./pages/created-orders";
 import OngoingConsultations from "./pages/ongoing-consultations";
 import OrderDetail from "./pages/order-detail";
+import Order from "./pages/order-detail2";
 function App() {
   const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ function App() {
     {
       path: "order-detail",
       element: <OrderDetail />,
+    },
+    {
+      path: "order/:id",
+      element: <Order />,
     },
   ]);
 
