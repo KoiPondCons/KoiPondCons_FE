@@ -3,9 +3,9 @@ import FormItem from "antd/es/form/FormItem";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./index.css";
-import NavDashboard from "../../components/navbar-dashboard";
+import NavDashboard from "../../../components/navbar-dashboard";
 import { useParams } from "react-router-dom";
-import "../../utils/table.css"
+import "../../../utils/table.css"
 function Order() {
   const {id} = useParams();
   const [constructionOrder, setConstructionOrder] = useState(null);

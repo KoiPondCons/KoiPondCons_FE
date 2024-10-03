@@ -1,11 +1,11 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ConsultationRequests from "./pages/consultation-requests";
+import ConsultationRequests from "./pages/consulting/consultation-requests";
 import MyProfile from "./pages/my-profile";
-import CreatedOrders from "./pages/created-orders";
-import OngoingConsultations from "./pages/ongoing-consultations";
+import CreatedOrders from "./pages/consulting/created-orders";
+import OngoingConsultations from "./pages/consulting/ongoing-consultations";
 import OrderDetail from "./pages/order-detail";
-import Order from "./pages/order-detail2";
+import Order from "./pages/consulting/order-detail2";
 import HistoryPage from "./pages/history";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";

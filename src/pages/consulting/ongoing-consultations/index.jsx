@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import NavDashboard from "../../components/navbar-dashboard";
+import NavDashboard from "../../../components/navbar-dashboard";
 import { Table } from "antd";
 import axios from "axios";
 import { AiOutlineUnorderedList } from "react-icons/ai";
-import "../../utils/table.css";
+import "../../../utils/table.css";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 function OngoingConsultations() {
