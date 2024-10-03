@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import NavDashboard from "../../../components/navbar-dashboard";
-import { Table } from "antd";
 import axios from "axios";
 import { AiOutlineUnorderedList } from "react-icons/ai";
-import "../../../utils/table.css";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
+import TableTemplate from "../../components/table";
 function OngoingConsultations() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
@@ -51,18 +49,10 @@ function OngoingConsultations() {
       },
     },
   ];
-
+const title = "Khách hàng đang tư vấn";
   return (
     <div>
-      <NavDashboard>
-        <h1>Khách hàng đang tư vấn</h1>
-        <Table
-          className="table-template"
-          columns={columns}
-          dataSource={requests}
-          pagination={{ pageSize: 8 }}
-        />
-      </NavDashboard>
+      <TableTemplate columns={columns} requests={requests} title={title} />
     </div>
   );
 }

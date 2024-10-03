@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Table } from "antd";
+import { Button, Modal } from "antd";
 import axios from "axios";
 import "./index.css";
-import "../../../utils/table.css";
-import NavDashboard from "../../../components/navbar-dashboard";
+import TableTemplate from "../../components/table";
 function ConsultationRequests() {
   const [requests, setRequests] = useState([]);
   const api = "https://66fa4cd2afc569e13a9b1aed.mockapi.io/ConstructionOrder";
@@ -79,19 +78,10 @@ function ConsultationRequests() {
       ),
     },
   ];
-
+const title = "Khách hàng cần tư vấn";
   return (
     <div>
-      <NavDashboard>
-        <h1>Khách hàng cần tư vấn</h1>
-
-        <Table
-          className="table-template"
-          columns={columns}
-          dataSource={requests}
-          pagination={{ pageSize: 8 }}
-        />
-      </NavDashboard>
+      <TableTemplate columns={columns} requests={requests} title={title} />
     </div>
   );
 }
