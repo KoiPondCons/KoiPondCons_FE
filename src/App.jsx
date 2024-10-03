@@ -1,18 +1,20 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ConsultationRequests from "./pages/consultation-requests";
+import MyProfile from "./pages/my-profile";
+import CreatedOrders from "./pages/created-orders";
+import OngoingConsultations from "./pages/ongoing-consultations";
+import OrderDetail from "./pages/order-detail";
+import Order from "./pages/order-detail2";
+import HistoryPage from "./pages/history";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import HomePage from "./pages/home";
 import ContactPage from "./pages/contact";
-import HistoryPage from "./pages/history";
 function App() {
   const router = createBrowserRouter([
     {
       path: "", //trang mặc định
-      element: <HomePage />,
-    },
-    {
-      path: "homepage",
       element: <HomePage />,
     },
     {
@@ -26,6 +28,34 @@ function App() {
     {
       path: "contact",
       element: <ContactPage />,
+    },
+    {
+      path: "homepage",
+      element: <HomePage />,
+    },
+    {
+      path: "consultation-requests",
+      element: <ConsultationRequests />,
+    },
+    {
+      path: "created-orders",
+      element: <CreatedOrders />,
+    },
+    {
+      path: "ongoing-consultation",
+      element: <OngoingConsultations />,
+    },
+    {
+      path: "my-profile",
+      element: <MyProfile />,
+    },
+    {
+      path: "order-detail",
+      element: <OrderDetail />,
+    },
+    {
+      path: "order/:id",
+      element: <Order />,
     },
     {
       path: "history",
