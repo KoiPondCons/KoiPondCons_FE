@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 import { FaRegUser } from "react-icons/fa";
 import { Dropdown, message } from "antd";
@@ -6,21 +6,20 @@ import { Link } from "react-router-dom";
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const token = localStorage.getItem("token");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
+
+  useEffect(() => {
+    if (token !== null) {
+      setIsLoggedIn(true);
+    }
+  }, [token]);
+
   const handleLogout = () => {
     setIsLoggedIn(false);
+    localStorage.removeItem("token");
   };
-  const handleButtonClick = (e) => {
-    message.info("Click on left button.");
-    console.log("click left button", e);
-  };
-  const handleMenuClick = (e) => {
-    message.info("Click on menu item.");
-    console.log("click", e);
-  };
+  
   const items = [
     {
       label: "Hồ sơ cá nhân",
@@ -52,7 +51,6 @@ function Header() {
 
   const menuProps = {
     items,
-    onClick: handleMenuClick,
   };
   return (
     <nav className="navbar">
