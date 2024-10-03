@@ -3,18 +3,51 @@ import React from "react";
 import AuthenTemplate from "../../components/authen-template";
 import { Form, Input } from "antd";
 import FormItem from "antd/es/form/FormItem";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "antd/es/form/Form";
+import { toast } from "react-toastify";
+import api from "../../config/axios";
 
 
 function LoginPage() {
   
+  const navigate = useNavigate();
+  const [form] = useForm();
 
-  const handleLogin = () => {};
+
+  const handleLogin = async (value) => {
+    try {
+      const response = await api.post("login", value);
+      const {role, token} = response.data;
+      localStorage.setItem("token", token);
+      if (role === "CUSTOMER") {
+        navigate("/");
+      }
+      else if (role === "CONSULTANT") {
+        navigate("/consultant/dashboard");
+      }
+      else if (role === "DESIGNER") {
+        navigate("/designer/dashboard");
+      }
+      else if (role === "CONSTRUCTOR") {
+        navigate("/constructor/dashboard");
+      }
+      else if (role === "MANAGER") {
+        navigate("/manager/dashboard");
+      }
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.response);
+      toast.error(error.response.data);
+    }
+  };
+
 
   return (
     
     <AuthenTemplate>
       <h2>Đăng nhập</h2>
-      <Form>
+      <Form form={form} onFinish={handleLogin}>
         <FormItem
           name="email"
           rules={[

@@ -11,6 +11,8 @@ import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import HomePage from "./pages/home";
 import ContactPage from "./pages/contact";
+
+
 function App() {
   const router = createBrowserRouter([
     {

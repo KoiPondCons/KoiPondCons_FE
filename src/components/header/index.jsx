@@ -1,5 +1,6 @@
 import React from "react";
 import "./index.css";
+import { Link } from "react-router-dom";
 
 
 function Header() {
@@ -8,38 +9,30 @@ function Header() {
       <div className="navbar-container">
         <ul className="navbar-menu">
           <li>
-            <a href="/homepage">TRANG CHỦ</a>
+            <Link to="/">TRANG CHỦ</Link>
           </li>
           <li>
-            <a href="/about">GIỚI THIỆU</a>
+            <Link to="/about">GIỚI THIỆU</Link>
           </li>
           <li>
-            <a href="/projects">DỰ ÁN</a>
+            <Link to="/projects">DỰ ÁN</Link>
           </li>
           <li>
-            <a href="/services">DỊCH VỤ</a>
+            <Link to="/services">DỊCH VỤ</Link>
           </li>
           <li>
-            <a href="/pricing">BÁO GIÁ</a>
+            <Link to="/pricing">BÁO GIÁ</Link>
           </li>
           <li>
-            <a href="/blog">BLOG</a>
+            <Link to="/blog">BLOG</Link>
           </li>
           <li>
-            <a href="/contact">LIÊN HỆ</a>
+            <Link to="/contact">LIÊN HỆ</Link>
           </li>
         </ul>
         <div className="navbar-auth">
-          <a href="register" className="auth-button">
-            Đăng ký
-          </a>
-          <a
-            href="login"
-            className="auth-button"
-            style={{ paddingLeft: "0px" }}
-          >
-            Đăng nhập
-          </a>
+          <Link to="/register" className="auth-button">Đăng ký</Link>
+          <Link to="/login" className="auth-button" style={{ paddingLeft: "0px" }}>Đăng nhập</Link>
         </div>
       </div>
     </nav>
