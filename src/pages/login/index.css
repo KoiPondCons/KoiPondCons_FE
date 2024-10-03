@@ -2,3 +2,6 @@
   text-align: right;
   margin-bottom: 15px;
 }
+.ant-form input{
+  font-size: inherit;
+}
