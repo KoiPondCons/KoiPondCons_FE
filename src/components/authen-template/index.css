@@ -29,6 +29,9 @@ h2 {
   margin-bottom: 20px;
   font-size: 24px;
 }
+.ant-form{
+  padding: 0px;
+}
 
 .ant-form-item {
   margin-bottom: 15px;
