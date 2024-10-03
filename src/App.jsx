@@ -5,12 +5,13 @@ import MyProfile from "./pages/my-profile";
 import CreatedOrders from "./pages/consulting/created-orders";
 import OngoingConsultations from "./pages/consulting/ongoing-consultations";
 import OrderDetail from "./pages/order-detail";
-import Order from "./pages/consulting/order-detail2";
+import Order from "./pages/order-detail";
 import HistoryPage from "./pages/history";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import HomePage from "./pages/home";
 import ContactPage from "./pages/contact";
+import PriceListStaff from "./pages/price-list-staff";
 function App() {
   const router = createBrowserRouter([
     {
@@ -60,6 +61,10 @@ function App() {
     {
       path: "history",
       element: <HistoryPage />,
+    },
+    {
+      path: "price-list",
+      element: <PriceListStaff />,
     },
   ]);
 
