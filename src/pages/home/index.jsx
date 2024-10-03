@@ -3,6 +3,7 @@ import Header from '../../components/header'
 import Footer from '../../components/footer'
 import './index.css'; // Assuming you have a CSS file for styles
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; 
+import { Carousel } from 'antd';
 
 function HomePage() {
   const images = [ // Danh sách hình ảnh
@@ -23,14 +24,6 @@ function HomePage() {
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // Trạng thái cho chỉ số hình ảnh hiện tại
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length); // Chuyển hình ảnh sau 5 giây
-    }, 5000);
-    return () => clearInterval(interval); // Dọn dẹp interval khi component unmount
-  }, []);
-
   const handleNext = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
@@ -38,25 +31,53 @@ function HomePage() {
   const handlePrev = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
-
+  const onChange = (currentSlide) => {
+    console.log(currentSlide);
+    };
   return (
     <div>
       <Header />
 
-      <div className="image-slider">
+      <Carousel afterChange={onChange} className='carousel-container' autoplay effect="fade">
+        <div className="image-container">
+          <img src={images[0]} alt={`Image ${0}`} />
+          <div className="image-overlay"></div> 
+          <div className="caption">
+            <h2 className="caption-text">{captions[0]}</h2>
+            <p className="caption-text-small">{text[0]}</p>
+          </div>
+        </div>
+        <div className="image-container">
+          <img src={images[1]} alt={`Image ${1}`} />
+          <div className="image-overlay"></div> 
+          <div className="caption">
+            <h2 className="caption-text">{captions[1]}</h2>
+            <p className="caption-text-small">{text[1]}</p>
+          </div>
+        </div>
+        <div className="image-container">
+          <img src={images[2]} alt={`Image ${2}`} />
+          <div className="image-overlay"></div> 
+          <div className="caption">
+            <h2 className="caption-text">{captions[2]}</h2>
+            <p className="caption-text-small">{text[2]}</p>
+          </div>
+        </div>
+    </Carousel>
+      {/* <div className="image-slider">
         <div className="image-container">
           <img src={images[currentImageIndex]} alt={`Image ${currentImageIndex + 1}`} />
-          <div className="image-overlay"></div> {/* Lớp phủ màu tối */}
+          <div className="image-overlay"></div> 
           <div className="caption">
             <h2 className="caption-text">{captions[currentImageIndex]}</h2>
             <p className="caption-text-small">{text[currentImageIndex]}</p>
           </div>
         </div>
         <div className="navigation">
-          <button onClick={handlePrev}><FaChevronLeft /></button> {/* Biểu tượng trái */}
-          <button onClick={handleNext}><FaChevronRight /></button> {/* Biểu tượng phải */}
+          <button onClick={handlePrev}><FaChevronLeft /></button> 
+          <button onClick={handleNext}><FaChevronRight /></button> 
         </div>
-      </div>
+      </div> */}
 
       <div className="koi-team">
         <h1>KOI TEAM - CHUYÊN CUNG CẤP</h1>
