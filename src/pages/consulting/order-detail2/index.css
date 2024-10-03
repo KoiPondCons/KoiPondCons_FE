@@ -4,3 +4,23 @@
     color: black;
     text-align: center;
   }
+  .progress {
+    display: flex;
+    justify-content: center;
+  }
+  .ant-form {
+    padding: 50px;  
+  }
+  .ant-form input{
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+  .more-detail{
+    color: black;
+    display: flex;
+    justify-content: center;
+  }
+  .more-detail:hover{
+    color: blue;
+    font-weight: 6  00;
+  }
