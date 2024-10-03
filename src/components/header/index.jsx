@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const token = localStorage.getItem("token");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (token !== null) {
