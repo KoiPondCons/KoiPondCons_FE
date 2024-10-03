@@ -7,12 +7,11 @@ import "../../utils/table.css";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 function OngoingConsultations() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const api = "https://66fa4cd2afc569e13a9b1aed.mockapi.io/ConstructionOrder";
   const fetchConsultationRequests = async () => {
     const response = await axios.get(api);
-    console.log(response.data);
     setRequests(response.data);
   };
   useEffect(() => {
@@ -44,7 +43,11 @@ function OngoingConsultations() {
       title: "",
       key: "",
       render: (record) => {
-        return <AiOutlineUnorderedList onClick={() => navigate(`/order/${record.id}`)} />;
+        return (
+          <AiOutlineUnorderedList
+            onClick={() => navigate(`/order/${record.id}`)}
+          />
+        );
       },
     },
   ];
