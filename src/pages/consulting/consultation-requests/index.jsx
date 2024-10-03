@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal } from "antd";
 import axios from "axios";
 import "./index.css";
-import TableTemplate from "../../components/table";
+import TableTemplate from "../../../components/table";
 function ConsultationRequests() {
   const [requests, setRequests] = useState([]);
   const api = "https://66fa4cd2afc569e13a9b1aed.mockapi.io/ConstructionOrder";

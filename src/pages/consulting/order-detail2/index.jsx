@@ -5,7 +5,7 @@ import axios from "axios";
 import "./index.css";
 import NavDashboard from "../../../components/navbar-dashboard";
 import { useParams } from "react-router-dom";
-import "../../../utils/table.css"
+import "../../../components/table/index.css"
 function Order() {
   const {id} = useParams();
   const [constructionOrder, setConstructionOrder] = useState(null);

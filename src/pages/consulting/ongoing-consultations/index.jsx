@@ -3,7 +3,7 @@ import axios from "axios";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
-import TableTemplate from "../../components/table";
+import TableTemplate from "../../../components/table";
 function OngoingConsultations() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
