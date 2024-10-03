@@ -38,7 +38,7 @@ function OngoingConsultations() {
       key: "status",
     },
     {
-      title: "",
+      title: "Chi tiết",
       key: "",
       render: (record) => {
         return (
