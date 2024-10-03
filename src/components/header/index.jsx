@@ -1,19 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import "./index.css";
 import { FaRegUser } from "react-icons/fa";
-import { Select } from "antd";
+import {Dropdown, message } from 'antd';
 
 
 function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
   const handleLogout = () => {
     setIsLoggedIn(false);
   };
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const handleButtonClick = (e) => {
+    message.info('Click on left button.');
+    console.log('click left button', e);
+  };
+  const handleMenuClick = (e) => {
+    message.info('Click on menu item.');
+    console.log('click', e);
+  };
+  const items = [
+    {
+      label: 'Hồ sơ cá nhân',
+      onClick: () => {
+        window.location.href = "/profile";
+      },
+      key: '1',
+    },
+    {
+      label: 'Lịch sử',
+      onClick: () => {
+        window.location.href = "/history";
+      },
+      key: '2',
+    },
+    {
+      label: 'Khuyến mãi tích điểm',
+      onClick: () => {
+        window.location.href = "/promotion";
+      },
+      key: '3',
+    },
+    {
+      label: 'Đăng xuất',
+      onClick: handleLogout,
+      key: '4',
+    },
+  ];
+  
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
   };
   return (
     <nav className="navbar">
@@ -44,6 +83,12 @@ function Header() {
         <div className="navbar-auth"> { isLoggedIn ? 
         (
           <>
+          <Dropdown.Button menu={menuProps} placement="bottom" icon={<FaRegUser />} />
+
+          </>
+        ) :
+        (
+          <>
            <a href="register" className="auth-button">
            Đăng ký
          </a>
@@ -56,22 +101,7 @@ function Header() {
          </a>
          </>
         )
-          : (
-            <>
-              <FaRegUser onClick={toggleDropdown} style={{cursor: "pointer"}} />
-              {isDropdownOpen && (
-                <div className="dropdown-menu">
-                  <ul>
-                <li><a href="/profile">Hồ sơ cá nhân</a></li>
-                <li><a href="/history">Lịch sử</a></li>
-                <li><a href="/promotion">Khuyến mãi tích điểm</a></li>
-                <li>Đăng xuất onClick={handleLogout}</li>
-              </ul>
-                </div>
-              )}
-
-            </>
-          )
+           
         }
         </div>
       </div>
