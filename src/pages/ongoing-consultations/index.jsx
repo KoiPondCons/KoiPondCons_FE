@@ -41,10 +41,10 @@ function OngoingConsultations() {
       key: "status",
     },
     {
-      title: "",
+      title: "Chi tiết",
       key: "",
       render: (record) => {
-        return <AiOutlineUnorderedList onClick={() => navigate(`/order/${record.id}`)} />;
+        return <AiOutlineUnorderedList style={{cursor: "pointer"}} onClick={() => navigate(`/order/${record.id}`)} />;
       },
     },
   ];
