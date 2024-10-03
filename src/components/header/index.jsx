@@ -5,7 +5,7 @@ import {Dropdown, message } from 'antd';
 
 
 function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleLogin = () => {
     setIsLoggedIn(true);
