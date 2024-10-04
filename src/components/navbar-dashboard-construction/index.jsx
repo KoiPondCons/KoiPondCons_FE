@@ -20,6 +20,9 @@ const NavDashboard = ({ children }) => {
             />
           </a>
           <ul>
+          <li>
+              <a href="/active-projects">Lịch làm việc</a> 
+            </li>
             <li>
               <a href="/active-projects">Dự án đang thực hiện</a> 
             </li>
