@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NavDashboard from "../../components/navbar-dashboard";
+import NavDashboard from "../../components/navbar-dashboard-construction";
 import { Button, Col, Form, Input, Row, Select, Table } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import "./index.css";
@@ -23,6 +23,15 @@ function PriceListStaff() {
 
     fetchPackageConstructionItem();
   }, []);
+  const clonedData = [
+    { item_content: "Đổ bê tông, chống thấm thành hồ, đáy hồ và hầm lọc.", duration: Math.floor(Math.random() * 4) + 1 },
+    { item_content: "Công tác M&E đấu nối điện nước sân vườn", duration: Math.floor(Math.random() * 4) + 1 },
+    { item_content: "Hệ thống lọc nước.", duration: Math.floor(Math.random() * 4) + 1 },
+    { item_content: "Thi công kè đá nghệ thuật", duration: Math.floor(Math.random() * 4) + 1 },
+    { item_content: "Thi công lắp đặt đèn đá Nhật.", duration: Math.floor(Math.random() * 4) + 1 },
+    { item_content: "Thi công sàn gỗ hầm lọc.", duration: Math.floor(Math.random() * 4) + 1 },
+    { item_content: "Thi công phối kết cây bụi và hoa tạo cảnh nghệ thuật", duration: Math.floor(Math.random() * 4) + 1 },
+  ];
   const columnsPackage = [
     {
       title: "STT",
@@ -38,6 +47,9 @@ function PriceListStaff() {
       title: "Thời lượng thi công",
       dataIndex: "duration",
       key: "duration",
+      render: (text, record) => (
+        <span>{text} ngày</span>
+      ),
     },
   ];
   return (
@@ -87,7 +99,7 @@ function PriceListStaff() {
           <h1>Chi tiết hạng mục</h1>
         <Table
           className="table-template"
-          dataSource={packageItems}
+          dataSource={clonedData}
           columns={columnsPackage}
           pagination={false}
           />

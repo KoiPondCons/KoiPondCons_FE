@@ -1,11 +1,10 @@
 import { Col, Form, Input, Popover, Row, Table } from "antd";
-import FormItem from "antd/es/form/FormItem";
 import React, { useEffect, useState } from "react";
 import { Progress } from "antd";
 import axios from "axios";
 import "./index.css";
-import NavDashboard from "../../components/navbar-dashboard";
-import { useParams } from "react-router-dom";
+import NavDashboard from "../../components/navbar-dashboard-construction";
+import { useNavigate, useParams } from "react-router-dom";
 import "../../components/table/index.css";
 import { AiOutlineFile } from "react-icons/ai";
 import { RiDraftLine } from "react-icons/ri";
@@ -14,6 +13,10 @@ function Order() {
   const [constructionOrder, setConstructionOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+    const handleClick = () => {
+        navigate(`/price-list-staff`);
+    };
   useEffect(() => {
     const fetchConstructionOrder = async () => {
       try {
@@ -211,20 +214,20 @@ function Order() {
             </Col>
             <Col span={8}>
               <label>Bảng báo giá và chi tiết hạng mục</label>
-              <div className="display-input">
+              <div className="display-input" onClick={() => handleClick()} style={{cursor: "pointer"}}>
                 {<AiOutlineFile style={{fontSize: "20px", textAlign: "center"}}/>}
               </div>
             </Col>
           </Row>
         </Form>
         
-        <h1>Báo giá</h1>
+        {/* <h1>Báo giá</h1>
         <Table
           className="table-template"
           dataSource={dataSource}
           columns={columns}
           pagination={false}
-        />
+        /> */}
       </div>
     </NavDashboard>
   );
