@@ -3,7 +3,7 @@ import { Button, Modal, Table } from "antd";
 import axios from "axios";
 import "./index.css";
 import "../../utils/table.css";
-import NavDashboard from "../../components/navbar-dashboard";
+import NavDashboard from "../../components/navbar-dashboard-construction";
 function ConsultationRequests() {
   const [requests, setRequests] = useState([]);
   const api = "https://66fa4cd2afc569e13a9b1aed.mockapi.io/ConstructionOrder";
