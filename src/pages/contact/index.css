@@ -40,3 +40,24 @@
 .ant-col-offset-2 {
     margin-inline-start: 20px; 
 }
+.content-container {
+    text-align: center;
+    margin-top: 100px;
+    display: flex; /* Thay đổi từ flex sang block */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+.content-container h1 {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+.content-container p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+.button-common {
+    margin: 10px;
+}
+
