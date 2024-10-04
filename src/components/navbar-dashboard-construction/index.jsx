@@ -21,13 +21,13 @@ const NavDashboard = ({ children }) => {
           </a>
           <ul>
           <li>
-              <a href="/active-projects">Lịch làm việc</a> 
+              <a href="/construction/active-projects">Lịch làm việc</a> 
             </li>
             <li>
-              <a href="/active-projects">Dự án đang thực hiện</a> 
+              <a href="/construction/active-projects">Dự án đang thực hiện</a> 
             </li>
             <li>
-              <a href="/project-history">Lịch sử dự án</a> 
+              <a href="/construction/history-construction">Lịch sử dự án</a> 
             </li>
             <li>
               <a href="/my-profile">Hồ sơ của tôi</a>
