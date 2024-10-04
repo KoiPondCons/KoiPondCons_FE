@@ -29,7 +29,7 @@ function HistoryPage() {
     <div>
       <CommonPageTemplate title={title} banner={banner}>
         <div className="history-page-container">
-          <Card title={<div style={{ textAlign: 'center', fontSize: '1.5rem' }}>Lịch sử đơn hàng</div>}>
+          <Card title={<h1 style={{ textAlign: 'center' }}>Lịch sử đơn hàng</h1>}>
           <Card style={{ backgroundColor: '#f0f4f8', borderRadius: '8px', padding: '16px' }}>
     <Row>
       <Col span={4}>
