@@ -1,7 +1,7 @@
 import React  from "react";
 import {Table } from "antd";
 import "./index.css";
-import NavDashboard from "../../components/navbar-dashboard";
+import NavDashboard from "../../components/navbar-dashboard-construction";
 function TableTemplate({columns, requests, title}) {
 
   return (
