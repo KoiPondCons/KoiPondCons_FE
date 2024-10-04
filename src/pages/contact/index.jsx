@@ -22,7 +22,20 @@ function ContactPage() {
 
   return (
     <CommonPageTemplate className="context" title={title} banner={banner}>
-      {isRequested ? (
+      {isRequested ? 
+       (
+        <div className="content-container">
+          <h1>Đã gửi yêu cầu thành công</h1>
+          <p>
+            Chúng tôi đã nhận được yều cầu của bạn và sẽ sớm liên hệ với bạn
+            trong vòng 24h làm việc
+          </p>
+          <div className="button-container">
+          <Button onClick={() => navigate("/")} className="button-common" >Quay về trang chủ</Button>
+          <Button onClick={() => navigate("/price")} className="button-common" >Tham khảo bảng giá</Button>
+          </div>
+        </div>
+      ) : (
         <Row justify="center" align="middle" style={{ width: "100%" }}>
           <Col span={9}>
             <div className="container-input">
@@ -198,19 +211,7 @@ function ContactPage() {
             </div>
           </Col>
         </Row>
-      ) : (
-        <div className="content-container">
-          <h1>Đã gửi yêu cầu thành công</h1>
-          <p>
-            Chúng tôi đã nhận được yều cầu của bạn và sẽ sớm liên hệ với bạn
-            trong vòng 24h làm việc
-          </p>
-          <div className="button-container">
-          <Button onClick={() => navigate("/")} className="button-common" >Quay về trang chủ</Button>
-          <Button onClick={() => navigate("/price")} className="button-common" >Tham khảo bảng giá</Button>
-          </div>
-        </div>
-      )}
+      ) }
     </CommonPageTemplate>
   );
 }
