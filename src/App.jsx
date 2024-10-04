@@ -1,40 +1,26 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ConsultationRequests from "./pages/consultation-requests";
-import MyProfile from "./pages/my-profile";
-import CreatedOrders from "./pages/created-orders";
-import OngoingConsultations from "./pages/ongoing-consultations";
-import OrderDetail from "./pages/order-detail";
-import Order from "./pages/order-detail2";
+import HistoryConstruction from "./pages/construction-staff/history-construction";
+import ActiveProject from "./pages/construction-staff/active-project";
+import Order from "./pages/order-detail";
+import PriceListStaff from "./pages/price-list-staff";
 function App() {
   const router = createBrowserRouter([
     {
-      path: "",
-      element: <ConsultationRequests />,
+      path: "history-construction",
+      element: <HistoryConstruction />,
     },
     {
-      path: "consultation-requests",
-      element: <ConsultationRequests />,
+      path: "active-projects",
+      element: <ActiveProject />,
     },
     {
-      path: "created-orders",
-      element: <CreatedOrders />,
-    },
-    {
-      path: "ongoing-consultation",
-      element: <OngoingConsultations />,
-    },
-    {
-      path: "my-profile",
-      element: <MyProfile />,
-    },
-    {
-      path: "order-detail",
-      element: <OrderDetail />,
-    },
-    {
-      path: "order/:id",
+      path: "order-detail/:id",
       element: <Order />,
+    },
+    {
+      path: "price-list-staff",
+      element: <PriceListStaff />,
     },
   ]);
 
