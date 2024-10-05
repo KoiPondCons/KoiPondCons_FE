@@ -9,7 +9,7 @@ import CreatedOrders from "./pages/consulting/created-orders";
 import OngoingConsultations from "./pages/consulting/ongoing-consultations";
 import OrderDetail from "./pages/order-detail";
 import Order from "./pages/order-detail";
-import HistoryPage from "./pages/history";
+import HistoryPage from "./pages/customer/history";
 import PriceListStaff from "./pages/price-list-staff";
 
 // Customer page
