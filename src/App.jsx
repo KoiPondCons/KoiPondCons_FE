@@ -10,7 +10,7 @@ import OngoingConsultations from "./pages/consulting/ongoing-consultations";
 //Construction
 
 //Designer
-
+import Designer from "./pages/designer";
 //Manager
 
 //Customer
@@ -31,6 +31,7 @@ import PriceListStaff from "./pages/price-list-staff";
 import MyProfile from "./pages/my-profile";
 import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -86,7 +87,7 @@ function App() {
       element: <HistoryPage />,
     },
     {
-      path: "price-list",
+      path: "price-list-staff",
       element: <PriceListStaff />,
     },
     //Consulting-staff
@@ -114,6 +115,7 @@ function App() {
     //Designer
     {
       path: "designer",
+      element: <Designer />,
     },
     //Manager
     {
