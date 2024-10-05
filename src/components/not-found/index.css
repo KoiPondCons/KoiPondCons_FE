@@ -1,0 +1,106 @@
+:root {
+    --main-bg-color: #c47b7b;
+    --hover-bg-color: #23c483;
+    --text-color: #000;
+    --overlay-text-color: white;
+}
+
+.notfound404-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    height: 100vh; 
+}
+
+.notfound404-shape {
+    width: 1000px;
+    height: auto;
+    background-color: white;
+    border-radius: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* Thêm padding để tạo khoảng cách */
+}
+
+.notfound404-shape img {
+    display: block;
+    width: 600px;
+    height: auto; /* Đảm bảo hình ảnh giữ tỷ lệ */
+    margin: auto;
+}
+
+.notfound404-shape h1 {
+    font-size: 2rem;
+    text-align: center;
+    letter-spacing: 1px; /* Giãn chữ cho h1 */
+}
+
+.notfound404-shape p {
+    margin: auto;
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 1.5; /* Cải thiện khoảng cách dòng */
+    letter-spacing: 0.5px; /* Giãn chữ cho p */
+}
+
+.notfound404-shape button {
+    display: block;
+    margin: 30px auto;
+    padding: 1em 2em;
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2.5px; /* Giãn chữ cho button */
+    color: var(--text-color);
+    background-color: var(--main-bg-color);
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    outline: none;
+}
+
+.notfound404-shape button:hover {
+    background-color: var(--hover-bg-color);
+    box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+    color: var(--overlay-text-color);
+    transform: translateY(-7px);
+}
+
+.notfound404-shape button:active {
+    transform: translateY(-1px);
+}
+
+.cover-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: 20% 1px;
+    filter: brightness(0.25);
+}
+
+button {
+    padding: 1em 2em;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background-color: #c47b7b;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+}
+
+button:hover {
+    background-color: #23c483;
+    box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+    color: #fff;
+    transform: translateY(-7px);
+}
+
+button:active {
+    transform: translateY(-1px);
+}
