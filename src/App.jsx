@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
 import ActiveProject from "./pages/construction-staff/active-project";
 import Order from "./pages/order-detail";
-import PriceListStaff from "./pages/price-list-staff";
+import PriceListStaff from "./pages/construction-staff/price-list-staff";
 function App() {
   const router = createBrowserRouter([
     {
