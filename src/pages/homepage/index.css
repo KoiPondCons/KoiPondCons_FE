@@ -1,0 +1,321 @@
+body {
+  background-image: url('https://t3.ftcdn.net/jpg/02/77/30/98/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg');
+  background-color: rgb(6, 21, 41);
+  /* Blue background with transparency */
+  background-blend-mode: overlay;
+}
+
+.koi-team {
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+.koi-team h1 {
+  font-size: 4rem;
+  margin: 40px 0 120px 0;
+}
+
+.koi-team .services {
+  display: flex;
+  /* Align items in a row */
+  justify-content: center;
+  gap: 50px;
+  margin-top: 20px;
+  /* Add space above the service items */
+}
+
+.service-item {
+  font-size: 1.5rem;
+  font-weight: 100;
+  max-width: 200px;
+  line-height: 1.4;
+  flex: 1;
+  /* Allow items to grow equally */
+  margin: 20px 10px;
+  /* Add horizontal spacing */
+  padding: 20px;
+  /* Add padding for a wider box */
+  background-color: rgba(255, 255, 255, 0);
+  /* Light background color */
+  border-radius: 5px;
+  /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for depth */
+  transition: background-color 0.3s;
+  /* Smooth transition for hover effect */
+  text-align: center;
+  /* Center text */
+}
+
+.separator {
+  width: 1px;
+  /* Width of the separator */
+  background-color: #ccc;
+  /* Color of the separator */
+  height: 200px;
+  /* Set a fixed height for visibility */
+  align-self: center;
+  /* Center the separator vertically */
+}
+
+.service-item:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Light hover effect */
+}
+
+.image-slider {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.image-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.caption {
+  bottom: 0;
+  /* Đặt ở dưới cùng */
+  color: white;
+  z-index: 2;
+  display: flex;
+  /* Sử dụng flexbox */
+  flex-direction: column;
+  /* Đặt chiều dọc */
+  justify-content: center;
+  /* Căn giữa theo chiều dọc */
+  align-items: center;
+  /* Căn giữa theo chiều ngang */
+  height: 100%;
+  /* Đảm bảo chiều cao đủ để căn giữa */
+  text-align: center;
+  /* Căn giữa chữ */
+  position: absolute;
+  /* Đặt vị trí tuyệt đối để nằm trên ảnh */
+  left: 0;
+  /* Đặt ở bên trái */
+  right: 0;
+  /* Đặt ở bên phải */
+}
+
+.caption-text {
+  text-align: center;
+  font-size: 5rem;
+  color: white;
+  opacity: 1;
+  /* Đặt độ mờ thành 1 để hiển thị chữ */
+  animation: none;
+  /* Tắt hiệu ứng animation nếu cần */
+  margin: 0;
+  /* Đảm bảo không có khoảng cách bên ngoài */
+}
+
+.caption-text-small {
+  max-width: 800px;
+  /* Giới hạn chiều rộng tối đa */
+  width: 100%;
+  /* Đảm bảo nó chiếm toàn bộ chiều rộng có sẵn */
+  text-align: center;
+  /* Căn giữa chữ */
+  margin: 0 auto;
+  /* Căn giữa theo chiều ngang */
+  font-weight: 100;
+  line-height: 1.5;
+}
+
+.navigation {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2;
+}
+
+.navigation button {
+  opacity: 0.2;
+  margin: 0 5px;
+  padding: 10px 15px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.navigation button:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.view-all-button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2%;
+}
+
+.view-all-button button {
+  padding: 20px 30px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+}
+
+.view-all-button button:hover {
+  background-color: rgb(141, 137, 137);
+  color: black;
+}
+
+.project-gallery {
+  display: flex;
+  /* Sử dụng flexbox để sắp xếp các bức ảnh */
+  justify-content: space-around;
+  /* Căn giữa các bức ảnh */
+  margin-top: 20px;
+  /* Khoảng cách trên */
+}
+
+.project-item {
+  position: relative;
+  /* Để có thể sử dụng absolute cho chữ */
+  display: flex;
+  /* Sử dụng flexbox cho item */
+  align-items: center;
+  /* Căn giữa theo chiều dọc */
+  transition: transform 0.3s ease;
+  /* Hiệu ứng chuyển tiếp */
+  z-index: 1;
+  /* Đặt z-index mặc định */
+}
+
+.project-item img {
+  width: 100%;
+  /* Đảm bảo ảnh chiếm toàn bộ chiều rộng */
+  height: auto;
+  /* Giữ tỷ lệ ảnh */
+}
+
+.project-item:hover {
+  transform: scale(1.2);
+  /* Phóng to ảnh khi hover */
+  z-index: 2;
+  /* Đưa ảnh đang hover lên trên */
+}
+
+.project-item:hover~.project-item {
+  transform: scale(1);
+  /* Thu nhỏ các ảnh còn lại khi hover */
+}
+
+.project-header {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  font-size: 4rem;
+  color: rgb(255, 255, 255);
+  margin: 40px 0 20px 0;
+}
+.project-header:hover{
+  color: white;
+}
+
+.project-title {
+  margin: 0;
+  /* Đảm bảo không có khoảng cách bên ngoài */
+  font-size: 1.5rem;
+  /* Kích thước chữ */
+  font-weight: bold;
+  /* Đậm chữ */
+  writing-mode: vertical-rl;
+  /* Đặt chữ theo chiều dọc */
+  transform: rotate(180deg);
+  /* Lật chữ để hướng đúng */
+  text-align: center;
+  /* Căn giữa chữ */
+  position: absolute;
+  /* Đặt vị trí tuyệt đối để nằm trên ảnh */
+  left: 10px;
+  /* Đặt khoảng cách từ bên trái */
+  top: 50%;
+  /* Đặt ở giữa theo chiều dọc */
+  transform: translateY(-50%) rotate(180deg);
+  /* Căn giữa và lật chữ */
+  color: white;
+  /* Màu chữ */
+  z-index: 2;
+  /* Đảm bảo chữ nằm trên ảnh */
+}
+
+
+.project-process {
+  background-image: url('https://t3.ftcdn.net/jpg/02/77/30/98/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg');
+  background-color: rgb(6, 21, 41);
+  /* Blue background with transparency */
+  background-blend-mode: overlay;
+  text-align: center; /* Center the title */
+  padding: 40px 20px; /* Add padding */
+}
+.project-process h1{
+  font-size: 4rem;
+  color: white;
+  margin: 40px 0 100px 0;
+}
+
+.process-steps {
+  display: grid; /* Use grid layout */
+  grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+  gap: 20px; /* Space between items */
+  max-width: 1200px; /* Set a maximum width for the grid */
+  margin: 0 auto; /* Center the grid horizontally */
+}
+
+.step {
+  background-color: rgba(255, 255, 255, 0.5); /* Light background color */
+  max-width: 300px;
+  margin-bottom: 50px;
+  border-radius: 10px; /* Rounded corners */
+  padding: 30px; /* Padding inside the box */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: transform 0.3s; /* Smooth transition for hover effect */
+}
+
+.step:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+}
+
+.step-number {
+  font-size: 4rem; /* Large font size for step number */
+  font-weight: bold; /* Bold font */
+  color: #0C2240; /* Primary color */
+}
+
+.step-title {
+  font-size: 1.5rem; /* Font size for title */
+  font-weight: bold; /* Bold font */
+  margin: 10px 0; /* Margin for spacing */
+}
+
+.step-description {
+  font-size: 1.2rem; /* Font size for description */
+  color: black; /* Darker color for description */
+}
