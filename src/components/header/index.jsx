@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import "./index.css";
-import { FaRegUser } from "react-icons/fa";
-import {Dropdown, message } from 'antd';
-
+import { FaBell, FaRegUser } from "react-icons/fa";
+import { Dropdown, message, Space } from "antd";
 
 function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -14,42 +13,42 @@ function Header() {
     setIsLoggedIn(false);
   };
   const handleButtonClick = (e) => {
-    message.info('Click on left button.');
-    console.log('click left button', e);
+    message.info("Click on left button.");
+    console.log("click left button", e);
   };
   const handleMenuClick = (e) => {
-    message.info('Click on menu item.');
-    console.log('click', e);
+    message.info("Click on menu item.");
+    console.log("click", e);
   };
   const items = [
     {
-      label: 'Hồ sơ cá nhân',
+      label: "Hồ sơ cá nhân",
       onClick: () => {
         window.location.href = "/profile";
       },
-      key: '1',
+      key: "1",
     },
     {
-      label: 'Lịch sử',
+      label: "Lịch sử",
       onClick: () => {
         window.location.href = "/history";
       },
-      key: '2',
+      key: "2",
     },
     {
-      label: 'Khuyến mãi tích điểm',
+      label: "Khuyến mãi tích điểm",
       onClick: () => {
         window.location.href = "/promotion";
       },
-      key: '3',
+      key: "3",
     },
     {
-      label: 'Đăng xuất',
+      label: "Đăng xuất",
       onClick: handleLogout,
-      key: '4',
+      key: "4",
     },
   ];
-  
+
   const menuProps = {
     items,
     onClick: handleMenuClick,
@@ -80,29 +79,33 @@ function Header() {
             <a href="/contact">LIÊN HỆ</a>
           </li>
         </ul>
-        <div className="navbar-auth"> { isLoggedIn ? 
-        (
-          <>
-          <Dropdown.Button menu={menuProps} placement="bottom" icon={<FaRegUser />} />
-
-          </>
-        ) :
-        (
-          <>
-           <a href="register" className="auth-button">
-           Đăng ký
-         </a>
-         <a
-           href="login"
-           className="auth-button"
-           style={{ paddingLeft: "0px" }}
-         >
-           Đăng nhập
-         </a>
-         </>
-        )
-           
-        }
+        <div className="navbar-auth">
+          {" "}
+          {isLoggedIn ? (
+            <>
+              <FaBell style={{ color: "white", marginRight: "10px" }} />
+              <Dropdown menu={{ items }} trigger={["click"]}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    <FaRegUser style={{ color: "white" }} />
+                  </Space>
+                </a>
+              </Dropdown>
+            </>
+          ) : (
+            <>
+              <a href="register" className="auth-button">
+                Đăng ký
+              </a>
+              <a
+                href="login"
+                className="auth-button"
+                style={{ paddingLeft: "0px" }}
+              >
+                Đăng nhập
+              </a>
+            </>
+          )}
         </div>
       </div>
     </nav>
