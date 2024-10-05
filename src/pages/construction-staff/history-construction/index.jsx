@@ -61,6 +61,7 @@ function HistoryConstruction() {
         columns={columns}
         requests={requests}
         title="Lịch sử dự án"
+        actor="construction"
       />
     </div>
   );

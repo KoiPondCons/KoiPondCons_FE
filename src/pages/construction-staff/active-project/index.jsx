@@ -2,13 +2,13 @@ import React from "react";
 import "./index.css";
 import TableTemplate from "../../../components/table";
 import { Button, Col, Progress, Row } from "antd";
-import NavDashboard from "../../../components/navbar-dashboard-construction";
+import NavDashboard from "../../../components/navbar-dashboard";
 import { RiDraftLine } from "react-icons/ri";
 
 function ActiveProject() {
   return (
     <div>
-      <NavDashboard>
+      <NavDashboard actor="construction">
         <h1>Thông tin dự án</h1>
         <Row gutter={60}>
           <Col span={12}>
