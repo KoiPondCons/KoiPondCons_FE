@@ -1,5 +1,8 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import NotFound from "./components/not-found"; // Thêm import cho NotFound
+
+// Staff page
 import ConsultationRequests from "./pages/consulting/consultation-requests";
 import MyProfile from "./pages/my-profile";
 import CreatedOrders from "./pages/consulting/created-orders";
@@ -7,11 +10,20 @@ import OngoingConsultations from "./pages/consulting/ongoing-consultations";
 import OrderDetail from "./pages/order-detail";
 import Order from "./pages/order-detail";
 import HistoryPage from "./pages/history";
-import LoginPage from "./pages/login";
-import RegisterPage from "./pages/register";
-import HomePage from "./pages/home";
-import ContactPage from "./pages/contact";
 import PriceListStaff from "./pages/price-list-staff";
+
+// Customer page
+import LoginPage from "./pages/homepage-login";
+import RegisterPage from "./pages/homepage-register";
+import HomePage from "./pages/homepage";
+import ContactPage from "./pages/homepage-contact";
+import Service from "./pages/homepage-service"
+import Pricing from "./pages/homepage-pricing"
+import About from "./pages/homepage-about"; 
+import Blog from "./pages/homepage-blog"; 
+import ListProject from "./pages/homepage-list-project"
+
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -27,8 +39,28 @@ function App() {
       element: <RegisterPage />,
     },
     {
+      path: "about",
+      element: <About/>,
+    },
+    {
       path: "contact",
       element: <ContactPage />,
+    },
+    {
+      path: "projects",
+      element: <ListProject/>,
+    },
+    {
+      path: "services",
+      element: <Service/>,
+    },
+    {
+      path: "pricing",
+      element: <Pricing/>,
+    },
+    {
+      path: "blog",
+      element: <Blog/>,
     },
     {
       path: "homepage",
@@ -65,6 +97,10 @@ function App() {
     {
       path: "price-list",
       element: <PriceListStaff />,
+    },
+    {
+      path: "*", // Route cho các đường dẫn không tồn tại
+      element: <NotFound />, // Chuyển hướng đến trang NotFound
     },
   ]);
 
