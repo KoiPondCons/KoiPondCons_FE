@@ -13,6 +13,8 @@ import OngoingConsultations from "./pages/consulting/ongoing-consultations";
 
 //Manager
 
+//Customer
+import HistoryPage from "./pages/customer/history";
 // Home page
 import LoginPage from "./pages/general/login";
 import RegisterPage from "./pages/general/register";
@@ -24,11 +26,11 @@ import About from "./pages/general/about";
 import Blog from "./pages/general/blog";
 import ListProject from "./pages/general/list-project";
 //General
-import OrderDetail from "./pages/order-detail";
 import Order from "./pages/order-detail";
-import HistoryPage from "./pages/customer/history";
 import PriceListStaff from "./pages/price-list-staff";
 import MyProfile from "./pages/my-profile";
+import ActiveProject from "./pages/construction-staff/active-project";
+import HistoryConstruction from "./pages/construction-staff/history-construction";
 function App() {
   const router = createBrowserRouter([
     {
@@ -76,10 +78,6 @@ function App() {
       element: <MyProfile />,
     },
     {
-      path: "order-detail",
-      element: <OrderDetail />,
-    },
-    {
       path: "order/:id",
       element: <Order />,
     },
@@ -93,46 +91,48 @@ function App() {
     },
     //Consulting-staff
     {
-      path: "consulting/consultation-requests",
+      path: "consulting",
       element: <ConsultationRequests />,
     },
     {
-      path: "/consulting/ongoing-consultation",
+      path: "consulting/ongoing-consultation",
       element: <OngoingConsultations />,
     },
     {
-      path: "/consulting/created-orders",
+      path: "consulting/created-orders",
       element: <CreatedOrders />,
     },
     //Construction-staff
     {
-      path: "/construction/active-project",
+      path: "construction",
+      element: <ActiveProject />,
     },
     {
-      path: "/construction/history-projects",
+      path: "construction/history-construction",
+      element: <HistoryConstruction />,
     },
     //Designer
     {
-      path: "/designer",
+      path: "designer",
     },
     //Manager
     {
-      path: "/manager/design-management",
+      path: "manager/design-management",
     },
     {
-      path: "/manager/staff-management",
+      path: "manager/staff-management",
     },
     {
-      path: "/manager/quote-management",
+      path: "manager/quote-management",
     },
     {
-      path: "/manager/construction-orders",
+      path: "manager/construction-orders",
     },
     {
-      path: "/manager/maintenance-orders",
+      path: "manager/maintenance-orders",
     },
     {
-      path: "/manager/customer-profile-management",
+      path: "manager/customer-profile-management",
     },
     {
       path: "*", // Route cho các đường dẫn không tồn tại
