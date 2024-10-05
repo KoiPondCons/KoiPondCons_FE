@@ -8,7 +8,7 @@ function PriceListStaff() {
   const [packageItems, setPackageItems] = useState([]);
   const [unitPrice, setUnitPrice] = useState(100000);
   const [discount, setDiscount] = useState(5);
-  const contentdiscount = "Sử dụng thiết kế mẫu giảm("+discount+"%)";
+  const contentdiscount = "Sử dụng thiết kế mẫu giảm(" + discount + "%)";
   const apiPackage =
     "https://66fa4cd2afc569e13a9b1aed.mockapi.io/PackageConstructionItem";
   useEffect(() => {
@@ -42,69 +42,83 @@ function PriceListStaff() {
   ];
   return (
     <div className="price-list-staff-container">
-        <NavDashboard>
-          <h1>Bảng báo giá và chi tiết hạng mục</h1>
-          <div className="price-list-staff-form">
+      <NavDashboard>
+        <h1>Bảng báo giá và chi tiết hạng mục</h1>
+        <div className="price-list-staff-form">
           <Form layout="vertical">
             <Row gutter={40}>
               <Col span={8}>
-                <FormItem label="Thể tích hồ"
-                key="pond-volume">
-                  <Input type="number" defaultValue={pondVolume} 
-                  addonAfter="m3"
-                  min={0}
-                  max={1000}
-                  onChange={(e) => setPondVolume(e.target.value)}
+                <FormItem label="Thể tích hồ" key="pond-volume">
+                  <Input
+                    type="number"
+                    defaultValue={pondVolume}
+                    addonAfter="m3"
+                    min={0}
+                    max={1000}
+                    onChange={(e) => setPondVolume(e.target.value)}
                   />
                 </FormItem>
               </Col>
               <Col span={8}>
-              <FormItem label="Gói"
-            key="packages"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng chọn gói!",
-              },
-            ]}
-            >
-              <Select placeholder="Chọn gói">
-                <Select.Option value="1">Gói cơ bản</Select.Option>
-                <Select.Option value="2">Gói phổ thông  </Select.Option>
-                <Select.Option value="3">Gói cao cấp</Select.Option>
-              </Select>
-            </FormItem>
+                <FormItem
+                  label="Gói"
+                  key="packages"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng chọn gói!",
+                    },
+                  ]}
+                >
+                  <Select placeholder="Chọn gói">
+                    <Select.Option value="1">Gói cơ bản</Select.Option>
+                    <Select.Option value="2">Gói phổ thông </Select.Option>
+                    <Select.Option value="3">Gói cao cấp</Select.Option>
+                  </Select>
+                </FormItem>
               </Col>
               <Col span={8}>
-                <Button type="primary" htmlType="submit" style={{position: "absolute", bottom: "15%", width: "90%"}}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  style={{ position: "absolute", bottom: "15%", width: "90%" }}
+                >
                   Tính toán
                 </Button>
               </Col>
             </Row>
           </Form>
 
-            <div className="price-list-staff-result">
-          <h1>Chi tiết hạng mục</h1>
-        <Table
-          className="table-template"
-          dataSource={packageItems}
-          columns={columnsPackage}
-          pagination={false}
-          />
+          <div className="price-list-staff-result">
+            <h1>Chi tiết hạng mục</h1>
+            <Table
+              className="table-template"
+              dataSource={packageItems}
+              columns={columnsPackage}
+              pagination={false}
+            />
           </div>
-          <h1 style={{textAlign: "center"}}>Báo giá</h1>
+          <h1 style={{ textAlign: "center" }}>Báo giá</h1>
           <h3>Đơn giá: {unitPrice} VNĐ/m3</h3>
           <h3>Thành tiền: {unitPrice * pondVolume} VNĐ</h3>
           <h3>Giảm giá:</h3>
-          <span>{contentdiscount}: {unitPrice * pondVolume * discount/100} VNĐ</span>
-          <h3>Tổng cộng: {unitPrice * pondVolume * (1-discount/100)} VNĐ</h3>
+          <span>
+            {contentdiscount}: {(unitPrice * pondVolume * discount) / 100} VNĐ
+          </span>
+          <h3>
+            Tổng cộng: {unitPrice * pondVolume * (1 - discount / 100)} VNĐ
+          </h3>
         </div>
-        
-      <Button className="button-template" type="primary" htmlType="submit" style={{textAlign: "center", width: "100%"}}>
-            Gửi báo giá
+
+        <Button
+          className="button-template"
+          type="primary"
+          htmlType="submit"
+          style={{ textAlign: "center", width: "100%" }}
+        >
+          Gửi báo giá
         </Button>
-        </NavDashboard>
-        
+      </NavDashboard>
     </div>
   );
 }
