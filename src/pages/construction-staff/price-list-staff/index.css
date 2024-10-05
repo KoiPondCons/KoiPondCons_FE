@@ -1,0 +1,123 @@
+.price-list-staff-form {
+    padding: 15px;
+}
+
+.price-list-staff-result {
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    
+}
+/* Body */
+.container {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: auto;
+    gap: 0px;
+    margin-top: 20px;
+  }
+  
+  hr {
+    height: 1px;
+    background-color: #2e2e2e; /* Dark gray line */
+    border: none;
+  }
+  
+  .card {
+    width: 60vw;
+    background: #C7D1D9; /* Dark background for a professional look */
+    box-shadow:
+      0px 187px 75px rgba(0, 0, 0, 0.01),
+      0px 105px 63px rgba(0, 0, 0, 0.05),
+      0px 47px 47px rgba(0, 0, 0, 0.09),
+      0px 12px 26px rgba(0, 0, 0, 0.1),
+      0px 0px 0px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    width: 100%;
+    height: 80px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 20px;
+    border-bottom: 1px solid #2e2e2e; /* Dark gray */
+    font-weight: 700;
+    font-size: 30px;
+    color: black; /* White text */
+  }
+  
+  /* Cart */
+  .cart {
+    border-radius: 19px 19px 0px 0px;
+  }
+  
+  .cart .steps {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .cart .steps .step {
+    display: grid;
+    gap: 10px;
+  }
+  
+  .cart .steps .step span {
+    font-size: 18px;
+    font-weight: lighter;
+    color:  #0C2240;
+    margin-bottom: 8px;
+    display: block;
+  }
+  
+  .cart .steps .step p {
+    font-size: 25px;
+    font-weight: 600;
+    color: black; 
+  }
+  
+  /* Checkout */
+  .payments .details {
+    display: grid;
+    grid-template-columns: 10fr 5fr;
+    padding: 30px;
+    gap: 10px;
+    justify-items: stretch; /* Giữ nguyên để các ô có chiều rộng đầy đủ */
+}
+
+.checkout .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px 10px 20px;
+    background-color: #0C2240; /* Dark gray background */
+  }
+  
+  .price {
+    font-size: 22px;
+    color: #ffffff; /* White text */
+    font-weight: 900;
+  }
+  
+  .checkout .checkout-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 36px;
+    margin-right: 15px;
+    background: #555555; /* Medium gray button */
+    border-radius: 7px;
+    border: 1px solid #2e2e2e; /* Dark gray border */
+    color: #ffffff; /* White text */
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+  }
+  
+  .checkout .checkout-btn:hover {
+    background-color: #5c3e11; /* Slightly lighter gray on hover */
+  }
