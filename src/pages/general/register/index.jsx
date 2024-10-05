@@ -1,5 +1,5 @@
 import React from "react";
-import AuthenTemplate from "../../components/authen-template";
+import AuthenTemplate from "../../../components/authen-template";
 import { Form, Input } from "antd";
 import FormItem from "antd/es/form/FormItem";
 

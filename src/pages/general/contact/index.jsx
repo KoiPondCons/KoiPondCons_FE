@@ -1,6 +1,6 @@
 import React, { useState } from "react"; // Import useState
 import "./index.css";
-import CommonPageTemplate from "../../components/common-page-template";
+import CommonPageTemplate from "../../../components/common-page-template";
 import { Form, Input, Select, Row, Col, Button } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import { LuMapPin, LuMail, LuPhone } from "react-icons/lu";
@@ -22,9 +22,13 @@ function ContactPage() {
     "https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/banner-contact.avif?alt=media&token=457aeca2-4a4d-48e0-b9da-2764712f4118";
 
   return (
-    <CommonPageTemplate className="context" title={title} context={context} banner={banner}>
-      {isRequested ? 
-       (
+    <CommonPageTemplate
+      className="context"
+      title={title}
+      context={context}
+      banner={banner}
+    >
+      {isRequested ? (
         <div className="content-container">
           <h1>Đã gửi yêu cầu thành công</h1>
           <p>
@@ -32,8 +36,15 @@ function ContactPage() {
             trong vòng 24h làm việc
           </p>
           <div className="button-container">
-          <Button onClick={() => navigate("/")} className="button-common" >Quay về trang chủ</Button>
-          <Button onClick={() => navigate("/price")} className="button-common" >Tham khảo bảng giá</Button>
+            <Button onClick={() => navigate("/")} className="button-common">
+              Quay về trang chủ
+            </Button>
+            <Button
+              onClick={() => navigate("/price")}
+              className="button-common"
+            >
+              Tham khảo bảng giá
+            </Button>
           </div>
         </div>
       ) : (
@@ -212,7 +223,7 @@ function ContactPage() {
             </div>
           </Col>
         </Row>
-      ) }
+      )}
     </CommonPageTemplate>
   );
 }

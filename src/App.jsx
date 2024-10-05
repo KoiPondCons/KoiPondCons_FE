@@ -13,16 +13,15 @@ import HistoryPage from "./pages/history";
 import PriceListStaff from "./pages/price-list-staff";
 
 // Customer page
-import LoginPage from "./pages/homepage-login";
-import RegisterPage from "./pages/homepage-register";
-import HomePage from "./pages/homepage";
-import ContactPage from "./pages/homepage-contact";
-import Service from "./pages/homepage-service"
-import Pricing from "./pages/homepage-pricing"
-import About from "./pages/homepage-about"; 
-import Blog from "./pages/homepage-blog"; 
-import ListProject from "./pages/homepage-list-project"
-
+import LoginPage from "./pages/general/login";
+import RegisterPage from "./pages/general/register";
+import HomePage from "./pages/general/homepage";
+import ContactPage from "./pages/general/contact";
+import Service from "./pages/general/service";
+import Pricing from "./pages/general/pricing";
+import About from "./pages/general/about";
+import Blog from "./pages/general/blog";
+import ListProject from "./pages/general/list-project";
 
 function App() {
   const router = createBrowserRouter([
@@ -40,7 +39,7 @@ function App() {
     },
     {
       path: "about",
-      element: <About/>,
+      element: <About />,
     },
     {
       path: "contact",
@@ -48,19 +47,19 @@ function App() {
     },
     {
       path: "projects",
-      element: <ListProject/>,
+      element: <ListProject />,
     },
     {
       path: "services",
-      element: <Service/>,
+      element: <Service />,
     },
     {
       path: "pricing",
-      element: <Pricing/>,
+      element: <Pricing />,
     },
     {
       path: "blog",
-      element: <Blog/>,
+      element: <Blog />,
     },
     {
       path: "homepage",

@@ -1,17 +1,13 @@
 import "./index.css";
 import React from "react";
-import AuthenTemplate from "../../components/authen-template";
+import AuthenTemplate from "../../../components/authen-template";
 import { Form, Input } from "antd";
 import FormItem from "antd/es/form/FormItem";
 
-
 function LoginPage() {
-  
-
   const handleLogin = () => {};
 
   return (
-    
     <AuthenTemplate>
       <h2>Đăng nhập</h2>
       <Form>

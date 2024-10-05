@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"; // Giữ lại khai báo này
-import Header from "../../components/header";
-import Footer from "../../components/footer";
+import Header from "../../../components/header";
+import Footer from "../../../components/footer";
 import "./index.css"; // Assuming you have a CSS file for styles
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
@@ -49,7 +49,7 @@ function HomePage() {
       <Header />
 
       <div className="image-slider">
-        <div className="image-container">
+        <div className="image-container" style={{ top: "0" }}>
           <img
             src={images[currentImageIndex]}
             alt={`Image ${currentImageIndex + 1}`}
