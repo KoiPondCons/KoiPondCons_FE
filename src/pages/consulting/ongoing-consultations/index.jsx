@@ -49,10 +49,15 @@ function OngoingConsultations() {
       },
     },
   ];
-const title = "Khách hàng đang tư vấn";
+  const title = "Khách hàng đang tư vấn";
   return (
     <div>
-      <TableTemplate columns={columns} requests={requests} title={title} />
+      <TableTemplate
+        columns={columns}
+        requests={requests}
+        title={title}
+        actor="consulting"
+      />
     </div>
   );
 }
