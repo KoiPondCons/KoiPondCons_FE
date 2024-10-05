@@ -4,8 +4,8 @@
     background: 
     linear-gradient(rgba(199, 209, 217, 0.9), rgba(199, 209, 217, 0.9)), 
     linear-gradient(rgba(1, 0, 0, 0.16), rgba(8, 0, 0, 0.16)), 
-    url('https://t3.ftcdn.net/jpg/02/77/30/98/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg');
-    background-size: cover;
+    url('https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg?alt=media&token=d7d55fab-e34f-483f-9125-b61b199abbf2');
+    background-size: auto;
     position: relative;
     overflow: hidden;
 }
@@ -27,16 +27,22 @@
     height: 100%;
     width: 30%;
 }
-
-.banner-title {
+.banner-text{
     color: white; 
-    font-size: 36px; 
     margin: 0; 
     bottom: 0px; 
     position:absolute;
-    left: 50%;
+    left: 25%;
     transform: translateX(-50%);
-    padding-bottom: 40px;
+    padding-bottom: 20px;   
+}
+
+.banner-text h1 {
+    font-size: 40px;
+}
+.banner-text p {
+    color: rgba(255, 254, 254, 0.664);
+    font-size: 20px;
 }
 
 .common-page-banner img {
