@@ -1,4 +1,4 @@
-import { Col, Form, Input, Popover, Row, Table } from "antd";
+import { Col, Form, Input, Modal, Popover, Row, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Progress } from "antd";
 import axios from "axios";
@@ -13,6 +13,17 @@ function Order() {
   const [constructionOrder, setConstructionOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [imageSrc, setImageSrc] = useState("");
+  const showModal = (src) => {
+    console.log("Modal is opening with image source:", src);
+    setImageSrc(src);
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(`/price-list-staff`);
@@ -206,7 +217,16 @@ function Order() {
             <Col span={8}>
               <label>Bản vẽ thiết kế</label>
               <div className="display-input">
-                {<RiDraftLine style={{ fontSize: "20px" }} />}
+                {
+                  <RiDraftLine
+                    style={{ fontSize: "20px" }}
+                    onClick={() =>
+                      showModal(
+                        "https://sgl.com.vn/wp-content/uploads/2020/04/ban-ve-ho-ca-koi-dep-e1599281683641-802x451.jpg"
+                      )
+                    }
+                  />
+                }
               </div>
             </Col>
             <Col span={8}>
@@ -225,15 +245,20 @@ function Order() {
             </Col>
           </Row>
         </Form>
-
-        {/* <h1>Báo giá</h1>
-        <Table
-          className="table-template"
-          dataSource={dataSource}
-          columns={columns}
-          pagination={false}
-        /> */}
       </div>
+      <Modal
+        title="Hình ảnh thiết kế"
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+        width={800}
+      >
+        <img
+          alt="Design"
+          src={imageSrc}
+          style={{ width: "100%", height: "auto" }}
+        />
+      </Modal>
     </NavDashboard>
   );
 }
