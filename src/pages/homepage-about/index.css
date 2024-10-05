@@ -14,7 +14,33 @@
     line-height: 2rem;
 }
 .about-context {
+    display: block;
     margin: 80px;
     width: 700px;
     height: 100vh;
+}
+.about-text{
+    display: block;
+    margin: auto;
+}
+.service {
+    width: 90vw;
+    height: 500px;
+    margin: 60px auto;
+    padding: 50px 100px;
+    border-radius: 40px;
+    background-color: white;
+    box-shadow: 30px 20px 20px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ */
+}
+.service-title {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+}
+.service-list {
+    margin: 30px auto;
+    font-size: 1.5rem;
+}
+.service-list li{
+    margin: 30px auto;
+    font-size: 1.3rem;
 }
