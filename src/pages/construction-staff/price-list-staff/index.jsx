@@ -74,6 +74,7 @@ function PriceListStaff() {
   return (
     <div className="price-list-staff-container">
       <NavDashboard>
+        {/* Bảng báo giá và chi tiết hạng mục */}
         <h1>Bảng báo giá và chi tiết hạng mục</h1>
         <div className="price-list-staff-form">
           <Form layout="vertical">
@@ -119,7 +120,7 @@ function PriceListStaff() {
               </Col>
             </Row>
           </Form>
-
+          {/* Chi tiết hạng mục */}
           <div className="price-list-staff-result">
             <h1>Chi tiết hạng mục</h1>
             <Table
@@ -129,26 +130,46 @@ function PriceListStaff() {
               pagination={false}
             />
           </div>
-          <h1 style={{ textAlign: "center" }}>Báo giá</h1>
-          <h3>Đơn giá: {unitPrice} VNĐ/m3</h3>
-          <h3>Thành tiền: {unitPrice * pondVolume} VNĐ</h3>
-          <h3>Giảm giá:</h3>
-          <span>
-            {contentdiscount}: {(unitPrice * pondVolume * discount) / 100} VNĐ
-          </span>
-          <h3>
-            Tổng cộng: {unitPrice * pondVolume * (1 - discount / 100)} VNĐ
-          </h3>
+          {/* Báo giá */}
+          <div class="container">
+            <div class="card cart">
+              <label class="title">BÁO GIÁ</label>
+              <div class="steps">
+                <div class="step">
+                  <div class="payments">
+                    <p>ƯỚC LƯỢNG</p>
+                    <div class="details">
+                      <span style={{ fontWeight: "bold" }}>Đơn giá</span>
+                      <span style={{ textAlign: "right" }}>100.000 VND/m3</span>
+                      <span style={{ fontWeight: "bold" }}>Thể tích</span>
+                      <span style={{ textAlign: "right" }}>100 m3</span>
+                    </div>
+                    <hr />
+                    <p style={{ marginTop: "20px" }}>THANH TOÁN</p>
+                    <div class="details">
+                      <span style={{ fontWeight: "bold" }}>Thành tiền</span>
+                      <span style={{ textAlign: "right" }}>
+                        100.000.000 VND
+                      </span>
+                      <span style={{ fontWeight: "bold" }}>Giảm giá</span>
+                      <span style={{ textAlign: "right" }}>5%</span>
+                      <span style={{ fontWeight: "bold" }}></span>
+                      <span style={{ textAlign: "right", gap: "1px" }}>
+                        5.000.000 VND
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card checkout">
+              <div class="footer">
+                <label class="price">95.000.000 VND</label>
+                <button class="checkout-btn">Gửi báo giá</button>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <Button
-          className="button-template"
-          type="primary"
-          htmlType="submit"
-          style={{ textAlign: "center", width: "100%" }}
-        >
-          Gửi báo giá
-        </Button>
       </NavDashboard>
     </div>
   );
