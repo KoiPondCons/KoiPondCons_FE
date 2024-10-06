@@ -78,10 +78,15 @@ function ConsultationRequests() {
       ),
     },
   ];
-const title = "Khách hàng cần tư vấn";
+  const title = "Khách hàng cần tư vấn";
   return (
     <div>
-      <TableTemplate columns={columns} requests={requests} title={title} />
+      <TableTemplate
+        columns={columns}
+        requests={requests}
+        title={title}
+        actor="consulting"
+      />
     </div>
   );
 }

@@ -1,12 +1,11 @@
-import React  from "react";
-import {Table } from "antd";
+import React from "react";
+import { Table } from "antd";
 import "./index.css";
 import NavDashboard from "../../components/navbar-dashboard";
-function TableTemplate({columns, requests, title}) {
-
+function TableTemplate({ columns, requests, title, actor }) {
   return (
     <div>
-      <NavDashboard>
+      <NavDashboard actor={actor}>
         <h1>{title}</h1>
 
         <Table

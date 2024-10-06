@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { AiOutlineUnorderedList } from "react-icons/ai";
 import "./index.css";
-import { useNavigate } from "react-router-dom";
+import "../../../utils/table.css";
+import { AiOutlineUnorderedList } from "react-icons/ai";
 import TableTemplate from "../../../components/table";
-function OngoingConsultations() {
-  const navigate = useNavigate();
+function OrderManagement() {
   const [requests, setRequests] = useState([]);
   const api = "https://66fa4cd2afc569e13a9b1aed.mockapi.io/ConstructionOrder";
   const fetchConsultationRequests = async () => {
@@ -15,10 +14,9 @@ function OngoingConsultations() {
   useEffect(() => {
     fetchConsultationRequests();
   }, []);
-
   const columns = [
     {
-      title: "ID",
+      title: "Mã đơn hàng",
       dataIndex: "id",
       key: "id",
     },
@@ -28,38 +26,30 @@ function OngoingConsultations() {
       key: "customer_name",
     },
     {
-      title: "Số điện thoại",
-      dataIndex: "customer_phone",
-      key: "customer_phone",
-    },
-    {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
     },
     {
-      title: "Chi tiết",
-      key: "",
-      render: (record) => {
-        return (
-          <AiOutlineUnorderedList
-            onClick={() => navigate(`/order/${record.id}`)}
-          />
-        );
-      },
+      title: "Ngày gửi đơn",
+      dataIndex: "request_date",
+      key: "request_date",
+    },
+    {
+      title: "chi tiết",
+      key: "actions",
+      // render: (_, record) => {
+      //   const link = {}; //Ý là để điều hướng sang trang order-detail
+      //   return <AiOutlineUnorderedList onClick={link} />;
+      // },
     },
   ];
-  const title = "Khách hàng đang tư vấn";
+  const title = "Khách hàng cần tư vấn";
   return (
     <div>
-      <TableTemplate
-        columns={columns}
-        requests={requests}
-        title={title}
-        actor="consulting"
-      />
+      <TableTemplate columns={columns} requests={requests} title={title} />
     </div>
   );
 }
 
-export default OngoingConsultations;
+export default OrderManagement;
