@@ -58,7 +58,7 @@ const NavDashboard = ({ children, actor }) => {
           <ul>
             {links[actor]?.map((link, index) => (
               <li key={index}>
-                <a style={{ color: "white" }} href={link.path}>
+                <a href={link.path}>
                   {link.label}
                 </a>
               </li>
