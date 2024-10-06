@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import NotFound from "./components/not-found"; // Thêm import cho NotFound
+import NotFound from "./pages/general/not-found"; // Thêm import cho NotFound
 
 // Staff page
 import ConsultationRequests from "./pages/consulting/consultation-requests";

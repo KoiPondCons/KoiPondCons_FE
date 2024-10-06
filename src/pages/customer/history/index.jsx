@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Col, Row } from "antd";
-import CommonPageTemplate from "../../components/common-page-template";
+import CommonPageTemplate from "../../../components/common-page-template"; // Kiểm tra đường dẫn và tên tệp
 import "./index.css";
 import { IoDocumentTextOutline } from "react-icons/io5";
 
