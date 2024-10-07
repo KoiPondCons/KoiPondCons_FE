@@ -73,7 +73,7 @@ function PriceListStaff() {
   ];
   return (
     <div className="price-list-staff-container">
-      <NavDashboard>
+      <NavDashboard actor="consulting">
         {/* Bảng báo giá và chi tiết hạng mục */}
         <h1>Bảng báo giá và chi tiết hạng mục</h1>
         <div className="price-list-staff-form">
