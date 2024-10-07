@@ -31,6 +31,7 @@ import PriceListStaff from "./pages/price-list-staff";
 import MyProfile from "./pages/my-profile";
 import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
+import OrderManagement from "./pages/manager/manage-order";
 
 function App() {
   const router = createBrowserRouter([
@@ -128,7 +129,8 @@ function App() {
       path: "manager/quote-management",
     },
     {
-      path: "manager/construction-orders",
+      path: "manager",
+      element: <OrderManagement />,
     },
     {
       path: "manager/maintenance-orders",
