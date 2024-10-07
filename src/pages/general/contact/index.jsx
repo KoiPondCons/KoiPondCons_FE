@@ -18,7 +18,7 @@ function ContactPage() {
   const email = "koinhathang@gmail.com";
   const phoneNumber = "0823 132 452";
   const title = "Liên hệ";
-  const banner = "https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/banner-contact.avif?alt=media&token=457aeca2-4a4d-48e0-b9da-2764712f4118";
+  const banner = "https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/toby-sakata-lJ62jee7oSM-unsplash.jpg?alt=media&token=92c638c4-75d1-4441-932a-f804c3aacd4e";
 
   const handleSubmitOrder = async (value) => {
     try {

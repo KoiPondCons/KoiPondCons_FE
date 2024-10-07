@@ -2,7 +2,7 @@ import "./index.css";
 import React from "react";
 import AuthenTemplate from "../../../components/authen-template";
 import { Form, Input } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
 import { toast } from "react-toastify";
 import FormItem from "antd/es/form/FormItem";
@@ -71,7 +71,7 @@ function LoginPage() {
         </p>
         <button>Đăng nhập</button>
         <p className="prompt">
-          Bạn chưa có tài khoản? <a href="register">Đăng ký</a>
+          Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
         </p>
         <div className="divider">
           <hr className="left" />

@@ -2,14 +2,32 @@ import React from "react";
 import AuthenTemplate from "../../../components/authen-template";
 import { Form, Input } from "antd";
 import FormItem from "antd/es/form/FormItem";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../../config/axios";
+import { toast } from "react-toastify";
 
 function RegisterPage() {
+  const navigate = useNavigate();
+  const handleRegister = async (values) => {
+    try {
+      values.role = "CUSTOMER";
+      const response = await api.post("register", values);
+      toast.success("Đăng ký tài khoản thành công!");
+      console.log(values);
+      console.log(response.data);
+      navigate("/login");
+    } catch (error) {
+      console.log(error.response.data);
+      toast.error("Email đã được đăng ký, vui lòng sử dụng email khác!");
+    }
+  };
+
   return (
     <AuthenTemplate>
       <h2>Đăng ký</h2>
-      <Form>
+      <Form onFinish={handleRegister}>
         <Form.Item
-          name="fullname"
+          name="name"
           rules={[{ required: true, message: "Vui lòng nhập họ và tên!" }]}
         >
           <Input placeholder="Họ và tên" />
@@ -22,6 +40,15 @@ function RegisterPage() {
           ]}
         >
           <Input placeholder="Email" />
+        </Form.Item>
+        <Form.Item 
+          name="phone"
+          rules={[
+            { required: true, message: "Vui lòng nhập số điện thoại!" },
+            { pattern: "^(84|0)+[3|5|7|8|9]\\d{8}$", message: "Số điện thoại không hợp lệ!" },
+          ]}
+        >
+          <Input placeholder="Số điện thoại" />
         </Form.Item>
         <Form.Item
           name="password"
@@ -58,6 +85,7 @@ function RegisterPage() {
           <hr className="right" />
         </div>
       </Form>
+
     </AuthenTemplate>
   );
 }

@@ -102,16 +102,16 @@ function Header() {
             </>
           ) : (
             <>
-              <a href="register" className="auth-button">
+              <Link to="/register" className="auth-button">
                 Đăng ký
-              </a>
-              <a
-                href="login"
+              </Link>
+              <Link
+                to="/login"
                 className="auth-button"
                 style={{ paddingLeft: "0px" }}
               >
                 Đăng nhập
-              </a>
+              </Link>
             </>
           )}
         </div>
