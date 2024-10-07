@@ -129,7 +129,7 @@ function Order() {
   ];
 
   return (
-    <NavDashboard>
+    <NavDashboard actor="consulting">
       <div>
         <h1>THÔNG TIN ĐƠN HÀNG</h1>
         <Form layout="vertical">

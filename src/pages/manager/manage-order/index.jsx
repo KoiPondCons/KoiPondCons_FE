@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./index.css";
-import "../../../utils/table.css";
-import { AiOutlineUnorderedList } from "react-icons/ai";
+import "../../../components/table/index.css";
 import TableTemplate from "../../../components/table";
 function OrderManagement() {
   const [requests, setRequests] = useState([]);
@@ -47,7 +46,12 @@ function OrderManagement() {
   const title = "Khách hàng cần tư vấn";
   return (
     <div>
-      <TableTemplate columns={columns} requests={requests} title={title} />
+      <TableTemplate
+        columns={columns}
+        requests={requests}
+        title={title}
+        actor="manager"
+      />
     </div>
   );
 }
