@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 import { FaBell, FaRegUser } from "react-icons/fa";
 import { Dropdown, message, Space } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 
 function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token !== null) {
+      setIsLoggedIn(true);
+    }
+  }, [token]);
+
   const handleLogout = () => {
     setIsLoggedIn(false);
+    localStorage.removeItem("token");
+    navigate("/");
   };
   const handleButtonClick = (e) => {
     message.info("Click on left button.");
@@ -58,25 +66,25 @@ function Header() {
       <div className="navbar-container">
         <ul className="navbar-menu">
           <li>
-            <a href="/homepage">TRANG CHỦ</a>
+            <Link to="/">TRANG CHỦ</Link>
           </li>
           <li>
-            <a href="/about">GIỚI THIỆU</a>
+            <Link to="/about">GIỚI THIỆU</Link>
           </li>
           <li>
-            <a href="/projects">DỰ ÁN</a>
+            <Link to="/projects">DỰ ÁN</Link>
           </li>
           <li>
-            <a href="/services">DỊCH VỤ</a>
+            <Link to="/services">DỊCH VỤ</Link>
           </li>
           <li>
-            <a href="/pricing">BÁO GIÁ</a>
+            <Link to="/pricing">BÁO GIÁ</Link>
           </li>
           <li>
-            <a href="/blog">BLOG</a>
+            <Link to="/blog">BLOG</Link>
           </li>
           <li>
-            <a href="/contact">LIÊN HỆ</a>
+            <Link to="/contact">LIÊN HỆ</Link>
           </li>
         </ul>
         <div className="navbar-auth">
