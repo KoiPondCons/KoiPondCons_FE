@@ -15,14 +15,17 @@
     justify-content: space-between;
 }
 
-.sidebar ul,a {
-    color: white; /* Màu chữ */
+.sidebar ul { 
+    color: white;
     font-size: 17px;
     font-weight: 200;
     list-style-type: none; /* Bỏ dấu chấm đầu dòng */
     padding: 0 ; /* Bỏ khoảng cách bên trong */
     cursor: pointer; /* Con trỏ khi di chuột qua */
     text-decoration: none;
+}
+.sidebar a{
+    color: white;
 }
 .sidebar ul :hover{
     color: gray;
