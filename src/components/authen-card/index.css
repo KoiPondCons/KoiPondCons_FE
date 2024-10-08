@@ -1,0 +1,10 @@
+
+
+:where(.css-dev-only-do-not-override-qnu6hi).ant-card .ant-card-body {
+    padding: 0px;
+    border-radius: 0px 0px 0px 0px;
+}
+:where(.css-dev-only-do-not-override-qnu6hi).ant-card {
+    border-radius: 0px;
+    margin: 30px;
+}
