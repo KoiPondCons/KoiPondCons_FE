@@ -5,7 +5,7 @@
     linear-gradient(rgba(199, 209, 217, 0.9), rgba(199, 209, 217, 0.9)), 
     linear-gradient(rgba(1, 0, 0, 0.16), rgba(8, 0, 0, 0.16)), 
     url('https://t3.ftcdn.net/jpg/02/77/30/98/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg');
-    background-size: cover;
+    background-size: auto;
     position: relative;
     overflow: hidden;
 }

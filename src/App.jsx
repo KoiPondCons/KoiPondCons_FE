@@ -11,6 +11,7 @@ import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import HomePage from "./pages/home";
 import ContactPage from "./pages/contact";
+import ListProject from "./pages/dung"
 function App() {
   const router = createBrowserRouter([
     {
@@ -28,6 +29,10 @@ function App() {
     {
       path: "contact",
       element: <ContactPage />,
+    },
+    {
+      path: "projects",
+      element: <ListProject/>,
     },
     {
       path: "homepage",
