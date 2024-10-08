@@ -1,26 +1,26 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginPage from "./pages/login";
-import RegisterPage from "./pages/register";
-import HomePage from "./pages/home";
-import ContactPage from "./pages/contact";
+import HistoryConstruction from "./pages/construction-staff/history-construction";
+import ActiveProject from "./pages/construction-staff/active-project";
+import Order from "./pages/order-detail";
+import PriceListStaff from "./pages/construction-staff/price-list-staff";
 function App() {
   const router = createBrowserRouter([
     {
-      path: "", //trang mặc định
-      element: <HomePage />,
+      path: "history-construction",
+      element: <HistoryConstruction />,
     },
     {
-      path: "login",
-      element: <LoginPage />,
+      path: "active-projects",
+      element: <ActiveProject />,
     },
     {
-      path: "register",
-      element: <RegisterPage />,
+      path: "order-detail/:id",
+      element: <Order />,
     },
     {
-      path: "contact",
-      element: <ContactPage />,
+      path: "price-list-staff",
+      element: <PriceListStaff />,
     },
   ]);
 

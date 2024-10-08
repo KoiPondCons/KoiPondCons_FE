@@ -1,0 +1,22 @@
+.table-template .ant-table-thead > tr > th  {
+    background-color: #0C2240;
+    color: white;
+    font-family: 'Montserrat';
+    font-size: 1rem;
+    font-weight: bold;
+}
+.table-template .ant-table-tbody > tr > td  {
+    background-color: #C7D1D9;
+    font-size: 1rem;
+    font-weight: 600;
+}
+.button-template {
+    background-color: #000;
+    color: white;
+    font-family:  'Inter';
+    font-size: 0.8rem;
+    font-weight: 300;
+}
+h1{
+    margin-bottom: 15px;
+}
