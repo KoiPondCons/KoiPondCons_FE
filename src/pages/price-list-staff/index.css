@@ -113,7 +113,7 @@
     border-radius: 7px;
     border: 1px solid #2e2e2e; /* Dark gray border */
     color: #ffffff; /* White text */
-    font-size: 13px;
+    font-size: 1rem;
     font-weight: 600;
     transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
   }

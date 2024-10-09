@@ -135,7 +135,7 @@ function PriceListStaff() {
             <div class="card cart">
               <label class="title">BÁO GIÁ</label>
               <div class="steps">
-                <div class="step">
+                <div class="step" style={{maxWidth:'100%'}}>
                   <div class="payments">
                     <p>ƯỚC LƯỢNG</p>
                     <div class="details">
