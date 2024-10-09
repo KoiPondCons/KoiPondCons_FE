@@ -18,7 +18,8 @@ function ContactPage() {
   const email = "koinhathang@gmail.com";
   const phoneNumber = "0823 132 452";
   const title = "Liên hệ";
-  const banner = "https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/toby-sakata-lJ62jee7oSM-unsplash.jpg?alt=media&token=92c638c4-75d1-4441-932a-f804c3aacd4e";
+  const context = "Trang chủ »  Liên hệ";
+  const banner = "https://images.unsplash.com/photo-1670879919941-b939366624c5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
   const handleSubmitOrder = async (value) => {
     try {
@@ -31,12 +32,12 @@ function ContactPage() {
   }
 
   return (
-    <CommonPageTemplate className="context" title={title} banner={banner}>
+    <CommonPageTemplate context={context} title={title} banner={banner}>
       <Row justify="center" align="middle" style={{ width: '100%' }}>
         <Col span={9}>
           <div className="container-input">
-            <h3>Đăng ký nhận báo giá ngay hôm nay!</h3>
             <Form onFinish={handleSubmitOrder}>
+              <h3>Đăng ký nhận báo giá ngay hôm nay!</h3>
               <Row gutter={[20]}>
                 <Col span={12}>
                   <FormItem
@@ -135,9 +136,9 @@ function ContactPage() {
                 </Col>
               </Row>
               <Button htmlType="submit">Gửi yêu cầu</Button>
-
+              <p style={{ margin: "10px 0px" }}>*Thường phản hồi trong vòng 24h làm việc</p>
             </Form>
-            <p style={{ marginTop: "20px" }}>*Thường phản hồi trong vòng 24h làm việc</p>
+
           </div>
         </Col>
         <hr style={{ margin: '20px 0', border: 'none', height: '1px', backgroundColor: 'black' }} />        <Col span={10} offset={2}>

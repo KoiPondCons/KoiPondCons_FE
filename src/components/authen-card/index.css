@@ -1,10 +1,29 @@
-
-
 :where(.css-dev-only-do-not-override-qnu6hi).ant-card .ant-card-body {
     padding: 0px;
     border-radius: 0px 0px 0px 0px;
 }
 :where(.css-dev-only-do-not-override-qnu6hi).ant-card {
     border-radius: 0px;
-    margin: 30px;
+    margin: 15px;
+}   
+.ant-card-body{
+    padding-bottom: 10px;
+}
+.card-content{
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute; 
+  bottom: 6px; 
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 70px;
+}
+.card-content h3{
+  color: white;
+}
+.card-content p{
+    font-weight: lighter;
+  color: white;
 }

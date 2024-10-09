@@ -9,7 +9,7 @@ function About() {
   const banner =
     "https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/jaipreet-singh-w7NUZ__mv70-unsplash.jpg?alt=media&token=c8c55d47-2f1d-4fea-bcb2-a3aa72ead9f7";
   return (
-    <div>
+    <div style={{display:'flex'}}>
       <CommonPageTemplate title={title} context={context} banner={banner}>
         {/* Giới thiệu */}
         <div className="about-container">
