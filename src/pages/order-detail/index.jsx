@@ -33,6 +33,7 @@ function Order() {
       try {
         const response = await api.get(`orders/${id}`);
         setConstructionOrder(response.data);
+        console.log(response.data);
       } catch (err) {
         setError(err);
       } finally {
@@ -91,7 +92,7 @@ function Order() {
             <Col span={7}>
               <label>Thể tích hồ</label>
               <div className="display-input">
-                <span> {constructionOrder.}</span>
+                <span> {constructionOrder.pon}</span>
               </div>
             </Col>
           </Row>
@@ -115,7 +116,7 @@ function Order() {
             <Col span={20}>
               <label>Tư vấn viên</label>
               <div className="display-input">
-                <span> Trần Kim Nhã</span>
+                <span>{constructionOrder.accountNonExpir}</span>
               </div>
               <label>Nhà thiết kế</label>
               <div className="display-input">

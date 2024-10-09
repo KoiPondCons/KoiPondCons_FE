@@ -25,6 +25,7 @@ function ConsultationRequests() {
 
   const showModal = (record) => {
     setSelectedOrder(record);
+    console.log(record);
     setIsModalOpen(true);
   };
   const consulting = async () => {
