@@ -3,10 +3,12 @@ import { Button, Modal } from "antd";
 import "./index.css";
 import TableTemplate from "../../../components/table";
 import api from "../../../config/axios";
+import { useNavigate } from "react-router-dom";
 function ConsultationRequests() {
   const [requests, setRequests] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedOrder, setSelectOrder] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const navigate = useNavigate();
   const fetchConsultationRequests = async () => {
     const response = await api.get("orders/status", {
       params: {
@@ -16,15 +18,26 @@ function ConsultationRequests() {
     console.log(response.data);
     setRequests(response.data);
   };
+
   useEffect(() => {
     fetchConsultationRequests();
   }, []);
 
-  const showModal = () => {
-    setSelectOrder;
+  const showModal = (record) => {
+    setSelectedOrder(record);
     setIsModalOpen(true);
   };
-  const handleOk = () => {
+  const consulting = async () => {
+    await api.put(`orders/consultant/${selectedOrder.id}`);
+  };
+  const handleOk = async () => {
+    selectedOrder.status = "PROCESSING";
+    console.log(selectedOrder);
+    consulting();
+    console.log(selectedOrder);
+    await api.put(`orders/${selectedOrder.id}`, selectedOrder);
+    console.log("Update order status success");
+    navigate("/consulting/ongoing-consultation");
     setIsModalOpen(false);
   };
 
@@ -45,9 +58,9 @@ function ConsultationRequests() {
       width: 200,
     },
     {
-      title: "Trạng thái",
-      dataIndex: "statusDescription",
-      key: "statusDescription",
+      title: "Số điện thoại",
+      dataIndex: "customerPhone",
+      key: "customerPhone",
       width: 150,
     },
     {
@@ -76,8 +89,8 @@ function ConsultationRequests() {
             onOk={handleOk}
             onCancel={handleCancel}
           >
-            <p>Khách: {record.customer_name}</p>
-            <p>Dịch vụ: {record.service}</p>
+            <p>Khách: {record.customerName}</p>
+            <p>Số điện thoại: {record.customerPhone}</p>
           </Modal>
         </>
       ),
