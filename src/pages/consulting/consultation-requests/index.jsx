@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal } from "antd";
-import axios from "axios";
 import "./index.css";
 import TableTemplate from "../../../components/table";
+import api from "../../../config/axios";
 function ConsultationRequests() {
   const [requests, setRequests] = useState([]);
-  const api = "https://66fa4cd2afc569e13a9b1aed.mockapi.io/ConstructionOrder";
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedOrder, setSelectOrder] = useState(null);
   const fetchConsultationRequests = async () => {
-    const response = await axios.get(api);
+    const response = await api.get("orders/status", {
+      params: {
+        status: "REQUESTED",
+      },
+    });
     console.log(response.data);
     setRequests(response.data);
   };
   useEffect(() => {
     fetchConsultationRequests();
   }, []);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const showModal = () => {
+    setSelectOrder;
     setIsModalOpen(true);
   };
-
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -35,15 +40,15 @@ function ConsultationRequests() {
     },
     {
       title: "Họ tên",
-      dataIndex: "customer_name",
-      key: "customer_name",
+      dataIndex: "customerName",
+      key: "customerName",
       width: 200,
     },
     {
       title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      width: 100,
+      dataIndex: "statusDescription",
+      key: "statusDescription",
+      width: 150,
     },
     {
       title: "Nội dung",
@@ -61,9 +66,9 @@ function ConsultationRequests() {
           <Button
             className="button-template"
             type="primary"
-            onClick={showModal}
+            onClick={() => showModal(record)}
           >
-            Open Modal
+            Tư vấn
           </Button>
           <Modal
             title="Xác nhận tư vấn"
