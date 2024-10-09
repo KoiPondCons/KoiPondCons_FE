@@ -4,12 +4,12 @@ import { AiOutlineUnorderedList } from "react-icons/ai";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import TableTemplate from "../../../components/table";
+import api from "../../../config/axios";
 function OngoingConsultations() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
-  const api = "https://66fa4cd2afc569e13a9b1aed.mockapi.io/ConstructionOrder";
   const fetchConsultationRequests = async () => {
-    const response = await axios.get(api);
+    const response = await api.get("orders/consultant");
     setRequests(response.data);
   };
   useEffect(() => {
@@ -24,18 +24,18 @@ function OngoingConsultations() {
     },
     {
       title: "Họ tên",
-      dataIndex: "customer_name",
-      key: "customer_name",
+      dataIndex: "customerName",
+      key: "customerName",
     },
     {
       title: "Số điện thoại",
-      dataIndex: "customer_phone",
-      key: "customer_phone",
+      dataIndex: "customerPhone",
+      key: "customerPhone",
     },
     {
       title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "statusDescription",
+      key: "statusDescription",
     },
     {
       title: "Chi tiết",

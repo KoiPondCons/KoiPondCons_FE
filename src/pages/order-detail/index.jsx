@@ -1,7 +1,7 @@
 import { Col, Form, Input, Modal, Popover, Row, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Progress } from "antd";
-import axios from "axios";
+import api from "../../config/axios";
 import "./index.css";
 import NavDashboard from "../../components/navbar-dashboard";
 import { useNavigate, useParams } from "react-router-dom";
@@ -31,9 +31,7 @@ function Order() {
   useEffect(() => {
     const fetchConstructionOrder = async () => {
       try {
-        const response = await axios.get(
-          `https://66fa4cd2afc569e13a9b1aed.mockapi.io/ConstructionOrder/${id}`
-        );
+        const response = await api.get(`orders/${id}`);
         setConstructionOrder(response.data);
       } catch (err) {
         setError(err);
@@ -47,86 +45,6 @@ function Order() {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data: {error.message}</div>;
-  const dataSource = [
-    {
-      key: "1",
-      installment: "Chi phí xây",
-      percentage: "",
-      amount: 3300000,
-      status: "",
-      remaining: "", // Tổng số tiền còn lại
-    },
-    {
-      key: "2",
-      installment: "Giảm Giá",
-      percentage: "",
-      amount: -300000,
-      status: "",
-      remaining: "",
-    },
-    {
-      key: "3",
-      installment: "Tổng Sau Giảm",
-      percentage: "",
-      amount: 3000000,
-      status: "",
-      remaining: "",
-    },
-    {
-      key: "4",
-      installment: "Đợt 1",
-      percentage: "20%",
-      amount: 600000,
-      status: "Đã Thanh Toán",
-      remaining: 0,
-    },
-    {
-      key: "5",
-      installment: "Đợt 2",
-      percentage: "30%",
-      amount: 900000,
-      status: "Chưa Thanh Toán",
-      remaining: 900000,
-    },
-    {
-      key: "6",
-      installment: "Đợt 3",
-      percentage: "50%",
-      amount: 1500000,
-      status: "Chưa Thanh Toán",
-      remaining: 1500000,
-    },
-  ];
-
-  const columns = [
-    {
-      title: "Đợt Thanh Toán",
-      dataIndex: "installment",
-      key: "installment",
-    },
-    {
-      title: "Tỷ Lệ (%)",
-      dataIndex: "percentage",
-      key: "percentage",
-    },
-    {
-      title: "Số Tiền (VND)",
-      dataIndex: "amount",
-      key: "amount",
-      render: (text) => text.toLocaleString("vi-VN"), // Định dạng số tiền
-    },
-    {
-      title: "Tình Trạng",
-      dataIndex: "status",
-      key: "status",
-    },
-    {
-      title: "Còn Lại (VND)",
-      dataIndex: "remaining",
-      key: "remaining",
-      render: (text) => (text ? text.toLocaleString("vi-VN") : ""), // Định dạng số tiền
-    },
-  ];
 
   return (
     <NavDashboard actor="consulting">
@@ -137,31 +55,31 @@ function Order() {
             <Col span={8}>
               <label>Họ tên</label>
               <div className="display-input">
-                <span> {constructionOrder.customer_name}</span>
+                <span> {constructionOrder.customerName}</span>
               </div>
             </Col>
             <Col span={8}>
               <label>Số điện thoại</label>
               <div className="display-input">
-                <span> {constructionOrder.customer_phone}</span>
+                <span> {constructionOrder.customerPhone}</span>
               </div>
             </Col>
             <Col span={8}>
               <label>Email</label>
               <div className="display-input">
-                <span> {constructionOrder.customer_email}</span>
+                <span> {constructionOrder.customerEmail}</span>
               </div>
             </Col>
             <Col span={24}>
               <label>Địa chỉ thi công</label>
               <div className="display-input">
-                <span> {constructionOrder.pond_address}</span>
+                <span> {constructionOrder.pondAddress}</span>
               </div>
             </Col>
             <Col span={10}>
               <label>Trạng thái</label>
               <div className="display-input">
-                <span> {constructionOrder.status}</span>
+                <span> {constructionOrder.statusDescription}</span>
               </div>
             </Col>
             <Col span={7}>
@@ -173,7 +91,7 @@ function Order() {
             <Col span={7}>
               <label>Thể tích hồ</label>
               <div className="display-input">
-                <span> {constructionOrder.pond_volume}</span>
+                <span> {constructionOrder.}</span>
               </div>
             </Col>
           </Row>
