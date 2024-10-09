@@ -32,6 +32,7 @@ import MyProfile from "./pages/my-profile";
 import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
 import OrderManagement from "./pages/manager/manage-order";
+import InfomationCustomer from "./pages/consulting/infomation-customer";
 
 function App() {
   const router = createBrowserRouter([
@@ -103,6 +104,10 @@ function App() {
     {
       path: "consulting/created-orders",
       element: <CreatedOrders />,
+    },
+    {
+      path: "consulting/information-customer",
+      element: <InfomationCustomer />,
     },
     //Construction-staff
     {
