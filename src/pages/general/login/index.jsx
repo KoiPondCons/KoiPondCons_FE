@@ -12,26 +12,21 @@ function LoginPage() {
   const navigate = useNavigate();
   const [form] = useForm();
 
-
   const handleLogin = async (value) => {
     try {
       const response = await api.post("login", value);
-      const {role, token} = response.data;
+      const { role, token } = response.data;
       localStorage.setItem("token", token);
       if (role === "CUSTOMER") {
         navigate("/");
-      }
-      else if (role === "CONSULTANT") {
-        navigate("/consultant/dashboard");
-      }
-      else if (role === "DESIGNER") {
-        navigate("/designer/dashboard");
-      }
-      else if (role === "CONSTRUCTOR") {
-        navigate("/constructor/dashboard");
-      }
-      else if (role === "MANAGER") {
-        navigate("/manager/dashboard");
+      } else if (role === "CONSULTANT") {
+        navigate("/consulting");
+      } else if (role === "DESIGNER") {
+        navigate("/designer");
+      } else if (role === "CONSTRUCTOR") {
+        navigate("/construction");
+      } else if (role === "MANAGER") {
+        navigate("/manager");
       }
       console.log(response.data);
     } catch (error) {
