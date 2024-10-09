@@ -1,14 +1,18 @@
-import { Col, Form, Input, Modal, Popover, Row, Table } from "antd";
+import { Col, Form, Input, Modal, Popover, Row, Select, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Progress } from "antd";
 import api from "../../config/axios";
 import "./index.css";
 import NavDashboard from "../../components/navbar-dashboard";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import "../../components/table/index.css";
 import { AiOutlineFile } from "react-icons/ai";
 import { RiDraftLine } from "react-icons/ri";
+import moment from "moment";
 function Order() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const actor = location.state;
   const { id } = useParams();
   const [constructionOrder, setConstructionOrder] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,7 +28,7 @@ function Order() {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  const navigate = useNavigate();
+
   const handleClick = () => {
     navigate(`/price-list-staff`);
   };
@@ -34,6 +38,7 @@ function Order() {
         const response = await api.get(`orders/${id}`);
         setConstructionOrder(response.data);
         console.log(response.data);
+        console.log(actor);
       } catch (err) {
         setError(err);
       } finally {
@@ -48,7 +53,7 @@ function Order() {
   if (error) return <div>Error fetching data: {error.message}</div>;
 
   return (
-    <NavDashboard actor="consulting">
+    <NavDashboard actor={actor}>
       <div>
         <h1>THÔNG TIN ĐƠN HÀNG</h1>
         <Form layout="vertical">
@@ -68,7 +73,7 @@ function Order() {
             <Col span={8}>
               <label>Email</label>
               <div className="display-input">
-                <span> {constructionOrder.customerEmail}</span>
+                <span> {constructionOrder.customer.account.email}</span>
               </div>
             </Col>
             <Col span={24}>
@@ -92,7 +97,7 @@ function Order() {
             <Col span={7}>
               <label>Thể tích hồ</label>
               <div className="display-input">
-                <span> {constructionOrder.pon}</span>
+                <span> {constructionOrder.quotation.pondVolume}</span>
               </div>
             </Col>
           </Row>
@@ -109,28 +114,49 @@ function Order() {
               >
                 Tiến độ
               </h3>
-              <a className="more-detail" href="">
+              <Link to="/construction" className="more-detail">
                 Xem chi tiết
-              </a>
+              </Link>
             </Col>
             <Col span={20}>
               <label>Tư vấn viên</label>
               <div className="display-input">
-                <span>{constructionOrder.accountNonExpir}</span>
+                <span>{constructionOrder.consultantAccount.name}</span>
               </div>
-              <label>Nhà thiết kế</label>
-              <div className="display-input">
-                <span> Trần Kim Nhã</span>
-              </div>
-              <label>Chịu trách nhiệm thi công</label>
-              <div className="display-input">
-                <span> Trần Kim Nhã</span>
-              </div>
+              {actor === "manager" ? (
+                <Form>
+                  <Form.Item label="Chọn nhà thiết kế">
+                    <Select placeholder="Chọn nhà thiết kế">
+                      <Select.Option value="1">Nhà thiết kế 1</Select.Option>
+                      <Select.Option value="2">Nhà thiết kế 2</Select.Option>
+                    </Select>
+                  </Form.Item>
+                  <Form.Item label="Chọn người chịu trách nhiệm thi công">
+                    <Select placeholder="Chọn người thi công">
+                      <Select.Option value="1">Người thi công 1</Select.Option>
+                      <Select.Option value="2">Người thi công 2</Select.Option>
+                    </Select>
+                  </Form.Item>
+                </Form>
+              ) : (
+                <>
+                  <label>Nhà thiết kế</label>
+                  <div className="display-input">
+                    <span>-</span>
+                  </div>
+                  <label>Chịu trách nhiệm thi công</label>
+                  <div className="display-input">
+                    <span>-</span>
+                  </div>
+                </>
+              )}
             </Col>
             <Col span={8}>
               <label>Ngày tiếp nhận</label>
               <div className="display-input">
-                <span>{constructionOrder.request_date}</span>
+                <span>
+                  {moment(constructionOrder.requestDate).format("DD/MM/YYYY")}
+                </span>
               </div>
             </Col>
             <Col span={8}>
