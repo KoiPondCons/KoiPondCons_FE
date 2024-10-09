@@ -6,6 +6,7 @@ import {
   SettingOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const NavDashboard = ({ children, actor }) => {
   const links = {
@@ -58,9 +59,10 @@ const NavDashboard = ({ children, actor }) => {
           <ul>
             {links[actor]?.map((link, index) => (
               <li key={index}>
-                <a href={link.path}>
+                <Link to={link.path}> {link.label}</Link>
+                {/* <a href={link.path}>
                   {link.label}
-                </a>
+                </a> */}
               </li>
             ))}
           </ul>
