@@ -6,6 +6,7 @@ import CommonPageTemplate from "../../../components/common-page-template";
 
 function HistoryPage() {
   const title = "Lịch sử đơn hàng";
+  const context = "Trang chủ »  Lịch sử đơn hàng"
   const banner =
     "https://images.unsplash.com/photo-1627884849665-8c74468f6037?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
@@ -28,7 +29,7 @@ function HistoryPage() {
 
   return (
     <div>
-      <CommonPageTemplate title={title} banner={banner}>
+      <CommonPageTemplate title={title} context={context} banner={banner}>
         <div className="history-page-container">
           <Card
             title={<h1 style={{ textAlign: "center" }}>Lịch sử đơn hàng</h1>}
