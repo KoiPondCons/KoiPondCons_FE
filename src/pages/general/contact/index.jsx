@@ -12,14 +12,13 @@ import api from "../../../config/axios";
 const { TextArea } = Input;
 
 function ContactPage() {
-
-
   const address = "Đường D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh";
   const email = "koinhathang@gmail.com";
   const phoneNumber = "0823 132 452";
   const title = "Liên hệ";
   const context = "Trang chủ »  Liên hệ";
-  const banner = "https://images.unsplash.com/photo-1670879919941-b939366624c5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  const banner =
+    "https://images.unsplash.com/photo-1670879919941-b939366624c5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
   const handleSubmitOrder = async (value) => {
     try {
@@ -27,13 +26,13 @@ function ContactPage() {
       toast.success("Gửi yêu cầu thành công!");
     } catch (error) {
       toast.error("Vui lòng đăng nhập để gửi yêu");
-      console.log(error.response.data)
+      console.log(error.response.data);
     }
-  }
+  };
 
   return (
     <CommonPageTemplate context={context} title={title} banner={banner}>
-      <Row justify="center" align="middle" style={{ width: '100%' }}>
+      <Row justify="center" align="middle" style={{ width: "100%" }}>
         <Col span={9}>
           <div className="container-input">
             <Form onFinish={handleSubmitOrder}>
@@ -66,8 +65,8 @@ function ContactPage() {
                       },
                       {
                         pattern: "^(84|0)+[3|5|7|8|9]\\d{8}$",
-                        message: "Số điện thoại không hợp lệ!"
-                      }
+                        message: "Số điện thoại không hợp lệ!",
+                      },
                     ]}
                   >
                     <Input />
@@ -93,7 +92,6 @@ function ContactPage() {
                     label="Thể tích hồ"
                     name="pondVolume"
                     labelCol={{ span: 24 }}
-
                   >
                     <Input type="Number" min={4} />
                   </FormItem>
@@ -119,7 +117,7 @@ function ContactPage() {
                         },
                         {
                           value: "true",
-                          label: "Thi công hồ cá Koi theo mẫu"
+                          label: "Thi công hồ cá Koi theo mẫu",
                         },
                       ]}
                     />
@@ -128,7 +126,7 @@ function ContactPage() {
                 <Col span={24}>
                   <FormItem
                     label="Nội dung yêu cầu"
-                    name="description"
+                    name="customerDescription"
                     labelCol={{ span: 24 }}
                   >
                     <TextArea placeholder="Nội dung yêu cầu" />
@@ -136,12 +134,21 @@ function ContactPage() {
                 </Col>
               </Row>
               <Button htmlType="submit">Gửi yêu cầu</Button>
-              <p style={{ margin: "10px 0px" }}>*Thường phản hồi trong vòng 24h làm việc</p>
+              <p style={{ margin: "10px 0px" }}>
+                *Thường phản hồi trong vòng 24h làm việc
+              </p>
             </Form>
-
           </div>
         </Col>
-        <hr style={{ margin: '20px 0', border: 'none', height: '1px', backgroundColor: 'black' }} />        <Col span={10} offset={2}>
+        <hr
+          style={{
+            margin: "20px 0",
+            border: "none",
+            height: "1px",
+            backgroundColor: "black",
+          }}
+        />{" "}
+        <Col span={10} offset={2}>
           <div className="contact-info__details">
             <h4>Để bắt đầu một dự án mới!</h4>
             <p>
@@ -151,15 +158,15 @@ function ContactPage() {
             </p>
             <div className="contact-info__list">
               <h3>
-                <LuMapPin style={{ marginRight: '8px' }} />
+                <LuMapPin style={{ marginRight: "8px" }} />
                 {address}
               </h3>
               <h3>
-                <LuMail style={{ marginRight: '8px' }} />
+                <LuMail style={{ marginRight: "8px" }} />
                 {email}
               </h3>
               <h3>
-                <LuPhone style={{ marginRight: '8px' }} />
+                <LuPhone style={{ marginRight: "8px" }} />
                 {phoneNumber}
               </h3>
             </div>
