@@ -28,7 +28,7 @@ import About from "./pages/general/about";
 import Blog from "./pages/general/blog";
 import ListProject from "./pages/general/list-project";
 //General
-import Order from "./pages/order-detail";
+import Order from "./pages/order-detail-staff";
 import MyProfile from "./pages/my-profile";
 import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
