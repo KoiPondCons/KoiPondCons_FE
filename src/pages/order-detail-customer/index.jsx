@@ -9,7 +9,7 @@ import "../../components/table/index.css";
 import { AiOutlineFile } from "react-icons/ai";
 import { RiDraftLine } from "react-icons/ri";
 import moment from "moment";
-function Order() {
+function OrderCustomer() {
   const navigate = useNavigate();
   const location = useLocation();
   const actor = location.state;
@@ -19,6 +19,43 @@ function Order() {
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
+  const [freeConstructors, setFreeConstructors] = useState([]);
+  const [freeDesigners, setFreeDesigners] = useState([]);
+  const fecthFreeConstructors = async () => {
+    try {
+      const response = await api.get("account/free-constructors");
+      setFreeConstructors(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log("Bug at fecthFreeConstructors, " + error);
+    }
+  };
+  const fecthFreeDesigners = async () => {
+    try {
+      const response = await api.get("account/free-designers");
+      setFreeDesigners(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log("Bug at fecthFreeDesigners, " + error);
+    }
+  };
+  const fetchConstructionOrder = async () => {
+    try {
+      const response = await api.get(`orders/${id}`);
+      setConstructionOrder(response.data);
+      console.log(response.data);
+      console.log(actor);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchConstructionOrder();
+    fecthFreeConstructors();
+    fecthFreeDesigners();
+  }, [id]);
   const showModal = (src) => {
     console.log("Modal is opening with image source:", src);
     setImageSrc(src);
@@ -32,28 +69,12 @@ function Order() {
   const handleClick = () => {
     navigate(`/price-list-staff`);
   };
-  useEffect(() => {
-    const fetchConstructionOrder = async () => {
-      try {
-        const response = await api.get(`orders/${id}`);
-        setConstructionOrder(response.data);
-        console.log(response.data);
-        console.log(actor);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchConstructionOrder();
-  }, [id]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data: {error.message}</div>;
 
   return (
-    <NavDashboard actor={actor}>
+    <div>
       <div>
         <h1>THÔNG TIN ĐƠN HÀNG</h1>
         <Form layout="vertical">
@@ -97,7 +118,7 @@ function Order() {
             <Col span={7}>
               <label>Thể tích hồ</label>
               <div className="display-input">
-                <span> {constructionOrder.quotation.pondVolume}</span>
+                <span> {constructionOrder.quotationResponse.pondVolume}</span>
               </div>
             </Col>
           </Row>
@@ -118,38 +139,50 @@ function Order() {
                 Xem chi tiết
               </Link>
             </Col>
+
             <Col span={20}>
               <label>Tư vấn viên</label>
               <div className="display-input">
                 <span>{constructionOrder.consultantAccount.name}</span>
               </div>
-              {actor === "manager" ? (
-                <Form>
-                  <Form.Item label="Chọn nhà thiết kế">
-                    <Select placeholder="Chọn nhà thiết kế">
-                      <Select.Option value="1">Nhà thiết kế 1</Select.Option>
-                      <Select.Option value="2">Nhà thiết kế 2</Select.Option>
-                    </Select>
-                  </Form.Item>
-                  <Form.Item label="Chọn người chịu trách nhiệm thi công">
-                    <Select placeholder="Chọn người thi công">
-                      <Select.Option value="1">Người thi công 1</Select.Option>
-                      <Select.Option value="2">Người thi công 2</Select.Option>
-                    </Select>
-                  </Form.Item>
-                </Form>
-              ) : (
-                <>
-                  <label>Nhà thiết kế</label>
+              <Form.Item label="Nhà thiết kế">
+                {constructionOrder.designed ? (
                   <div className="display-input">
-                    <span>-</span>
+                    <span>{constructionOrder.designer || "-"}</span>
                   </div>
-                  <label>Chịu trách nhiệm thi công</label>
+                ) : actor === "manager" ? (
+                  <Select placeholder="Chọn nhà thiết kế">
+                    {freeDesigners.map((designer) => (
+                      <Select.Option key={designer.id} value={designer.id}>
+                        {designer.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                ) : (
                   <div className="display-input">
-                    <span>-</span>
+                    <span>{constructionOrder.designer || "-"}</span>
                   </div>
-                </>
-              )}
+                )}
+              </Form.Item>
+
+              <Form.Item label="Người chịu trách nhiệm thi công">
+                {actor === "manager" ? (
+                  <Select placeholder="Chọn người thi công">
+                    {freeConstructors.map((constructor) => (
+                      <Select.Option
+                        key={constructor.id}
+                        value={constructor.id}
+                      >
+                        {constructor.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                ) : (
+                  <div className="display-input">
+                    <span>{constructionOrder.responsiblePerson || "-"}</span>
+                  </div>
+                )}
+              </Form.Item>
             </Col>
             <Col span={8}>
               <label>Ngày tiếp nhận</label>
@@ -204,7 +237,7 @@ function Order() {
           style={{ width: "100%", height: "auto" }}
         />
       </Modal>
-    </NavDashboard>
+    </div>
   );
 }
-export default Order;
+export default OrderCustomer;

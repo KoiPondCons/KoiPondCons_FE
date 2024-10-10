@@ -15,6 +15,8 @@ import Designer from "./pages/designer";
 
 //Customer
 import HistoryPage from "./pages/customer/history";
+import OrderCustomer from "./pages/order-detail-customer";
+import PriceListCustomer from "./pages/price-list-customer";
 // Home page
 import LoginPage from "./pages/general/login";
 import RegisterPage from "./pages/general/register";
@@ -27,12 +29,11 @@ import Blog from "./pages/general/blog";
 import ListProject from "./pages/general/list-project";
 //General
 import Order from "./pages/order-detail";
-import PriceListStaff from "./pages/price-list-staff";
 import MyProfile from "./pages/my-profile";
 import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
 import OrderManagement from "./pages/manager/manage-order";
-import InfomationCustomer from "./pages/consulting/infomation-customer";
+import PriceListStaff from "./pages/consulting/price-list-staff";
 
 function App() {
   const router = createBrowserRouter([
@@ -82,7 +83,7 @@ function App() {
     },
     {
       path: "order/:id",
-      element: <Order />,
+      element: <OrderCustomer />,
     },
     {
       path: "history",
@@ -90,7 +91,12 @@ function App() {
     },
     {
       path: "price-list-staff",
-      element: <PriceListStaff />,
+      element: <PriceListCustomer />,
+    },
+    //Staff
+    {
+      path: "order-detail/:id",
+      element: <Order />,
     },
     //Consulting-staff
     {
@@ -106,8 +112,8 @@ function App() {
       element: <CreatedOrders />,
     },
     {
-      path: "consulting/information-customer/:id",
-      element: <InfomationCustomer />,
+      path: "consulting/price-list-staff/:id",
+      element: <PriceListStaff />,
     },
     //Construction-staff
     {

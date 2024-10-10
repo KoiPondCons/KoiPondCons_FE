@@ -5,7 +5,7 @@ import api from "../../../config/axios";
 import "../../../utils/common.css";
 import FormItem from "antd/es/form/FormItem";
 import { useLocation, useParams } from "react-router-dom";
-function InfomationCustomer() {
+function PriceListStaff() {
   const { id } = useParams();
   const location = useLocation();
   const actor = location.state;
@@ -330,4 +330,4 @@ function InfomationCustomer() {
   );
 }
 
-export default InfomationCustomer;
+export default PriceListStaff;
