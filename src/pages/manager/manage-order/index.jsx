@@ -6,6 +6,7 @@ import api from "../../../config/axios";
 import TableTemplate from "../../../components/table";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineUnorderedList } from "react-icons/ai";
+import moment from "moment";
 function OrderManagement() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
@@ -29,13 +30,53 @@ function OrderManagement() {
     },
     {
       title: "Trạng thái",
-      dataIndex: "statusDescription",
-      key: "statusDescription",
+      key: "status",
+      render: (record) => {
+        const textStyle = {
+          fontSize: "1rem",
+          fontStyle: "italic",
+          textAlign: "center",
+        };
+
+        if (record.status === "PROCESSING") {
+          return (
+            <div style={textStyle}>
+              {record.quotationResponse &&
+              record.quotationResponse.statusDescription ? (
+                <p>{record.quotationResponse.statusDescription} báo giá</p>
+              ) : (
+                <p>Không có thông tin báo giá, hãy tạo báo giá</p>
+              )}
+            </div>
+          );
+        } else if (record.status === "DESIGNING") {
+          return (
+            <div style={textStyle}>
+              {record.designDrawResponse &&
+              record.designDrawResponse.statusDescription ? (
+                <p>
+                  {record.designDrawResponse.statusDescription} bản thiết kế
+                </p>
+              ) : (
+                <p>Chờ chỉ định nhà thiết kế</p>
+              )}
+            </div>
+          );
+        } else {
+          return (
+            <div style={textStyle}>
+              <p>{record.statusDescription}</p>
+            </div>
+          );
+        }
+      },
     },
     {
       title: "Ngày gửi đơn",
-      dataIndex: "requestDate",
       key: "requestDate",
+      render: (record) => (
+        <p>{moment(record.requestDate).format("DD/MM/YYYY")}</p>
+      ),
     },
     {
       title: "chi tiết",
@@ -44,7 +85,7 @@ function OrderManagement() {
         return (
           <AiOutlineUnorderedList
             onClick={() =>
-              navigate(`/order/${record.id}`, { state: "manager" })
+              navigate(`/order-detail/${record.id}`, { state: "manager" })
             }
           />
         );
