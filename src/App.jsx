@@ -33,7 +33,8 @@ import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
 import OrderManagement from "./pages/manager/manage-order";
 import InfomationCustomer from "./pages/consulting/infomation-customer";
-
+//Payment
+import PaymentConfirm from "./pages/payment"
 function App() {
   const router = createBrowserRouter([
     {
@@ -142,6 +143,11 @@ function App() {
     },
     {
       path: "manager/customer-profile-management",
+    },
+    //PAYMENT
+    {
+      path: "payment",
+      element: <PaymentConfirm/>
     },
     {
       path: "*", // Route cho các đường dẫn không tồn tại
