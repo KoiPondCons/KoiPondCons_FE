@@ -5,11 +5,11 @@ import api from "../../../config/axios";
 import "../../../utils/common.css";
 import FormItem from "antd/es/form/FormItem";
 import { useLocation, useParams } from "react-router-dom";
+import Bill from "../../../components/bill";
 function PriceListStaff() {
   const { id } = useParams();
   const location = useLocation();
-  const actor = location.state;
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { actor } = location.state;
   const [listCombo, setListCombo] = useState([]);
   const [selectedCombo, setSelectedCombo] = useState(null);
   const [constructionOrder, setConstructionOrder] = useState(null);
@@ -88,7 +88,7 @@ function PriceListStaff() {
   const fetchComboPrice = async () => {
     try {
       const response = await api.get(
-        `comboprices/combo/volume/${selectedCombo}/${constructionOrder.quotation.pondVolume}`
+        `comboprices/combo/volume/${selectedCombo}/${constructionOrder.quotationResponse.pondVolume}`
       );
       setComboPrice(response.data);
       console.log(response.data);
@@ -99,7 +99,7 @@ function PriceListStaff() {
   const fecthPromotionList = async () => {
     try {
       const response = await api.get(
-        `promotions/quotation/${constructionOrder.quotation.id}`
+        `promotions/quotation/${constructionOrder.quotationResponse.id}`
       );
       setPromotionList(response.data);
       console.log("Promotion:");
@@ -119,39 +119,7 @@ function PriceListStaff() {
     }
   }, [comboPrice]);
   const isComboSelected = selectedCombo !== null;
-  let totalDiscountPrice = 0;
-  promotionList.forEach((promotion) => {
-    const discountPrice =
-      promotion.discountPercent *
-      comboPrice.unitPrice *
-      constructionOrder.quotation.pondVolume;
-    totalDiscountPrice += discountPrice;
-  });
-  const handleQuotation = async () => {
-    const value = {
-      combo: selectedCombo,
-      pondVolume: constructionOrder.quotation.pondVolume,
-      quotationFile: null,
-      status: "MANAGER_PENDING",
-    };
-    try {
-      await api.put(`quotation/${constructionOrder.quotation.id}`, value);
-      console.log("Quotation updated successfully");
-      console.log(value);
-    } catch (error) {
-      console.error("Error updating quotation:", error);
-      console.log("Error: ", value);
-    }
-  };
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  const handleYes = () => {
-    handleQuotation();
-  };
+
   return (
     <NavDashboard actor={actor}>
       <h1>THÔNG TIN ĐƠN HÀNG</h1>
@@ -195,8 +163,8 @@ function PriceListStaff() {
             <label>Thể tích hồ</label>
             <div className="display-input">
               <span>
-                {constructionOrder && constructionOrder.quotation
-                  ? constructionOrder.quotation.pondVolume
+                {constructionOrder && constructionOrder.quotationResponse
+                  ? constructionOrder.quotationResponse.pondVolume
                   : "N/A"}
               </span>
             </div>
@@ -241,89 +209,16 @@ function PriceListStaff() {
               pagination={false}
             />
           </div>
-          <div className="container">
-            <div className="card cart">
-              <label className="title">BÁO GIÁ</label>
-              <div className="steps">
-                <div className="step" style={{ maxWidth: "100%" }}>
-                  <div className="payments">
-                    <p>ƯỚC LƯỢNG</p>
-                    <div className="details">
-                      <span style={{ fontWeight: "bold" }}>Đơn giá</span>
-                      <span style={{ textAlign: "right" }}>
-                        <span style={{ textAlign: "right" }}>
-                          {comboPrice
-                            ? `${new Intl.NumberFormat("vi-VN").format(
-                                comboPrice.unitPrice
-                              )} VND/m3`
-                            : "Loading VND/m3"}
-                        </span>
-                      </span>
-                      <span style={{ fontWeight: "bold" }}>Thể tích</span>
-                      <span style={{ textAlign: "right" }}>
-                        {constructionOrder.quotation.pondVolume} m3
-                      </span>
-                    </div>
-                    <hr />
-                    <p style={{ marginTop: "20px" }}>THANH TOÁN</p>
-                    <div className="details">
-                      <span style={{ fontWeight: "bold" }}>Thành tiền</span>
-                      <span style={{ textAlign: "right" }}>
-                        {comboPrice
-                          ? `${new Intl.NumberFormat("vi-VN").format(
-                              comboPrice.unitPrice *
-                                constructionOrder.quotation.pondVolume
-                            )} VND`
-                          : "Loading VND"}
-                      </span>
-
-                      {promotionList.map((promotion) => (
-                        <>
-                          <span style={{ fontWeight: "bold" }}>Giảm giá</span>
-                          <span style={{ textAlign: "right" }}>
-                            {promotion.content}
-                          </span>
-                          <span style={{ fontWeight: "bold" }}></span>
-                          <span style={{ textAlign: "right", gap: "1px" }}>
-                            {new Intl.NumberFormat("vi-VN").format(
-                              promotion.discountPercent *
-                                comboPrice.unitPrice *
-                                constructionOrder.quotation.pondVolume
-                            )}{" "}
-                            VND
-                          </span>
-                        </>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="card checkout">
-              <div className="footer">
-                <label className="price">
-                  {comboPrice
-                    ? `${new Intl.NumberFormat("vi-VN").format(
-                        comboPrice.unitPrice *
-                          constructionOrder.quotation.pondVolume -
-                          totalDiscountPrice
-                      )} VND`
-                    : "Loading VND"}
-                </label>
-                <button className="checkout-btn" onClick={showModal}>
-                  Gửi báo giá
-                </button>
-                <Modal
-                  title="Xác nhận gửi báo giá"
-                  open={isModalOpen}
-                  onOk={handleYes}
-                  onCancel={handleCancel}
-                >
-                  <p>Bạn có chắc chắn muốn gửi báo giá</p>
-                </Modal>
-              </div>
-            </div>
-          </div>
+          {comboPrice && constructionOrder && promotionList.length > 0 && (
+            <Bill
+              actor={actor}
+              unitPrice={comboPrice.unitPrice}
+              pondVolume={constructionOrder.quotationResponse.pondVolume}
+              promotionList={promotionList}
+              comboId={selectedCombo}
+              quotationId={constructionOrder.quotationResponse.id}
+            />
+          )}
         </>
       )}
     </NavDashboard>
