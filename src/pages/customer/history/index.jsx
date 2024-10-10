@@ -84,7 +84,10 @@ function HistoryPage() {
                       </button>
                       {constructionOrder.consultantAccount && (
                         <Link
-                          to={`/order/${constructionOrder.id}`}
+                          to={{
+                            pathname: `/order/${constructionOrder.id}`,
+                            state: "customer",
+                          }}
                           style={{ color: "#007bff" }}
                         >
                           Chi tiết
