@@ -1,20 +1,61 @@
-import { Col, Form, Input, Modal, Popover, Row, Table } from "antd";
+import { Col, Form, Input, Modal, Popover, Row, Select, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Progress } from "antd";
 import api from "../../config/axios";
 import "./index.css";
 import NavDashboard from "../../components/navbar-dashboard";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import "../../components/table/index.css";
 import { AiOutlineFile } from "react-icons/ai";
 import { RiDraftLine } from "react-icons/ri";
-function Order() {
+import moment from "moment";
+function OrderCustomer() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const actor = location.state;
   const { id } = useParams();
   const [constructionOrder, setConstructionOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
+  const [freeConstructors, setFreeConstructors] = useState([]);
+  const [freeDesigners, setFreeDesigners] = useState([]);
+  const fecthFreeConstructors = async () => {
+    try {
+      const response = await api.get("account/free-constructors");
+      setFreeConstructors(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log("Bug at fecthFreeConstructors, " + error);
+    }
+  };
+  const fecthFreeDesigners = async () => {
+    try {
+      const response = await api.get("account/free-designers");
+      setFreeDesigners(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log("Bug at fecthFreeDesigners, " + error);
+    }
+  };
+  const fetchConstructionOrder = async () => {
+    try {
+      const response = await api.get(`orders/${id}`);
+      setConstructionOrder(response.data);
+      console.log(response.data);
+      console.log(actor);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchConstructionOrder();
+    fecthFreeConstructors();
+    fecthFreeDesigners();
+  }, [id]);
   const showModal = (src) => {
     console.log("Modal is opening with image source:", src);
     setImageSrc(src);
@@ -24,31 +65,16 @@ function Order() {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  const navigate = useNavigate();
+
   const handleClick = () => {
     navigate(`/price-list-staff`);
   };
-  useEffect(() => {
-    const fetchConstructionOrder = async () => {
-      try {
-        const response = await api.get(`orders/${id}`);
-        setConstructionOrder(response.data);
-        console.log(response.data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchConstructionOrder();
-  }, [id]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data: {error.message}</div>;
 
   return (
-    <NavDashboard actor="consulting">
+    <div>
       <div>
         <h1>THÔNG TIN ĐƠN HÀNG</h1>
         <Form layout="vertical">
@@ -68,7 +94,7 @@ function Order() {
             <Col span={8}>
               <label>Email</label>
               <div className="display-input">
-                <span> {constructionOrder.customerEmail}</span>
+                <span> {constructionOrder.customer.account.email}</span>
               </div>
             </Col>
             <Col span={24}>
@@ -92,7 +118,7 @@ function Order() {
             <Col span={7}>
               <label>Thể tích hồ</label>
               <div className="display-input">
-                <span> {constructionOrder.pon}</span>
+                <span> {constructionOrder.quotationResponse.pondVolume}</span>
               </div>
             </Col>
           </Row>
@@ -109,28 +135,61 @@ function Order() {
               >
                 Tiến độ
               </h3>
-              <a className="more-detail" href="">
+              <Link to="/construction" className="more-detail">
                 Xem chi tiết
-              </a>
+              </Link>
             </Col>
+
             <Col span={20}>
               <label>Tư vấn viên</label>
               <div className="display-input">
-                <span>{constructionOrder.accountNonExpir}</span>
+                <span>{constructionOrder.consultantAccount.name}</span>
               </div>
-              <label>Nhà thiết kế</label>
-              <div className="display-input">
-                <span> Trần Kim Nhã</span>
-              </div>
-              <label>Chịu trách nhiệm thi công</label>
-              <div className="display-input">
-                <span> Trần Kim Nhã</span>
-              </div>
+              <Form.Item label="Nhà thiết kế">
+                {constructionOrder.designed ? (
+                  <div className="display-input">
+                    <span>{constructionOrder.designer || "-"}</span>
+                  </div>
+                ) : actor === "manager" ? (
+                  <Select placeholder="Chọn nhà thiết kế">
+                    {freeDesigners.map((designer) => (
+                      <Select.Option key={designer.id} value={designer.id}>
+                        {designer.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                ) : (
+                  <div className="display-input">
+                    <span>{constructionOrder.designer || "-"}</span>
+                  </div>
+                )}
+              </Form.Item>
+
+              <Form.Item label="Người chịu trách nhiệm thi công">
+                {actor === "manager" ? (
+                  <Select placeholder="Chọn người thi công">
+                    {freeConstructors.map((constructor) => (
+                      <Select.Option
+                        key={constructor.id}
+                        value={constructor.id}
+                      >
+                        {constructor.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                ) : (
+                  <div className="display-input">
+                    <span>{constructionOrder.responsiblePerson || "-"}</span>
+                  </div>
+                )}
+              </Form.Item>
             </Col>
             <Col span={8}>
               <label>Ngày tiếp nhận</label>
               <div className="display-input">
-                <span>{constructionOrder.request_date}</span>
+                <span>
+                  {moment(constructionOrder.requestDate).format("DD/MM/YYYY")}
+                </span>
               </div>
             </Col>
             <Col span={8}>
@@ -178,7 +237,7 @@ function Order() {
           style={{ width: "100%", height: "auto" }}
         />
       </Modal>
-    </NavDashboard>
+    </div>
   );
 }
-export default Order;
+export default OrderCustomer;

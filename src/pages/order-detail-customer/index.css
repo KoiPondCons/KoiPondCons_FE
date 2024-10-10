@@ -39,3 +39,10 @@
     text-align: center;
     margin: 5px
   }
+  .display-input, .ant-form-item {
+    margin-bottom: 10px; /* Điều chỉnh khoảng cách */
+  }
+  
+  .ant-select, .display-input {
+    width: 100%; /* Đảm bảo các phần tử chiếm cùng chiều rộng */
+  }
