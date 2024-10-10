@@ -4,11 +4,13 @@
     font-family: 'Montserrat';
     font-size: 1rem;
     font-weight: bold;
+    text-align: center;
 }
 .table-template .ant-table-tbody > tr > td  {
     background-color: #C7D1D9;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: lighter;
+    text-align: center;
 }
 .button-template {
     background-color: #000;
