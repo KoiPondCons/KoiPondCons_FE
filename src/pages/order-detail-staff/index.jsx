@@ -66,10 +66,6 @@ function Order() {
     setIsModalVisible(false);
   };
 
-  const handleClick = () => {
-    navigate(`/price-list-staff`);
-  };
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data: {error.message}</div>;
 
@@ -209,14 +205,19 @@ function Order() {
             </Col>
             <Col span={8}>
               <label>Bảng báo giá và chi tiết hạng mục</label>
-              <div
-                className="display-input"
-                onClick={() => handleClick()}
-                style={{ cursor: "pointer" }}
-              >
+              <div className="display-input">
                 {
                   <AiOutlineFile
-                    style={{ fontSize: "20px", textAlign: "center" }}
+                    style={{
+                      fontSize: "20px",
+                      textAlign: "center",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      navigate(`/consulting/price-list-staff/${id}`, {
+                        state: { actor },
+                      })
+                    }
                   />
                 }
               </div>

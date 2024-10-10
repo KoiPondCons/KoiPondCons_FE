@@ -211,7 +211,11 @@ function OrderCustomer() {
               <label>Bảng báo giá và chi tiết hạng mục</label>
               <div
                 className="display-input"
-                onClick={() => handleClick()}
+                onClick={() =>
+                  navigate(`/price-list/${id}`, {
+                    state: { actor },
+                  })
+                }
                 style={{ cursor: "pointer" }}
               >
                 {
