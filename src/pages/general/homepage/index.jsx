@@ -3,6 +3,8 @@ import Header from "../../../components/header";
 import Footer from "../../../components/footer";
 import "./index.css"; // Assuming you have a CSS file for styles
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import CardContent from '../../../components/card-content';
+
 
 function HomePage() {
   const images = [
@@ -85,44 +87,18 @@ function HomePage() {
         </div>
       </div>
 
-      <div className="project">
+
+      <div className="project" style={{margin:"0px"}}>
         <div>
           <a className="project-header">DỰ ÁN TIÊU BIỂU</a>
           <div className="view-all-button">
             <button>XEM TẤT CẢ</button>
           </div>
         </div>
-        <div className="project-gallery">
-          <div className="project-item">
-            <img
-              src="https://images.unsplash.com/photo-1654225718758-79c6f724183a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Project 1"
-            />
-            <h2 className="project-title">VIEN LE JARDIN</h2>
-          </div>
-          <div className="project-item">
-            <img
-              src="https://images.unsplash.com/photo-1654225718758-79c6f724183a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Project 2"
-            />
-            <h2 className="project-title">OPAL TOWER</h2>
-          </div>
-          <div className="project-item">
-            <img
-              src="https://images.unsplash.com/photo-1654225718758-79c6f724183a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Project 3"
-            />
-            <h2 className="project-title">ONSEN GÒ VẤP</h2>
-          </div>
-          <div className="project-item">
-            <img
-              src="https://images.unsplash.com/photo-1654225718758-79c6f724183a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Project 4"
-            />
-            <h2 className="project-title">LÀNG THÔNG DONG</h2>
-          </div>
-        </div>
+        <CardContent />
       </div>
+
+
       <div className="project-process">
         <h1>QUY TRÌNH THỰC HIỆN DỰ ÁN</h1>
         <div className="process-steps">
