@@ -35,6 +35,7 @@ import HistoryConstruction from "./pages/construction-staff/history-construction
 import OrderManagement from "./pages/manager/manage-order";
 import PriceListStaff from "./pages/consulting/price-list-staff";
 
+import PaymentConfirm from "./pages/payment";
 function App() {
   const router = createBrowserRouter([
     {
@@ -148,6 +149,11 @@ function App() {
     },
     {
       path: "manager/customer-profile-management",
+    },
+    //PAYMENT
+    {
+      path: "payment",
+      element: <PaymentConfirm />,
     },
     {
       path: "*", // Route cho các đường dẫn không tồn tại
