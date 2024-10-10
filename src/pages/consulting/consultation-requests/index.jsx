@@ -66,8 +66,8 @@ function ConsultationRequests() {
     },
     {
       title: "Nội dung",
-      dataIndex: "description",
-      key: "description",
+      dataIndex: "customerDescription",
+      key: "customerDescription",
       render: (text) => <div className="description-cell">{text}</div>,
       width: 300,
     },

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { AiOutlineUnorderedList } from "react-icons/ai";
+import { MdOutlinePriceChange } from "react-icons/md";
+
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import TableTemplate from "../../../components/table";
@@ -38,13 +40,30 @@ function OngoingConsultations() {
       key: "statusDescription",
     },
     {
-      title: "Chi tiết",
+      title: "",
       key: "",
       render: (record) => {
-        return (
-          <AiOutlineUnorderedList
-            onClick={() => navigate(`/order/${record.id}`)}
-          />
+        return record.status === "PROCESSING" ? (
+          <div style={{ textAlign: "center", cursor: "pointer" }}>
+            <MdOutlinePriceChange
+              size={30}
+              onClick={() =>
+                navigate(`/consulting/information-customer/${record.id}`, {
+                  state: "consulting",
+                })
+              }
+            />
+            <p style={{ fontSize: "10px", fontStyle: "italic" }}>Tạo báo giá</p>
+          </div>
+        ) : (
+          <div style={{ textAlign: "center", cursor: "pointer" }}>
+            <AiOutlineUnorderedList
+              onClick={() =>
+                navigate(`/order/${record.id}`, { state: "consulting" })
+              }
+            />
+            <p style={{ fontSize: "10px", fontStyle: "italic" }}>Chi tiết</p>
+          </div>
         );
       },
     },

@@ -106,7 +106,7 @@ function App() {
       element: <CreatedOrders />,
     },
     {
-      path: "consulting/information-customer",
+      path: "consulting/information-customer/:id",
       element: <InfomationCustomer />,
     },
     //Construction-staff
