@@ -91,7 +91,7 @@ function App() {
       element: <HistoryPage />,
     },
     {
-      path: "price-list-staff",
+      path: "price-list",
       element: <PriceListCustomer />,
     },
     //Staff
