@@ -13,6 +13,7 @@ function OngoingConsultations() {
   const fetchConsultationRequests = async () => {
     const response = await api.get("orders/consultant");
     setRequests(response.data);
+    console.log(response.data);
   };
   useEffect(() => {
     fetchConsultationRequests();
@@ -43,28 +44,76 @@ function OngoingConsultations() {
       title: "",
       key: "",
       render: (record) => {
-        return record.status === "PROCESSING" ? (
-          <div style={{ textAlign: "center", cursor: "pointer" }}>
-            <MdOutlinePriceChange
-              size={30}
-              onClick={() =>
-                navigate(`/consulting/information-customer/${record.id}`, {
-                  state: "consulting",
-                })
-              }
-            />
-            <p style={{ fontSize: "10px", fontStyle: "italic" }}>Tạo báo giá</p>
-          </div>
-        ) : (
-          <div style={{ textAlign: "center", cursor: "pointer" }}>
-            <AiOutlineUnorderedList
-              onClick={() =>
-                navigate(`/order/${record.id}`, { state: "consulting" })
-              }
-            />
-            <p style={{ fontSize: "10px", fontStyle: "italic" }}>Chi tiết</p>
-          </div>
-        );
+        if (record.quotationResponse.status === "PROCESSING") {
+          return (
+            <div style={{ textAlign: "center", cursor: "pointer" }}>
+              <MdOutlinePriceChange
+                style={{ cursor: "pointer" }}
+                size={30}
+                onClick={() =>
+                  navigate(`/consulting/price-list-staff/${record.id}`, {
+                    state: "consulting",
+                  })
+                }
+              />
+              <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                Tạo báo giá
+              </p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ textAlign: "center", cursor: "pointer" }}>
+              <AiOutlineUnorderedList
+                style={{ cursor: "pointer" }}
+                size={30}
+                onClick={() =>
+                  navigate(`/order-detail/${record.id}`, {
+                    state: "consulting",
+                  })
+                }
+              />
+              <p style={{ fontSize: "10px", fontStyle: "italic" }}>Chi tiết</p>
+            </div>
+          );
+        }
+      },
+    },
+    {
+      title: "Tình trạng",
+      key: "",
+      render: (record) => {
+        if (record.status === "PROCESSING") {
+          return (
+            <div style={{ textAlign: "center" }}>
+              {record.quotationResponse &&
+              record.quotationResponse.statusDescription ? (
+                <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                  {record.quotationResponse.statusDescription} báo giá
+                </p>
+              ) : (
+                <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                  Không có thông tin báo giá, hãy tạo báo giá
+                </p>
+              )}
+            </div>
+          );
+        } else if (record.status === "DESIGNING") {
+          return (
+            <div style={{ textAlign: "center" }}>
+              {record.designDrawResponse &&
+              record.designDrawResponse.statusDescription ? (
+                <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                  {record.designDrawResponse.statusDescription} bản thiết kế
+                </p>
+              ) : (
+                <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                  Chờ chỉ định nhà thiết kế
+                </p>
+              )}
+            </div>
+          );
+        }
       },
     },
   ];

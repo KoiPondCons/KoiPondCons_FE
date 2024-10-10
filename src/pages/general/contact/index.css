@@ -39,24 +39,28 @@
 .ant-col-offset-2 {
     margin-inline-start: 20px; 
 }
-.content-container {
+.request-success {
     text-align: center;
     margin-top: 100px;
     display: flex; /* Thay đổi từ flex sang block */
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: auto;
+    height: 60vh;
+    display: flex;
 }
-.content-container h1 {
-    font-size: 4rem;
+.request-success__wrapper {
+}
+.request-success__wrapper h1 {
+    font-size: 3rem;
     margin-bottom: 10px;
 }
-.content-container p {
+.request-success__wrapper p {
     font-size: 1.1rem;
     margin-bottom: 10px;
 }
 .button-common {
     margin: 10px;
 }
+
 
