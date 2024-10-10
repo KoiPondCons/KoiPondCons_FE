@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NavDashboard from "../../../components/navbar-dashboard";
-import { Button, Col, Form, Row, Select, Table } from "antd";
+import { Button, Col, Form, Modal, Row, Select, Table } from "antd";
 import api from "../../../config/axios";
 import "../../../utils/common.css";
 import FormItem from "antd/es/form/FormItem";
@@ -9,11 +9,12 @@ function InfomationCustomer() {
   const { id } = useParams();
   const location = useLocation();
   const actor = location.state;
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [listCombo, setListCombo] = useState([]);
   const [selectedCombo, setSelectedCombo] = useState(null);
   const [constructionOrder, setConstructionOrder] = useState(null);
   const [comboConstructionItems, setComboConstructionItems] = useState([]);
-  const [unitPrice, setUnitPrice] = useState();
+  const [comboPrice, setComboPrice] = useState();
   const [promotionList, setPromotionList] = useState([]);
   const columnsPackage = [
     {
@@ -36,6 +37,7 @@ function InfomationCustomer() {
       ),
     },
   ];
+
   const fecthCombo = async () => {
     try {
       const response = await api.get("combos");
@@ -83,23 +85,24 @@ function InfomationCustomer() {
       console.log("Bug at fetchConstructionItems, " + error);
     }
   };
-  const fetchUnitPrice = async () => {
+  const fetchComboPrice = async () => {
     try {
       const response = await api.get(
         `comboprices/combo/volume/${selectedCombo}/${constructionOrder.quotation.pondVolume}`
       );
-      setUnitPrice(response.data);
+      setComboPrice(response.data);
       console.log(response.data);
     } catch (error) {
-      console.log("Bug at fetchUnitPrice, " + error);
+      console.log("Bug at fetchComboPrice, " + error);
     }
   };
   const fecthPromotionList = async () => {
     try {
       const response = await api.get(
-        `promotions/customer/${constructionOrder.customer.id}`
+        `promotions/quotation/${constructionOrder.quotation.id}`
       );
       setPromotionList(response.data);
+      console.log("Promotion:");
       console.log(response.data);
     } catch (error) {
       console.log("Bug at fecthPromotion, " + error);
@@ -107,23 +110,48 @@ function InfomationCustomer() {
   };
   useEffect(() => {
     fetchConstructionItems();
-    fetchUnitPrice();
+    fetchComboPrice();
     fecthPromotionList();
   }, [selectedCombo]);
   useEffect(() => {
-    if (unitPrice) {
-      console.log(unitPrice.data);
+    if (comboPrice) {
+      console.log(comboPrice.data);
     }
-  }, [unitPrice]);
+  }, [comboPrice]);
   const isComboSelected = selectedCombo !== null;
   let totalDiscountPrice = 0;
   promotionList.forEach((promotion) => {
     const discountPrice =
       promotion.discountPercent *
-      unitPrice.unitPrice *
+      comboPrice.unitPrice *
       constructionOrder.quotation.pondVolume;
     totalDiscountPrice += discountPrice;
   });
+  const handleQuotation = async () => {
+    const value = {
+      combo: selectedCombo,
+      pondVolume: constructionOrder.quotation.pondVolume,
+      quotationFile: null,
+      status: "MANAGER_PENDING",
+    };
+    try {
+      await api.put(`quotation/${constructionOrder.quotation.id}`, value);
+      console.log("Quotation updated successfully");
+      console.log(value);
+    } catch (error) {
+      console.error("Error updating quotation:", error);
+      console.log("Error: ", value);
+    }
+  };
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const handleYes = () => {
+    handleQuotation();
+  };
   return (
     <NavDashboard actor={actor}>
       <h1>THÔNG TIN ĐƠN HÀNG</h1>
@@ -224,9 +252,9 @@ function InfomationCustomer() {
                       <span style={{ fontWeight: "bold" }}>Đơn giá</span>
                       <span style={{ textAlign: "right" }}>
                         <span style={{ textAlign: "right" }}>
-                          {unitPrice
+                          {comboPrice
                             ? `${new Intl.NumberFormat("vi-VN").format(
-                                unitPrice.unitPrice
+                                comboPrice.unitPrice
                               )} VND/m3`
                             : "Loading VND/m3"}
                         </span>
@@ -241,9 +269,9 @@ function InfomationCustomer() {
                     <div className="details">
                       <span style={{ fontWeight: "bold" }}>Thành tiền</span>
                       <span style={{ textAlign: "right" }}>
-                        {unitPrice
+                        {comboPrice
                           ? `${new Intl.NumberFormat("vi-VN").format(
-                              unitPrice.unitPrice *
+                              comboPrice.unitPrice *
                                 constructionOrder.quotation.pondVolume
                             )} VND`
                           : "Loading VND"}
@@ -259,7 +287,7 @@ function InfomationCustomer() {
                           <span style={{ textAlign: "right", gap: "1px" }}>
                             {new Intl.NumberFormat("vi-VN").format(
                               promotion.discountPercent *
-                                unitPrice.unitPrice *
+                                comboPrice.unitPrice *
                                 constructionOrder.quotation.pondVolume
                             )}{" "}
                             VND
@@ -274,15 +302,25 @@ function InfomationCustomer() {
             <div className="card checkout">
               <div className="footer">
                 <label className="price">
-                  {unitPrice
+                  {comboPrice
                     ? `${new Intl.NumberFormat("vi-VN").format(
-                        unitPrice.unitPrice *
+                        comboPrice.unitPrice *
                           constructionOrder.quotation.pondVolume -
                           totalDiscountPrice
                       )} VND`
                     : "Loading VND"}
                 </label>
-                <button className="checkout-btn">Gửi báo giá</button>
+                <button className="checkout-btn" onClick={showModal}>
+                  Gửi báo giá
+                </button>
+                <Modal
+                  title="Xác nhận gửi báo giá"
+                  open={isModalOpen}
+                  onOk={handleYes}
+                  onCancel={handleCancel}
+                >
+                  <p>Bạn có chắc chắn muốn gửi báo giá</p>
+                </Modal>
               </div>
             </div>
           </div>
