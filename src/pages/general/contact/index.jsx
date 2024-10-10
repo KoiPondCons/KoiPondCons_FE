@@ -27,7 +27,7 @@ function ContactPage() {
       toast.success("Gửi yêu cầu thành công!");
     } catch (error) {
       toast.error("Vui lòng đăng nhập để gửi yêu");
-      console.log(error.response.data)
+      console.log(error);
     }
   }
 
@@ -128,7 +128,7 @@ function ContactPage() {
                 <Col span={24}>
                   <FormItem
                     label="Nội dung yêu cầu"
-                    name="description"
+                    name="customerDescription"
                     labelCol={{ span: 24 }}
                   >
                     <TextArea placeholder="Nội dung yêu cầu" />
