@@ -6,7 +6,7 @@
 .sidebar {
     width: 300px; /* Chiều rộng của thanh bên trái */
     height: 100%; /* Chiều cao của thanh bên trái */
-    background: url('https://cdn.discordapp.com/attachments/1281613412111225009/1289920595529830500/SU_CHUNG-MING.png?ex=66fa93ab&is=66f9422b&hm=c1be9cafb9df75fcff62c35c7b86479647cc65b59db5a1568010a2fac38d9419&');
+    background: url('../../images/pattern.png');
     background-color: rgba(6, 21, 41,0.8);
     background-blend-mode: overlay;
     padding: 20px; /* Khoảng cách bên trong */

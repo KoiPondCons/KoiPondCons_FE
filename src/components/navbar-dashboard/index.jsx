@@ -7,6 +7,7 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import IMGDashboard from "../../images/Dashboard.png"; // Nhập hình ảnh
 
 const NavDashboard = ({ children, actor }) => {
   const links = {
@@ -52,7 +53,7 @@ const NavDashboard = ({ children, actor }) => {
           <a href="">
             <img
               className="dashboard"
-              src="https://cdn.discordapp.com/attachments/1281613412111225009/1289420986487148599/Group_145.png?ex=66fb655f&is=66fa13df&hm=6b47106f0679fd800823b4c282e66f9d005efcab5572ff83979e0fa16411d27f&"
+              src={IMGDashboard} // Sử dụng biến đã nhập
               alt=""
             />
           </a>
