@@ -19,8 +19,8 @@ function PriceListCustomer() {
     try {
       const response = await api.get(`orders/${id}`);
       setConstructionOrder(response.data);
-      // const comboId = response.quotationResponse.combo.id;
-      // console.log(comboId.data);
+      const comboId = response.data.quotationResponse.combo.id;
+      console.log(comboId.data);
       console.log("fetchConstructionOrder");
       console.log(response.data);
     } catch (err) {
@@ -31,7 +31,7 @@ function PriceListCustomer() {
   const fetchConstructionItems = async () => {
     try {
       const response = await api.get(
-        `comboconstructionitems/combo/${constructionOrder.quotationResponse.id}`
+        `comboconstructionitems/combo/${constructionOrder.quotationResponse.combo.id}`
       );
       setComboConstructionItems(response.data);
       console.log("fetchConstructionItems");
@@ -43,7 +43,7 @@ function PriceListCustomer() {
   const fetchComboPrice = async () => {
     try {
       const response = await api.get(
-        `comboprices/combo/volume/${selectedCombo}/${constructionOrder.quotationResponse.pondVolume}`
+        `comboprices/combo/volume/${constructionOrder.quotationResponse.combo.id}/${constructionOrder.quotationResponse.pondVolume}`
       );
       setComboPrice(response.data);
       console.log(response.data);
@@ -53,10 +53,11 @@ function PriceListCustomer() {
   };
   useEffect(() => {
     fetchConstructionOrder();
+  }, []);
+  useEffect(() => {
     fetchConstructionItems();
     fetchComboPrice();
-  }, []);
-
+  }, [constructionOrder]);
   // useEffect(() => {
   //   if (constructionOrders?.quotationResponse?.combo?.id) {
   //     fetchConstructionItems();
@@ -83,10 +84,9 @@ function PriceListCustomer() {
   ];
 
   return (
-    <div style={{ backgroundColor: "white" }}>
+    <div style={{ backgroundColor: "white", height: "auto" }}>
       <Header />
       <div className="price-list-staff-container">
-        <h1>Bảng báo giá và chi tiết hạng mục</h1>
         <div className="price-list-staff-result">
           <h1>Chi tiết hạng mục</h1>
           <Table
@@ -97,14 +97,14 @@ function PriceListCustomer() {
           />
         </div>
 
-        {/* <Bill
-          actor={actor}
-          unitPrice={comboPrice.unitPrice}
-          pondVolume={constructionOrder.quotationResponse.pondVolume}
-          promotionList={comboConstructionItems}
-          comboId={selectedCombo}
-          quotationId={constructionOrder.quotationResponse.id}
-        /> */}
+        <Bill
+          actor={"customer"}
+          unitPrice={comboPrice?.unitPrice}
+          pondVolume={constructionOrder.quotationResponse?.pondVolume}
+          promotionList={comboConstructionItems.quotationResponse?.promotions}
+          comboId={constructionOrder.quotationResponse?.combo?.id}
+          quotationId={constructionOrder.quotationResponse?.id}
+        />
         <Footer />
       </div>
     </div>

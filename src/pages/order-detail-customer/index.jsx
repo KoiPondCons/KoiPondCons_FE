@@ -9,6 +9,8 @@ import "../../components/table/index.css";
 import { AiOutlineFile } from "react-icons/ai";
 import { RiDraftLine } from "react-icons/ri";
 import moment from "moment";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
 function OrderCustomer() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -66,181 +68,164 @@ function OrderCustomer() {
     setIsModalVisible(false);
   };
 
-  const handleClick = () => {
-    navigate(`/price-list-staff`);
-  };
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data: {error.message}</div>;
 
   return (
     <div>
-      <div>
-        <h1>THÔNG TIN ĐƠN HÀNG</h1>
-        <Form layout="vertical">
-          <Row gutter={24}>
-            <Col span={8}>
-              <label>Họ tên</label>
-              <div className="display-input">
-                <span> {constructionOrder.customerName}</span>
-              </div>
-            </Col>
-            <Col span={8}>
-              <label>Số điện thoại</label>
-              <div className="display-input">
-                <span> {constructionOrder.customerPhone}</span>
-              </div>
-            </Col>
-            <Col span={8}>
-              <label>Email</label>
-              <div className="display-input">
-                <span> {constructionOrder.customer.account.email}</span>
-              </div>
-            </Col>
-            <Col span={24}>
-              <label>Địa chỉ thi công</label>
-              <div className="display-input">
-                <span> {constructionOrder.pondAddress}</span>
-              </div>
-            </Col>
-            <Col span={10}>
-              <label>Trạng thái</label>
-              <div className="display-input">
-                <span> {constructionOrder.statusDescription}</span>
-              </div>
-            </Col>
-            <Col span={7}>
-              <label>Gói</label>
-              <div className="display-input">
-                <span> Trần Kim Nhã</span>
-              </div>
-            </Col>
-            <Col span={7}>
-              <label>Thể tích hồ</label>
-              <div className="display-input">
-                <span> {constructionOrder.quotationResponse.pondVolume}</span>
-              </div>
-            </Col>
-          </Row>
-        </Form>
-        <h1>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
-        <Form layout="vertical">
-          <Row gutter={24}>
-            <Col span={4}>
-              <div className="progress">
-                <Progress type="circle" percent={80} />
-              </div>
-              <h3
-                style={{ textAlign: "center", margin: " 20px 20px 0px 20px" }}
-              >
-                Tiến độ
-              </h3>
-              <Link to="/construction" className="more-detail">
-                Xem chi tiết
-              </Link>
-            </Col>
+      <Header />
+      <div style={{ backgroundColor: "white" }}>
+        <div>
+          <h1>THÔNG TIN ĐƠN HÀNG</h1>
+          <Form layout="vertical">
+            <Row gutter={24}>
+              <Col span={8}>
+                <label>Họ tên</label>
+                <div className="display-input">
+                  <span> {constructionOrder.customerName}</span>
+                </div>
+              </Col>
+              <Col span={8}>
+                <label>Số điện thoại</label>
+                <div className="display-input">
+                  <span> {constructionOrder.customerPhone}</span>
+                </div>
+              </Col>
+              <Col span={8}>
+                <label>Email</label>
+                <div className="display-input">
+                  <span> {constructionOrder.customer.account.email}</span>
+                </div>
+              </Col>
+              <Col span={24}>
+                <label>Địa chỉ thi công</label>
+                <div className="display-input">
+                  <span> {constructionOrder.pondAddress}</span>
+                </div>
+              </Col>
+              <Col span={10}>
+                <label>Trạng thái</label>
+                <div className="display-input">
+                  <span> {constructionOrder.statusDescription}</span>
+                </div>
+              </Col>
+              <Col span={7}>
+                <label>Gói</label>
+                <div className="display-input">
+                  <span>
+                    {" "}
+                    {constructionOrder.quotationResponse?.combo?.name || "N/A"}
+                  </span>
+                </div>
+              </Col>
+              <Col span={7}>
+                <label>Thể tích hồ</label>
+                <div className="display-input">
+                  <span> {constructionOrder.quotationResponse.pondVolume}</span>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+          <h1>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
+          <Form layout="vertical">
+            <Row gutter={24}>
+              <Col span={4}>
+                <div className="progress">
+                  <Progress type="circle" percent={80} />
+                </div>
+                <h3
+                  style={{ textAlign: "center", margin: " 20px 20px 0px 20px" }}
+                >
+                  Tiến độ
+                </h3>
+                <Link to="/construction" className="more-detail">
+                  Xem chi tiết
+                </Link>
+              </Col>
 
-            <Col span={20}>
-              <label>Tư vấn viên</label>
-              <div className="display-input">
-                <span>{constructionOrder.consultantAccount.name}</span>
-              </div>
-              <Form.Item label="Nhà thiết kế">
-                {constructionOrder.designed ? (
+              <Col span={20}>
+                <label>Tư vấn viên</label>
+                <div className="display-input">
+                  <span>
+                    {constructionOrder.consultantAccount?.name || "N/A"}
+                  </span>
+                </div>
+                <Form.Item label="Nhà thiết kế">
                   <div className="display-input">
-                    <span>{constructionOrder.designer || "-"}</span>
+                    <span>
+                      {constructionOrder.designDrawingResponse?.designerAccount
+                        ?.name || "N/A"}
+                    </span>
                   </div>
-                ) : actor === "manager" ? (
-                  <Select placeholder="Chọn nhà thiết kế">
-                    {freeDesigners.map((designer) => (
-                      <Select.Option key={designer.id} value={designer.id}>
-                        {designer.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                ) : (
-                  <div className="display-input">
-                    <span>{constructionOrder.designer || "-"}</span>
-                  </div>
-                )}
-              </Form.Item>
+                </Form.Item>
 
-              <Form.Item label="Người chịu trách nhiệm thi công">
-                {actor === "manager" ? (
-                  <Select placeholder="Chọn người thi công">
-                    {freeConstructors.map((constructor) => (
-                      <Select.Option
-                        key={constructor.id}
-                        value={constructor.id}
-                      >
-                        {constructor.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                ) : (
+                <Form.Item label="Người chịu trách nhiệm thi công">
                   <div className="display-input">
-                    <span>{constructionOrder.responsiblePerson || "-"}</span>
+                    <span>
+                      {constructionOrder.constructorAccount?.name || "N/A"}
+                    </span>
                   </div>
-                )}
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <label>Ngày tiếp nhận</label>
-              <div className="display-input">
-                <span>
-                  {moment(constructionOrder.requestDate).format("DD/MM/YYYY")}
-                </span>
-              </div>
-            </Col>
-            <Col span={8}>
-              <label>Bản vẽ thiết kế</label>
-              <div className="display-input">
-                {
-                  <RiDraftLine
-                    style={{ fontSize: "20px" }}
-                    onClick={() =>
-                      showModal(
-                        "https://sgl.com.vn/wp-content/uploads/2020/04/ban-ve-ho-ca-koi-dep-e1599281683641-802x451.jpg"
-                      )
-                    }
-                  />
-                }
-              </div>
-            </Col>
-            <Col span={8}>
-              <label>Bảng báo giá và chi tiết hạng mục</label>
-              <div
-                className="display-input"
-                onClick={() =>
-                  navigate(`/price-list/${id}`, {
-                    state: { actor },
-                  })
-                }
-                style={{ cursor: "pointer" }}
-              >
-                {
-                  <AiOutlineFile
-                    style={{ fontSize: "20px", textAlign: "center" }}
-                  />
-                }
-              </div>
-            </Col>
-          </Row>
-        </Form>
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <label>Ngày tiếp nhận</label>
+                <div className="display-input">
+                  <span>
+                    {moment(constructionOrder.requestDate).format("DD/MM/YYYY")}
+                  </span>
+                </div>
+              </Col>
+              <Col span={8}>
+                <label>Bản vẽ thiết kế</label>
+                <div className="display-input">
+                  {
+                    <RiDraftLine
+                      style={{ fontSize: "20px" }}
+                      onClick={() =>
+                        showModal(
+                          `${constructionOrder.designDrawingResponse?.designFile}`
+                        )
+                      }
+                    />
+                  }
+                </div>
+              </Col>
+              <Col span={8}>
+                <label>Bảng báo giá và chi tiết hạng mục</label>
+                <div
+                  className="display-input"
+                  onClick={() =>
+                    navigate(`/price-list/${id}`, {
+                      state: { actor },
+                    })
+                  }
+                  style={{ cursor: "pointer" }}
+                >
+                  {
+                    <AiOutlineFile
+                      style={{ fontSize: "20px", textAlign: "center" }}
+                    />
+                  }
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+        <Modal
+          title="Hình ảnh thiết kế"
+          visible={isModalVisible}
+          onCancel={handleCancel}
+          footer={null}
+          width={800}
+        >
+          <img
+            alt="Design"
+            src={imageSrc}
+            style={{ width: "100%", height: "auto" }}
+          />
+        </Modal>
       </div>
-      <Modal
-        title="Hình ảnh thiết kế"
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-        width={800}
-      >
-        <img
-          alt="Design"
-          src={imageSrc}
-          style={{ width: "100%", height: "auto" }}
-        />
-      </Modal>
+      <Footer />
     </div>
   );
 }
