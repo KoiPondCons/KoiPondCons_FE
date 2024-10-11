@@ -27,35 +27,35 @@ const Footer = () => {
           <ul>
             <li>
               <IoHomeSharp />
-              Văn phòng: {address}
-            </li>
-            <li>
-              <FaWrench />
-              Xưởng: {factoryAddress}
+              <p>Văn phòng: {address}</p>
             </li>
             <li>
               <FaPhone />
-              Điện thoại: {phone}{" "}
+              <p>Điện thoại: {phone}{" "}</p>
             </li>
             <li>
               <FaSuitcase />
-              Số Fax: {fax}{" "}
+              <p>Số Fax: {fax}{" "}</p>
             </li>
             <li>
               <FaEnvelope />
-              Email: {email}{" "}
+              <p>Email: {email}{" "}</p>
             </li>
             <li>
               <FaUserGroup />
-              Mã số doanh nghiệp: {codeBusiness}{" "}
+              <p>Mã số doanh nghiệp: {codeBusiness}{" "}</p>
             </li>
           </ul>
         </div>
+
+
         <hr className="footer__hr--vertical"></hr>
+
+
         <div className="footer-nav">
           <ul>
             <li>
-              <a href="homepage">Trang chủ</a>
+              <a style={{ color: 'white', fontWeight: 'bolder', fontSize: '1.4rem' }} href="homepage">Trang chủ</a>
             </li>
             <li>
               <a href="about">Giới thiệu</a>
@@ -77,15 +77,24 @@ const Footer = () => {
             </li>
           </ul>
         </div>
+
+
         <hr className="footer__hr--vertical"></hr>
+
+
         <div className="footer-title">
-          <h2 className="footer-title__text footer-title__text--underline">
-            BÁO GIÁ
+          <h2 style={{textAlign:'left'}} className="footer-title__text">
+            <a href="contact">Nhận báo giá</a>
           </h2>
-          <h2 className="footer-title__text">NHẬN TƯ VẤN</h2>
+          <h2 style={{textAlign:'left'}} className="footer-title__text"><a href="contact">Yêu cầu báo giá</a></h2>
+          <h2 style={{textAlign:'left'}} className="footer-title__text">
+            <a href="contact">Hotline: {phone}</a>
+          </h2>
           <p className="footer-description">{description}</p>
         </div>
       </div>
+
+
       <div className="footer-coppyright">
         <h3>KOI TEAM Vietnam 2024 © All Rights Reserved</h3>
       </div>
