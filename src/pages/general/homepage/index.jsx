@@ -1,63 +1,83 @@
-import React, { useState, useEffect } from "react"; // Giữ lại khai báo này
+import React, { useState, useEffect } from "react";
 import Header from "../../../components/header";
 import Footer from "../../../components/footer";
-import "./index.css"; // Assuming you have a CSS file for styles
+import "./index.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import CardContent from '../../../components/card-content';
 
-
 function HomePage() {
   const images = [
-    // Danh sách hình ảnh
     "https://images.unsplash.com/photo-1521584934521-f27ac11b7523?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "https://images.unsplash.com/photo-1671456557525-fc9744617d91?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "https://images.unsplash.com/photo-1617908833148-6f81dc10d881?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   ];
 
   const captions = [
-    // Danh sách văn bản
     "THIẾT KẾ KIẾN TRÚC CẢNH QUAN",
     "DESIGN & BUILD",
     "KIẾN TẠO CUỘC SỐNG",
   ];
   const text = [
-    // Danh sách văn bản phụ
     "Chúng tôi tự hào mang đến những không gian sống nghệ thuật qua từng thiết kế hồ cá koi. Với tầm nhìn sâu sắc về kiến trúc cảnh quan, mỗi công trình không chỉ là một hồ cá đơn thuần mà còn là tác phẩm kiến tạo không gian hài hòa, nơi con người và thiên nhiên hòa quyện, mang lại sự bình yên và thẩm mỹ cao nhất cho ngôi nhà của bạn.",
     "Với phương châm Design & Build, Koi Team dẫn đầu trong việc cung cấp giải pháp toàn diện từ thiết kế đến thi công, giúp khách hàng an tâm về chất lượng và tiến độ. Mỗi hồ cá koi là sự kết hợp hoàn hảo giữa sáng tạo và kỹ thuật, được chúng tôi chăm chút đến từng chi tiết, tạo nên những không gian nước tinh tế và đẳng cấp.",
     "Chúng tôi không chỉ xây dựng những công trình, chúng tôi kiến tạo lối sống. Mỗi hồ cá koi mà chúng tôi thực hiện là một phần của giấc mơ, mang đến sự cân bằng, thư giãn và niềm vui trong cuộc sống. Với lòng đam mê và sự tận tâm, Koi Team cam kết tạo ra không gian sống mà mọi khách hàng đều tự hào.",
   ];
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Trạng thái cho chỉ số hình ảnh hiện tại
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageFade, setImageFade] = useState(false);
+  const [captionFade, setCaptionFade] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length); // Chuyển hình ảnh sau 5 giây
-    }, 5000);
-    return () => clearInterval(interval); // Dọn dẹp interval khi component unmount
-  }, []);
+      setImageFade(true);
+      setCaptionFade(true);
+
+      setTimeout(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+        setImageFade(false);
+        setCaptionFade(false);
+      }, 500);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [images.length]);
 
   const handleNext = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setImageFade(true);
+    setCaptionFade(true);
+
+    setTimeout(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setImageFade(false);
+      setCaptionFade(false);
+    }, 500);
   };
 
   const handlePrev = () => {
-    setCurrentImageIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
-    );
+    setImageFade(true);
+    setCaptionFade(true);
+
+    setTimeout(() => {
+      setCurrentImageIndex(
+        (prevIndex) => (prevIndex - 1 + images.length) % images.length
+      );
+      setImageFade(false);
+      setCaptionFade(false);
+    }, 500);
   };
 
   return (
     <div>
       <Header />
-
       <div className="image-slider">
         <div className="image-container" style={{ top: "0" }}>
           <img
             src={images[currentImageIndex]}
             alt={`Image ${currentImageIndex + 1}`}
+            className={`fade ${imageFade ? 'fade-out' : ''}`}
           />
-          <div className="image-overlay"></div> {/* Lớp phủ màu tối */}
-          <div className="caption">
+          <div className="image-overlay"></div>
+          <div className={`caption ${captionFade ? 'fade-out' : ''}`}>
             <h2 className="caption-text">{captions[currentImageIndex]}</h2>
             <p className="caption-text-small">{text[currentImageIndex]}</p>
           </div>
@@ -65,15 +85,12 @@ function HomePage() {
         <div className="navigation">
           <button onClick={handlePrev}>
             <FaChevronLeft />
-          </button>{" "}
-          {/* Biểu tượng trái */}
+          </button>
           <button onClick={handleNext}>
             <FaChevronRight />
-          </button>{" "}
-          {/* Biểu tượng phải */}
+          </button>
         </div>
       </div>
-
       <div className="koi-team">
         <h1>KOI TEAM - CHUYÊN CUNG CẤP</h1>
         <div className="services">
@@ -86,8 +103,6 @@ function HomePage() {
           <div className="service-item">Thiết kế thi công hồ cá trọn gói</div>
         </div>
       </div>
-
-
       <div className="project" style={{margin:"0px"}}>
         <div>
           <a className="project-header">DỰ ÁN TIÊU BIỂU</a>
@@ -97,8 +112,6 @@ function HomePage() {
         </div>
         <CardContent />
       </div>
-
-
       <div className="project-process">
         <h1>QUY TRÌNH THỰC HIỆN DỰ ÁN</h1>
         <div className="process-steps">
