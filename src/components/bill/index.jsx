@@ -15,6 +15,7 @@ function Bill({
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
+  const [isRejectCustomerOpen, setIsRejectCustomerOpen] = useState(false);
   let totalDiscountPrice = 0;
   if (Array.isArray(promotionList)) {
     promotionList.forEach((promotion) => {
@@ -24,10 +25,6 @@ function Bill({
   } else {
     console.warn("promotionList is not defined or is not an array");
   }
-
-  const handleModalClose = () => {
-    setModalType(null);
-  };
   const handleQuotation = async () => {
     const value = {
       combo: comboId,
@@ -42,41 +39,74 @@ function Bill({
       console.error("Error updating quotation:", error);
     }
   };
+  const handleApproveQuotation = async () => {
+    const value = {
+      combo: comboId,
+      pondVolume: pondVolume,
+      quotationFile: null,
+      status: "CUSTOMER_PENDING",
+    };
+    try {
+      await api.put(`quotation/${quotationId}`, value);
+      console.log("Quotation updated successfully");
+    } catch (error) {
+      console.error("Error updating quotation:", error);
+    }
+  };
+  const handleRejectQuotation = async () => {
+    const value = {
+      combo: comboId,
+      pondVolume: pondVolume,
+      quotationFile: null,
+      status: "MANAGER_REJECTED",
+    };
+    try {
+      await api.put(`quotation/${quotationId}`, value);
+      console.log("Quotation updated successfully");
+    } catch (error) {
+      console.error("Error updating quotation:", error);
+    }
+  };
+  const handleRejectCustomerQuotation = async () => {
+    const value = {
+      combo: comboId,
+      pondVolume: pondVolume,
+      quotationFile: null,
+      status: "CUSTOMER_REJECTED",
+    };
+    try {
+      await api.put(`quotation/${quotationId}`, value);
+      console.log("Quotation updated successfully");
+    } catch (error) {
+      console.error("Error updating quotation:", error);
+    }
+  };
   const renderButtons = () => {
     switch (actor) {
       case "manager":
         return (
           <>
-            <button
-              className="approve-btn btn"
-              onClick={() => setIsApproveModalOpen(true)}
-            >
+            <button className="btn" onClick={() => setIsApproveModalOpen(true)}>
               Phê duyệt
             </button>
-            <button
-              className="reject-btn btn"
-              onClick={() => setIsRejectModalOpen(true)}
-            >
+            <button className="btn" onClick={() => setIsRejectModalOpen(true)}>
               Từ chối
             </button>
           </>
         );
       case "consulting":
         return (
-          <button
-            className="send-quotation-btn btn"
-            onClick={() => setIsSendModalOpen(true)}
-          >
+          <button className="btn" onClick={() => setIsSendModalOpen(true)}>
             Gửi báo giá
           </button>
         );
       case "customer":
         return (
           <>
-            <button className="payment-btn btn">Thanh toán</button>
+            <button className="btn">Thanh toán</button>
             <button
-              className="reject-btn"
-              onClick={() => setIsRejectModalOpen(true)}
+              className="btn"
+              onClick={() => setIsRejectCustomerOpen(true)}
             >
               Từ chối
             </button>
@@ -88,7 +118,7 @@ function Bill({
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ marginBottom: "30px" }}>
       <div className="card cart">
         <label className="title">BÁO GIÁ</label>
         <div className="steps">
@@ -156,8 +186,7 @@ function Bill({
         title="Xác nhận phê duyệt"
         open={isApproveModalOpen}
         onOk={() => {
-          setIsApproveModalOpen(false);
-          // Add approval handling logic here
+          handleApproveQuotation();
         }}
         onCancel={() => setIsApproveModalOpen(false)}
       >
@@ -168,8 +197,17 @@ function Bill({
         title="Xác nhận từ chối"
         open={isRejectModalOpen}
         onOk={() => {
-          setIsRejectModalOpen(false);
-          // Add rejection handling logic here
+          handleRejectQuotation();
+        }}
+        onCancel={() => setIsRejectModalOpen(false)}
+      >
+        <p>Bạn có chắc chắn muốn từ chối báo giá này không?</p>
+      </Modal>
+      <Modal
+        title="Xác nhận từ chối"
+        open={isRejectCustomerOpen}
+        onOk={() => {
+          handleRejectCustomerQuotation();
         }}
         onCancel={() => setIsRejectModalOpen(false)}
       >
