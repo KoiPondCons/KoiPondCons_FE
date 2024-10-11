@@ -119,7 +119,15 @@ function PriceListStaff() {
     }
   }, [comboPrice]);
   const isComboSelected = selectedCombo !== null;
-
+  useEffect(() => {
+    if (
+      actor === "manager" &&
+      constructionOrder &&
+      constructionOrder.quotationResponse
+    ) {
+      setSelectedCombo(constructionOrder.quotationResponse.combo.id);
+    }
+  }, [actor, constructionOrder]);
   return (
     <NavDashboard actor={actor}>
       <h1>THÔNG TIN ĐƠN HÀNG</h1>
@@ -177,25 +185,29 @@ function PriceListStaff() {
                 : "N/A"}
             </div>
           </Col>
-          <Col span={12}>
-            <FormItem
-              name="comboId"
-              label="Gói"
-              key="packages"
-              rules={[{ required: true, message: "Vui lòng chọn gói!" }]}
-            >
-              <Select placeholder="Chọn gói" onChange={handleSelectChange}>
-                {listCombo.map((combo) => (
-                  <Select.Option key={combo.id} value={combo.id}>
-                    {combo.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </FormItem>
-          </Col>
-          <Col span={12} style={{ display: "flex", alignItems: "center" }}>
-            <Button>Tạo bảng báo giá</Button>
-          </Col>
+          {actor === "consulting" && (
+            <>
+              <Col span={12}>
+                <FormItem
+                  name="comboId"
+                  label="Gói"
+                  key="packages"
+                  rules={[{ required: true, message: "Vui lòng chọn gói!" }]}
+                >
+                  <Select placeholder="Chọn gói" onChange={handleSelectChange}>
+                    {listCombo.map((combo) => (
+                      <Select.Option key={combo.id} value={combo.id}>
+                        {combo.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={12} style={{ display: "flex", alignItems: "center" }}>
+                <Button>Tạo bảng báo giá</Button>
+              </Col>
+            </>
+          )}
         </Row>
       </Form>
       {isComboSelected && (
@@ -209,15 +221,17 @@ function PriceListStaff() {
               pagination={false}
             />
           </div>
-          {comboPrice && constructionOrder && promotionList.length > 0 && (
-            <Bill
-              actor={actor}
-              unitPrice={comboPrice.unitPrice}
-              pondVolume={constructionOrder.quotationResponse.pondVolume}
-              promotionList={promotionList}
-              comboId={selectedCombo}
-              quotationId={constructionOrder.quotationResponse.id}
-            />
+          {comboPrice && constructionOrder && (
+            <div className="container-bill">
+              <Bill
+                actor={actor}
+                unitPrice={comboPrice.unitPrice}
+                pondVolume={constructionOrder.quotationResponse.pondVolume}
+                promotionList={promotionList}
+                comboId={selectedCombo}
+                quotationId={constructionOrder.quotationResponse.id}
+              />
+            </div>
           )}
         </>
       )}
