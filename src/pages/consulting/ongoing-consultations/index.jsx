@@ -88,11 +88,12 @@ function OngoingConsultations() {
               <MdOutlinePriceChange
                 style={{ cursor: "pointer" }}
                 size={30}
-                onClick={() =>
+                onClick={() => {
+                  const actor = "consulting";
                   navigate(`/consulting/price-list-staff/${record.id}`, {
-                    state: "consulting",
-                  })
-                }
+                    state: { actor },
+                  });
+                }}
               />
               <p style={{ fontSize: "10px", fontStyle: "italic" }}>
                 Tạo báo giá
