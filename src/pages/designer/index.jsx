@@ -1,10 +1,82 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TableTemplate from "../../components/table";
 import { RiDraftLine, RiUpload2Fill } from "react-icons/ri";
-import { Modal } from "antd";
+import { Button, Modal, Popconfirm, Upload } from "antd";
+import uploadFile from "../../utils/file";
+import api from "../../config/axios";
+import { toast } from "react-toastify";
+import { DeleteOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+
 function Designer() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
+  const [listDrawings, setListDrawings] = useState([]);
+  const [fileList, setFileList] = useState([]);
+  const [fileData, setFileData] = useState([]);
+
+  const handleChangeImage =
+    async (id) =>
+    async ({ fileList: newFileList }) => {
+      setFileList(newFileList);
+      if (fileList.length > 0) {
+        const file = fileList[0];
+        const url = await uploadFile(file.originFileObj);
+        setFileList([]);
+        console.log(url);
+      }
+    };
+
+  const fetchDrawings = async () => {
+    try {
+      const response = await api.get("design-drawings/designer");
+      console.log(response.data);
+      setListDrawings(response.data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  useEffect(() => {
+    fetchDrawings();
+  }, []);
+
+  // useEffect(() => {
+  //   fetchDrawings();
+  // }, [listDrawings]);
+
+  const handleUploadDrawing =
+    (drawingId) =>
+    async ({ fileList: newFileList }) => {
+      const updatedFileData = fileData.map((item) => {
+        if (item.id === drawingId) {
+          return { ...item, fileList: newFileList }; // Cập nhật fileList cho dòng này
+        }
+        return item; // Không thay đổi các dòng khác
+      });
+      setFileData(updatedFileData);
+      if (newFileList.length > 0) {
+        const file = newFileList[0];
+        const url = await uploadFile(file.originFileObj);
+        console.log(url);
+        try {
+          const response = await api.get(`design-drawings/${drawingId}`);
+          console.log(response.data);
+          const updatedData = {
+            designerAccount: response.data.designerAccount.id,
+            status: "MANAGER_PENDING",
+            designFile: url,
+          };
+          console.log(updatedData);
+
+          await api.put(`design-drawings/${drawingId}`, updatedData);
+          toast.success("Nộp bản vẽ thành công!");
+          fetchDrawings();
+        } catch (error) {
+          console.log(error.response);
+        }
+      }
+    };
+
   const showModal = (src) => {
     console.log("Modal is opening with image source:", src);
     setImageSrc(src);
@@ -14,87 +86,62 @@ function Designer() {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  const data = [
-    {
-      key: "1",
-      id: "001",
-      customer_name: "Nguyễn Văn A",
-      name: "Trần Thị B",
-      phone: "0123456789",
-      status: "Đang chờ",
-      hasImage: true, // Hoặc false tùy thuộc vào trạng thái
-    },
-    {
-      key: "2",
-      id: "002",
-      customer_name: "Lê Thị C",
-      name: "Nguyễn Văn D",
-      phone: "0987654321",
-      status: "Hoàn thành",
-      hasImage: false, // Không có hình
-    },
-    {
-      key: "3",
-      id: "003",
-      customer_name: "Phạm Văn E",
-      name: "Trần Văn F",
-      phone: "0234567890",
-      status: "Đang xử lý",
-      hasImage: true, // Có hình
-    },
-    {
-      key: "4",
-      id: "004",
-      customer_name: "Nguyễn Thị G",
-      name: "Lê Văn H",
-      phone: "0345678901",
-      status: "Đã hủy",
-      hasImage: false, // Không có hình
-    },
-  ];
+
+  const handleDeleteFile = async (drawingId) => {
+    try {
+      const response = await api.get(`design-drawings/${drawingId}`);
+      console.log(response.data);
+      const updatedData = {
+        designerAccount: response.data.designerAccount.id,
+        status: "DESIGNING",
+        designFile: "N/A",
+      };
+      console.log(updatedData);
+
+      await api.put(`design-drawings/${drawingId}`, updatedData);
+      toast.success("Xóa bản vẽ thành công!");
+      fetchDrawings();
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: "Mã đơn hàng",
+      dataIndex: ["orderCustomerResponse", "orderId"],
+      key: "orderCustomerResponse.orderId",
+      width: "150px",
     },
     {
       title: "Tên khách hàng",
-      dataIndex: "customer_name ",
-      key: "customer_name ",
+      dataIndex: ["orderCustomerResponse", "customerName"],
+      key: "orderCustomerResponse.customerName",
+      width: "250px",
     },
     {
-      title: "Tư vấn viên",
-      dataIndex: "name",
-      key: "name",
+      title: "Số điện thoại",
+      dataIndex: ["orderCustomerResponse", "customerPhone"],
+      key: "orderCustomerResponse.customerPhone",
+      width: "250px",
     },
     {
-      title: "Số điện thoại tư vấn viên",
-      dataIndex: "phone",
-      key: "phone",
-      width: 150,
-      align: "center",
+      title: "Trạng thái bản vẽ",
+      dataIndex: "statusDescription",
+      key: "statusDescription",
     },
     {
-      title: "Trạng thái",
+      title: "Bản vẽ",
       dataIndex: "status",
       key: "status",
-    },
-    {
-      title: "",
-      dataIndex: "actor",
-      key: "actor",
-      render: (text, record) => (
+      width: "150px",
+      align: "center",
+      render: (status, record) => (
         <>
-          {record.hasImage ? (
+          {status !== "DESIGNING" ? (
             <div
               style={{ textAlign: "center", cursor: "pointer" }}
-              onClick={() =>
-                showModal(
-                  "https://sgl.com.vn/wp-content/uploads/2020/04/ban-ve-ho-ca-koi-dep-e1599281683641-802x451.jpg"
-                )
-              }
+              onClick={() => showModal(`${record.designFile}`)}
             >
               <RiDraftLine size={30} />
               <p style={{ fontSize: "10px", fontStyle: "italic" }}>
@@ -103,11 +150,59 @@ function Designer() {
             </div>
           ) : (
             <div style={{ textAlign: "center", cursor: "pointer" }}>
-              <RiUpload2Fill size={30} />
-              <p style={{ fontSize: "10px", fontStyle: "italic" }}>
-                Upload file thiết kế
-              </p>
+              <Upload
+                fileList={
+                  fileData.find((item) => item.id === record.id)?.fileList || []
+                }
+                onChange={handleUploadDrawing(record.id)}
+                maxCount={1}
+                showUploadList={{
+                  showRemoveIcon: true,
+                  showDownloadIcon: true,
+                }}
+              >
+                <div style={{ textAlign: "center" }}>
+                  <RiUpload2Fill size={30} />
+                  <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                    Upload file thiết kế
+                  </p>
+                </div>
+              </Upload>
             </div>
+          )}
+        </>
+      ),
+    },
+    {
+      dataIndex: "id",
+      key: "id",
+      align: "center",
+      render: (id, record) => (
+        <>
+          {record.status !== "DESIGNING" ? (
+            <div>
+              <Popconfirm
+                title="Xóa bản vẽ"
+                description="Bạn có chắc muốn xóa bản vẽ?"
+                onConfirm={() => handleDeleteFile(id)}
+                icon={
+                  <QuestionCircleOutlined
+                    style={{
+                      color: "red",
+                    }}
+                  />
+                }
+              >
+                <Button
+                  icon={<DeleteOutlined />}
+                  danger // Tùy chọn để làm nút đỏ
+                >
+                  Xóa
+                </Button>
+              </Popconfirm>
+            </div>
+          ) : (
+            <div></div>
           )}
         </>
       ),
@@ -119,7 +214,7 @@ function Designer() {
         actor="designer"
         title="Xem đơn thiết kế"
         columns={columns}
-        requests={data}
+        requests={listDrawings}
       ></TableTemplate>
       <Modal
         title="Hình ảnh thiết kế"
@@ -133,6 +228,7 @@ function Designer() {
           src={imageSrc}
           style={{ width: "100%", height: "auto" }}
         />
+        <Button>Download</Button>
       </Modal>
     </>
   );

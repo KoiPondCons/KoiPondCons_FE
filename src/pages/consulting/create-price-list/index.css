@@ -1,0 +1,19 @@
+.price-list-staff-form {
+    padding: 15px;
+}
+
+.price-list-staff-result {
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    
+}
+.container-bill {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: auto;
+  gap: 0px;
+  margin-top: 20px;
+  width: 80%;
+  background-color: bisque;
+}

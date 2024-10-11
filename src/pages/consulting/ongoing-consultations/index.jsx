@@ -37,8 +37,46 @@ function OngoingConsultations() {
     },
     {
       title: "Trạng thái",
-      dataIndex: "statusDescription",
-      key: "statusDescription",
+      key: "status",
+      render: (record) => {
+        const textStyle = {
+          fontSize: "1rem",
+          fontStyle: "italic",
+          textAlign: "center",
+        };
+
+        if (record.status === "PROCESSING") {
+          return (
+            <div style={textStyle}>
+              {record.quotationResponse &&
+              record.quotationResponse.statusDescription ? (
+                <p>{record.quotationResponse.statusDescription} báo giá</p>
+              ) : (
+                <p>Không có thông tin báo giá, hãy tạo báo giá</p>
+              )}
+            </div>
+          );
+        } else if (record.status === "DESIGNING") {
+          return (
+            <div style={textStyle}>
+              {record.designDrawResponse &&
+              record.designDrawResponse.statusDescription ? (
+                <p>
+                  {record.designDrawResponse.statusDescription} bản thiết kế
+                </p>
+              ) : (
+                <p>Chờ chỉ định nhà thiết kế</p>
+              )}
+            </div>
+          );
+        } else {
+          return (
+            <div style={textStyle}>
+              <p>{record.statusDescription}</p>
+            </div>
+          );
+        }
+      },
     },
     {
       title: "",
@@ -50,11 +88,12 @@ function OngoingConsultations() {
               <MdOutlinePriceChange
                 style={{ cursor: "pointer" }}
                 size={30}
-                onClick={() =>
+                onClick={() => {
+                  const actor = "consulting";
                   navigate(`/consulting/price-list-staff/${record.id}`, {
-                    state: "consulting",
-                  })
-                }
+                    state: { actor },
+                  });
+                }}
               />
               <p style={{ fontSize: "10px", fontStyle: "italic" }}>
                 Tạo báo giá
@@ -74,43 +113,6 @@ function OngoingConsultations() {
                 }
               />
               <p style={{ fontSize: "10px", fontStyle: "italic" }}>Chi tiết</p>
-            </div>
-          );
-        }
-      },
-    },
-    {
-      title: "Tình trạng",
-      key: "",
-      render: (record) => {
-        if (record.status === "PROCESSING") {
-          return (
-            <div style={{ textAlign: "center" }}>
-              {record.quotationResponse &&
-              record.quotationResponse.statusDescription ? (
-                <p style={{ fontSize: "10px", fontStyle: "italic" }}>
-                  {record.quotationResponse.statusDescription} báo giá
-                </p>
-              ) : (
-                <p style={{ fontSize: "10px", fontStyle: "italic" }}>
-                  Không có thông tin báo giá, hãy tạo báo giá
-                </p>
-              )}
-            </div>
-          );
-        } else if (record.status === "DESIGNING") {
-          return (
-            <div style={{ textAlign: "center" }}>
-              {record.designDrawResponse &&
-              record.designDrawResponse.statusDescription ? (
-                <p style={{ fontSize: "10px", fontStyle: "italic" }}>
-                  {record.designDrawResponse.statusDescription} bản thiết kế
-                </p>
-              ) : (
-                <p style={{ fontSize: "10px", fontStyle: "italic" }}>
-                  Chờ chỉ định nhà thiết kế
-                </p>
-              )}
             </div>
           );
         }

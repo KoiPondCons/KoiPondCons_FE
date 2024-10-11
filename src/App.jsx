@@ -33,7 +33,7 @@ import MyProfile from "./pages/my-profile";
 import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
 import OrderManagement from "./pages/manager/manage-order";
-import PriceListStaff from "./pages/consulting/price-list-staff";
+import PriceListStaff from "./pages/consulting/create-price-list";
 
 import PaymentConfirm from "./pages/payment";
 function App() {
@@ -91,7 +91,7 @@ function App() {
       element: <HistoryPage />,
     },
     {
-      path: "price-list-staff",
+      path: "price-list/:id",
       element: <PriceListCustomer />,
     },
     //Staff

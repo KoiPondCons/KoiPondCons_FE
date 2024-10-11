@@ -21,6 +21,8 @@ function Order() {
   const [imageSrc, setImageSrc] = useState("");
   const [freeConstructors, setFreeConstructors] = useState([]);
   const [freeDesigners, setFreeDesigners] = useState([]);
+  const [selectedDesigner, setSelectedDesigner] = useState();
+  const [selectedConstructor, setSelectedConstructor] = useState();
   const fecthFreeConstructors = async () => {
     try {
       const response = await api.get("account/free-constructors");
@@ -66,13 +68,38 @@ function Order() {
     setIsModalVisible(false);
   };
 
-  const handleClick = () => {
-    navigate(`/price-list-staff`);
-  };
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data: {error.message}</div>;
 
+  const handleAssignConstructor = async () => {
+    if (selectedConstructor) {
+      await api.put(
+        `orders/constructor/${constructionOrder.id}/${selectedConstructor}`
+      );
+      console.log("Lưu constructor với ID:", selectedConstructor);
+      fetchConstructionOrder();
+    } else {
+      alert("Vui lòng chọn nhà thiết kế");
+    }
+  };
+  const handleAssignDesigner = async () => {
+    const value = {
+      designerAccount: selectedDesigner,
+      designFile: "N/A",
+      status: "DESIGNING",
+    };
+
+    if (selectedDesigner) {
+      await api.put(
+        `design-drawings/${constructionOrder.designDrawingResponse.id}`,
+        value
+      );
+      console.log("Lưu designer với ID:", selectedDesigner);
+      fetchConstructionOrder();
+    } else {
+      alert("Vui lòng chọn nhà thiết kế");
+    }
+  };
   return (
     <NavDashboard actor={actor}>
       <div>
@@ -112,7 +139,11 @@ function Order() {
             <Col span={7}>
               <label>Gói</label>
               <div className="display-input">
-                <span> Trần Kim Nhã</span>
+                <span>
+                  {constructionOrder.quotationResponse.combo
+                    ? constructionOrder.quotationResponse.combo.name
+                    : "-"}
+                </span>
               </div>
             </Col>
             <Col span={7}>
@@ -143,43 +174,83 @@ function Order() {
             <Col span={20}>
               <label>Tư vấn viên</label>
               <div className="display-input">
-                <span>{constructionOrder.consultantAccount.name}</span>
+                <span>
+                  {constructionOrder.consultantAccount?.name || "N/A"}
+                </span>
               </div>
               <Form.Item label="Nhà thiết kế">
-                {constructionOrder.designed ? (
+                {constructionOrder.quotationResponse?.status ===
+                "CUSTOMER_CONFIRMED" ? (
                   <div className="display-input">
-                    <span>{constructionOrder.designer || "-"}</span>
+                    <span>Chờ hoàn thành báo giá</span>
+                  </div>
+                ) : constructionOrder.designed ||
+                  constructionOrder.designDrawingResponse?.designerAccount
+                    ?.name ? (
+                  <div className="display-input">
+                    <span>
+                      {constructionOrder.designDrawingResponse?.designerAccount
+                        ?.name || "N/A"}
+                    </span>
                   </div>
                 ) : actor === "manager" ? (
-                  <Select placeholder="Chọn nhà thiết kế">
-                    {freeDesigners.map((designer) => (
-                      <Select.Option key={designer.id} value={designer.id}>
-                        {designer.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
+                  <div>
+                    <Select
+                      placeholder="Chọn nhà thiết kế"
+                      onChange={(value) => setSelectedDesigner(value)} // Hàm để lưu lựa chọn tạm thời
+                    >
+                      {freeDesigners.map((designer) => (
+                        <Select.Option key={designer.id} value={designer.id}>
+                          {designer.name}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                    <button onClick={handleAssignDesigner}>Lưu</button>
+                  </div>
                 ) : (
                   <div className="display-input">
-                    <span>{constructionOrder.designer || "-"}</span>
+                    <span>
+                      {constructionOrder.designDrawingResponse?.designerAccount
+                        ?.name || "N/A"}
+                    </span>
                   </div>
                 )}
               </Form.Item>
 
               <Form.Item label="Người chịu trách nhiệm thi công">
-                {actor === "manager" ? (
-                  <Select placeholder="Chọn người thi công">
-                    {freeConstructors.map((constructor) => (
-                      <Select.Option
-                        key={constructor.id}
-                        value={constructor.id}
-                      >
-                        {constructor.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
+                {constructionOrder.constructionOrder?.designDrawingResponse
+                  ?.status !== "CUSTOMER_CONFIRMED" ? (
+                  <div className="display-input">
+                    <span>Chờ hoàn thành thiết kế</span>
+                  </div>
+                ) : constructionOrder.constructorAccount?.name ? (
+                  <div className="display-input">
+                    <span>{constructionOrder.constructorAccount.name}</span>
+                  </div>
+                ) : actor === "manager" ? (
+                  <div>
+                    <Select
+                      placeholder="Chọn người thi công"
+                      onChange={(value) => setSelectedConstructor(value)}
+                    >
+                      {freeConstructors.map((constructor) => (
+                        <Select.Option
+                          key={constructor.id}
+                          value={constructor.id}
+                        >
+                          {constructor.name}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                    <button onClick={() => handleAssignConstructor()}>
+                      Lưu
+                    </button>
+                  </div>
                 ) : (
                   <div className="display-input">
-                    <span>{constructionOrder.responsiblePerson || "-"}</span>
+                    <span>
+                      {constructionOrder.constructorAccount?.name || "N/A"}
+                    </span>
                   </div>
                 )}
               </Form.Item>
@@ -200,7 +271,7 @@ function Order() {
                     style={{ fontSize: "20px" }}
                     onClick={() =>
                       showModal(
-                        "https://sgl.com.vn/wp-content/uploads/2020/04/ban-ve-ho-ca-koi-dep-e1599281683641-802x451.jpg"
+                        `${constructionOrder.designDrawingResponse?.designFile}`
                       )
                     }
                   />
@@ -209,14 +280,19 @@ function Order() {
             </Col>
             <Col span={8}>
               <label>Bảng báo giá và chi tiết hạng mục</label>
-              <div
-                className="display-input"
-                onClick={() => handleClick()}
-                style={{ cursor: "pointer" }}
-              >
+              <div className="display-input">
                 {
                   <AiOutlineFile
-                    style={{ fontSize: "20px", textAlign: "center" }}
+                    style={{
+                      fontSize: "20px",
+                      textAlign: "center",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      navigate(`/consulting/price-list-staff/${id}`, {
+                        state: { actor },
+                      })
+                    }
                   />
                 }
               </div>
