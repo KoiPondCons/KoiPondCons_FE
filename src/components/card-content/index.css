@@ -1,66 +1,66 @@
-/* From Uiverse.io by joe-watson-sbf */ 
+
 .card-project { 
-  width: 100vw;
-  height: 50vh; 
-  display: flex;
-  padding: .4em;
-  margin: auto;
-  background-color: rgb(0, 0, 0, 0);
-}
-
-.card-project p {
-  height: 100%;
-  flex: 1;
-  overflow: hidden;
-  cursor: pointer;
-  border-radius: 2px;
-  transition: all .5s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative; /* Đặt vị trí tương đối cho thẻ p */
-}
-
-.card-project p:hover {
-  flex: 2;
-}
-
-.card-project p span {
-  position: absolute; /* Đặt vị trí tuyệt đối cho thẻ span */
-  min-width: 14em;
-  padding: .5em;
-  text-align: center;
-  transition: all .5s;
-  text-transform: uppercase;
-  color: white;
-  font-size: 2rem;
-  letter-spacing: .1em;
-  z-index: 2; /* Đặt z-index cao hơn để nằm trên hình ảnh */
-  transform: rotate(-90deg);
-  flex: 2;
-}
-
-.card-project p:hover span {
-  transform: rotate(0);
-  font-size: 3rem;
-}
-.card-project img {
-  transform: scale(0.6); /* Thu nhỏ hình ảnh xuống 50% */
-  position: relative;
-  z-index: 1; /* Đặt z-index thấp hơn để nằm dưới span */
-}
-
-.overlay {
-  position: absolute; /* Đặt vị trí tuyệt đối cho lớp phủ */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1; 
-  transition: opacity 0.5s; 
+    width: 99vw;
+    height: 50vh;
+    display: flex;
+    padding: 0;
+    margin: auto;
+    background-color: rgb(0, 0, 0, 0);
+  }
+  
+  .card-project p {
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all .5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Đặt vị trí tương đối cho thẻ p */
+  }
+  
+  .card-project p:hover {
+    flex: 3;
+  }
+  
+  .card-project p span {
+    position: absolute; /* Đặt vị trí tuyệt đối cho thẻ span */
+    min-width: 14em;
+    padding: .5em;
+    text-align: center;
+    transition: all .5s;
+    text-transform: uppercase;
+    color: white;
+    font-size: 2rem;
+    letter-spacing: .1em;
+    z-index: 2; /* Đặt z-index cao hơn để nằm trên hình ảnh */
+    transform: rotate(-90deg);
+    flex: 2;
+  }
+  
+  .card-project p:hover span {
+    transform: rotate(0);
+    font-size: 3rem;
+  }
+  .card-project img {
+    transform: scale(0.6); /* Thu nhỏ hình ảnh xuống 50% */
+    position: relative;
+    z-index: 1; /* Đặt z-index thấp hơn để nằm dưới span */
+  }
+  
+  .overlay {
+    position: absolute; /* Đặt vị trí tuyệt đối cho lớp phủ */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1; 
+    transition: opacity 0.5s; 
 }
 
 .card-project p:hover .overlay {
-  opacity: 0; 
+  opacity: 0;
 }

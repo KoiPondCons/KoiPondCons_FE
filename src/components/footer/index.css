@@ -1,12 +1,10 @@
-
 .footer {
     margin: 0;
     padding: 0;
-    font-family: 'Montserrat', sans-serif;
 }
 .footer-content {
     background-color: #1a2b47;
-    padding: 20px 0;
+    padding: 10px 0;
     width: 100%;
     display: flex; 
     justify-content: space-between; 
@@ -16,12 +14,21 @@
     padding: 10px;
 }
 .footer-contact li, .footer-contact h2 {
-    color: white;
+    text-align: left;
     padding-left: 20px; 
+}
+.footer-contact h2 {
+    margin-bottom: 1.5rem;
+    color: white;
 }
 .footer-contact li {
     padding-bottom: 10px;
-    margin: 0;
+    margin-top: 5px;
+    color: rgba(255, 255, 255, 0.8);
+    display: flex;
+}
+.footer-contact p {
+    margin-left: 10px;
 }
 .footer-contact ul, .footer-nav ul{
     list-style: none; 
@@ -30,39 +37,54 @@
 }
 .footer-nav {
     flex: 2;
-    padding: 30px 10px 10px 20px ;
+    padding: 10px 10px 10px 20px ;
 }
 .footer-nav li  {
     margin: 10px 0px; 
 }
 .footer-nav a {
-    color: white; 
+    color: rgba(255, 255, 255, 0.6);
     text-decoration: none; 
-    font-weight: 400;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-weight: lighter;
+    font-size: 1.1rem;
+    margin-left: 20px;
+}
+.footer-nav a:hover {
+    color: white;
+    font-weight: lighter;
 }
 .footer-title {
     flex: 4;
-    padding: 30px 10px 10px 20px ;
+    padding: 10px 10px 10px 60px ;
 }
-.footer-title__text {
+.footer-title__text a,h2{
+    font-size: 1.8rem;
     color: white;
-    font-weight: 500;
+    text-decoration: none;
+    font-weight: bolder;
     text-align: left;
-}   
+    margin:10px 0 ;
+}
+.footer-title__text a:hover{
+    color: white;
+}      
 .footer-title__text--underline {
     text-decoration: underline;
-    text-underline-offset: 10px;
+    text-underline-offset: 1rem;
 }
 .footer-description {
-    color: white;
-    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
     text-align: justify;
+    padding-right: 3rem;
+    line-height: 1.5rem;
 }
 .footer__hr--vertical {
-    border: 2px solid white;
-    margin-top: 30px;
+    border: 1px solid white;
+    margin-top: 10px;
+    height: 15rem; /* Thay đổi chiều cao theo nhu cầu */
+    width: auto; /* Đặt chiều rộng bằng 0 để tạo đường kẻ dọc */
+    align-self: center; /* Căn giữa nếu cần thiết */
 }
 .footer-coppyright {
     background-color: #575958;

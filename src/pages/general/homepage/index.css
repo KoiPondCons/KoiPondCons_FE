@@ -64,11 +64,18 @@ body {
   height: 100%;
   position: relative;
   top: 5px;
+  overflow: hidden; /* Đảm bảo hình ảnh không bị tràn ra ngoài */
 }
 
 .image-container img {
   width: 100%;
   height: fit-content;
+  transition: opacity 0.5s ease-in-out; /* Thêm hiệu ứng chuyển đổi cho hình ảnh */
+  opacity: 1; /* Mặc định là nhìn thấy */
+}
+
+.image-container img.fade-out {
+  opacity: 0; /* Ẩn hình ảnh khi chuyển đổi */
 }
 
 .image-overlay {
@@ -104,6 +111,12 @@ body {
   /* Đặt ở bên trái */
   right: 0;
   /* Đặt ở bên phải */
+  transition: opacity 0.2s ease-in-out; /* Thêm hiệu ứng chuyển đổi cho caption */
+  opacity: 1; /* Mặc định là nhìn thấy */
+}
+
+.caption.fade-out {
+  opacity: 0; /* Ẩn caption khi chuyển đổi */
 }
 
 .caption-text {
