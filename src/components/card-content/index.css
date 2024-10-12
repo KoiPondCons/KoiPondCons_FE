@@ -1,7 +1,7 @@
 /* From Uiverse.io by joe-watson-sbf */ 
-.card-project { /*
+.card-project { 
   width: 100vw;
-  height: 50vh; /* Tăng chiều cao để dễ thấy */
+  height: 50vh; 
   display: flex;
   padding: .4em;
   margin: auto;
