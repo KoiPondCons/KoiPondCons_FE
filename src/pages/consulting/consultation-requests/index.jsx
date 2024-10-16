@@ -28,14 +28,10 @@ function ConsultationRequests() {
     console.log(record);
     setIsModalOpen(true);
   };
-  const consulting = async () => {
-    await api.put(`orders/consultant/${selectedOrder.id}`);
-  };
   const handleOk = async () => {
     selectedOrder.status = "PROCESSING";
     console.log(selectedOrder);
-    consulting();
-    console.log(selectedOrder);
+    await api.put(`orders/consultant/${selectedOrder.id}`);
     await api.put(`orders/${selectedOrder.id}`, selectedOrder);
     console.log("Update order status success");
     navigate("/consulting/ongoing-consultation");
