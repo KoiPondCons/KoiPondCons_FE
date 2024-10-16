@@ -2,22 +2,35 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { MdOutlinePriceChange } from "react-icons/md";
-
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import TableTemplate from "../../../components/table";
 import api from "../../../config/axios";
+import { Spin } from "antd";
 function OngoingConsultations() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const fetchConsultationRequests = async () => {
-    const response = await api.get("orders/consultant");
-    setRequests(response.data);
-    console.log(response.data);
+    setLoading(true);
+    try {
+      const response = await api.get("orders/consultant");
+      setRequests(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching consultation requests:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
   useEffect(() => {
     fetchConsultationRequests();
   }, []);
+  if (loading) {
+    return <Spin size="large" />;
+  }
 
   const columns = [
     {
@@ -82,7 +95,11 @@ function OngoingConsultations() {
       title: "",
       key: "",
       render: (record) => {
-        if (record.quotationResponse.status === "PROCESSING") {
+        if (
+          record.quotationResponse.status === "PROCESSING" ||
+          record.quotationResponse.status === "MANAGER_REJECTED" ||
+          record.quotationResponse.status === "CUSTOMER_REJECTED"
+        ) {
           return (
             <div style={{ textAlign: "center", cursor: "pointer" }}>
               <MdOutlinePriceChange
