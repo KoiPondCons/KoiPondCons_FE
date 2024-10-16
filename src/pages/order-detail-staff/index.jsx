@@ -9,6 +9,7 @@ import "../../components/table/index.css";
 import { AiOutlineFile } from "react-icons/ai";
 import { RiDraftLine } from "react-icons/ri";
 import moment from "moment";
+import OrderInfor from "../../components/order-information";
 function Order() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,6 +24,7 @@ function Order() {
   const [freeDesigners, setFreeDesigners] = useState([]);
   const [selectedDesigner, setSelectedDesigner] = useState();
   const [selectedConstructor, setSelectedConstructor] = useState();
+
   const fecthFreeConstructors = async () => {
     try {
       const response = await api.get("account/free-constructors");
@@ -57,6 +59,7 @@ function Order() {
     fetchConstructionOrder();
     fecthFreeConstructors();
     fecthFreeDesigners();
+    console.log("Data table:");
   }, [id]);
   const showModal = (src) => {
     console.log("Modal is opening with image source:", src);
@@ -100,60 +103,11 @@ function Order() {
       alert("Vui lòng chọn nhà thiết kế");
     }
   };
+
   return (
     <NavDashboard actor={actor}>
       <div>
-        <h1>THÔNG TIN ĐƠN HÀNG</h1>
-        <Form layout="vertical">
-          <Row gutter={24}>
-            <Col span={8}>
-              <label>Họ tên</label>
-              <div className="display-input">
-                <span> {constructionOrder.customerName}</span>
-              </div>
-            </Col>
-            <Col span={8}>
-              <label>Số điện thoại</label>
-              <div className="display-input">
-                <span> {constructionOrder.customerPhone}</span>
-              </div>
-            </Col>
-            <Col span={8}>
-              <label>Email</label>
-              <div className="display-input">
-                <span> {constructionOrder.customer.account.email}</span>
-              </div>
-            </Col>
-            <Col span={24}>
-              <label>Địa chỉ thi công</label>
-              <div className="display-input">
-                <span> {constructionOrder.pondAddress}</span>
-              </div>
-            </Col>
-            <Col span={10}>
-              <label>Trạng thái</label>
-              <div className="display-input">
-                <span> {constructionOrder.statusDescription}</span>
-              </div>
-            </Col>
-            <Col span={7}>
-              <label>Gói</label>
-              <div className="display-input">
-                <span>
-                  {constructionOrder.quotationResponse.combo
-                    ? constructionOrder.quotationResponse.combo.name
-                    : "-"}
-                </span>
-              </div>
-            </Col>
-            <Col span={7}>
-              <label>Thể tích hồ</label>
-              <div className="display-input">
-                <span> {constructionOrder.quotationResponse.pondVolume}</span>
-              </div>
-            </Col>
-          </Row>
-        </Form>
+        <OrderInfor constructionOrder={constructionOrder} />
         <h1>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
         <Form layout="vertical">
           <Row gutter={24}>
@@ -300,6 +254,7 @@ function Order() {
           </Row>
         </Form>
       </div>
+
       <Modal
         title="Hình ảnh thiết kế"
         visible={isModalVisible}

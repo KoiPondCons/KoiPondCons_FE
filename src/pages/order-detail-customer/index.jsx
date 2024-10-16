@@ -11,6 +11,7 @@ import { RiDraftLine } from "react-icons/ri";
 import moment from "moment";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
+import OrderInfor from "../../components/order-information";
 function OrderCustomer() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,8 +22,6 @@ function OrderCustomer() {
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
-  const [freeConstructors, setFreeConstructors] = useState([]);
-  const [freeDesigners, setFreeDesigners] = useState([]);
   const fecthFreeConstructors = async () => {
     try {
       const response = await api.get("account/free-constructors");
@@ -70,62 +69,68 @@ function OrderCustomer() {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data: {error.message}</div>;
-
+  const finalPrice = "800000000";
+  const columns = [
+    {
+      title: "Các đợt thanh toán",
+      dataIndex: "paymentPhase",
+      key: "paymentPhase",
+    },
+    {
+      title: "Nội dung",
+      dataIndex: "content",
+      key: "content",
+    },
+    {
+      title: "Số tiền cần thanh toán",
+      dataIndex: "amount",
+      key: "amount",
+    },
+  ];
+  const data = [];
+  if (constructionOrder.isDesigned) {
+    data.push(
+      {
+        key: "1",
+        paymentPhase: "Đợt thanh toán 1",
+        content: "Thanh toán để bắt đầu thi công",
+        amount: (finalPrice * 0.5).toLocaleString("vi-VN") + " VND",
+      },
+      {
+        key: "2",
+        paymentPhase: "Đợt thanh toán 2",
+        content: "Thanh toán bàn giao hồ cá",
+        amount: (finalPrice * 0.5).toLocaleString("vi-VN") + " VND",
+      }
+    );
+  } else {
+    data.push(
+      {
+        key: "1",
+        paymentPhase: "Đợt thanh toán 1",
+        content: "Thanh toán để bắt đầu thiết kế bản vẽ hồ cá",
+        amount: (finalPrice * 0.2).toLocaleString("vi-VN") + " VND",
+      },
+      {
+        key: "2",
+        paymentPhase: "Đợt thanh toán 2",
+        content: "Thanh toán để bắt đầu thi công",
+        amount: (finalPrice * 0.3).toLocaleString("vi-VN") + " VND",
+      },
+      {
+        key: "3",
+        paymentPhase: "Đợt thanh toán 3",
+        content: "Thanh toán bàn giao hồ cá",
+        amount: (finalPrice * 0.5).toLocaleString("vi-VN") + " VND",
+      }
+    );
+  }
   return (
     <div>
       <Header />
       <div style={{ backgroundColor: "white" }}>
         <div>
-          <h1>THÔNG TIN ĐƠN HÀNG</h1>
-          <Form layout="vertical">
-            <Row gutter={24}>
-              <Col span={8}>
-                <label>Họ tên</label>
-                <div className="display-input">
-                  <span> {constructionOrder.customerName}</span>
-                </div>
-              </Col>
-              <Col span={8}>
-                <label>Số điện thoại</label>
-                <div className="display-input">
-                  <span> {constructionOrder.customerPhone}</span>
-                </div>
-              </Col>
-              <Col span={8}>
-                <label>Email</label>
-                <div className="display-input">
-                  <span> {constructionOrder.customer.account.email}</span>
-                </div>
-              </Col>
-              <Col span={24}>
-                <label>Địa chỉ thi công</label>
-                <div className="display-input">
-                  <span> {constructionOrder.pondAddress}</span>
-                </div>
-              </Col>
-              <Col span={10}>
-                <label>Trạng thái</label>
-                <div className="display-input">
-                  <span> {constructionOrder.statusDescription}</span>
-                </div>
-              </Col>
-              <Col span={7}>
-                <label>Gói</label>
-                <div className="display-input">
-                  <span>
-                    {" "}
-                    {constructionOrder.quotationResponse?.combo?.name || "N/A"}
-                  </span>
-                </div>
-              </Col>
-              <Col span={7}>
-                <label>Thể tích hồ</label>
-                <div className="display-input">
-                  <span> {constructionOrder.quotationResponse.pondVolume}</span>
-                </div>
-              </Col>
-            </Row>
-          </Form>
+          <OrderInfor constructionOrder={constructionOrder} />
           <h1>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
           <Form layout="vertical">
             <Row gutter={24}>
@@ -210,6 +215,8 @@ function OrderCustomer() {
               </Col>
             </Row>
           </Form>
+          <h1>Thanh toán</h1>
+          <Table columns={columns} dataSource={data} />
         </div>
         <Modal
           title="Hình ảnh thiết kế"
