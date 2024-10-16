@@ -10,7 +10,7 @@ import Bill from "../../components/bill";
 function PriceListCustomer() {
   const { id } = useParams();
   const location = useLocation();
-  const { actor } = location.state || {};
+  const { actor } = location.state || "customer";
   const [constructionOrder, setConstructionOrder] = useState({});
   const [comboConstructionItems, setComboConstructionItems] = useState([]);
   const [comboPrice, setComboPrice] = useState();
@@ -58,11 +58,6 @@ function PriceListCustomer() {
     fetchConstructionItems();
     fetchComboPrice();
   }, [constructionOrder]);
-  // useEffect(() => {
-  //   if (constructionOrders?.quotationResponse?.combo?.id) {
-  //     fetchConstructionItems();
-  //   }
-  // }, [constructionOrders]);
 
   const columnsPackage = [
     {
@@ -98,7 +93,7 @@ function PriceListCustomer() {
         </div>
 
         <Bill
-          actor={"customer"}
+          actor={actor}
           unitPrice={comboPrice?.unitPrice}
           pondVolume={constructionOrder.quotationResponse?.pondVolume}
           promotionList={comboConstructionItems.quotationResponse?.promotions}
