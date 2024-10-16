@@ -164,8 +164,8 @@ function Bill({
                 <span style={{ textAlign: "right" }}>
                   {unitPrice
                     ? `${new Intl.NumberFormat("vi-VN").format(
-                        unitPrice
-                      )} VND/m3`
+                      unitPrice
+                    )} VND/m3`
                     : "Loading VND/m3"}
                 </span>
                 <span style={{ fontWeight: "bold" }}>Thể tích</span>
@@ -174,36 +174,38 @@ function Bill({
               {promotionList.length > 0 && (
                 <>
                   <hr />
-                  <p style={{ marginTop: "20px" }}>THANH TOÁN</p>
+                  <p style={{ marginTop: "20px" }}>HÓA ĐƠN TẠM TÍNH</p>
                   <div className="details">
                     <span style={{ fontWeight: "bold" }}>Thành tiền</span>
                     <span style={{ textAlign: "right" }}>
                       {unitPrice
                         ? `${new Intl.NumberFormat("vi-VN").format(
-                            unitPrice * pondVolume
-                          )} VND`
+                          unitPrice * pondVolume
+                        )} VND`
                         : "Loading VND"}
                     </span>
+
                     <p style={{ marginTop: "20px" }}>GIẢM GIÁ</p>
-                    {promotionList.map((promotion, index) => (
-                      <div key={index}>
-                        <div className="details">
-                          <span style={{ fontWeight: "bold" }}>
-                            {promotion.content || "Giảm giá"}
-                          </span>
-                          <span style={{ textAlign: "right" }}>
-                            {unitPrice && pondVolume
-                              ? `-${new Intl.NumberFormat("vi-VN").format(
-                                  promotion.discountPercent *
-                                    unitPrice *
-                                    pondVolume
-                                )} VND`
-                              : "N/A"}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
+                    <span></span>
                   </div>
+                  {promotionList.map((promotion, index) => (
+                    <div key={index}>
+                      <div className="details" style={{padding:'0 30px'}}>
+                        <span style={{ fontWeight: "bold"}}>
+                          {promotion.content || "Giảm giá"}
+                        </span>
+                        <span style={{ textAlign: "right" ,marginBottom:'40px'}}>
+                          {unitPrice && pondVolume
+                            ? `-${new Intl.NumberFormat("vi-VN").format(
+                              promotion.discountPercent *
+                              unitPrice *
+                              pondVolume
+                            )} VND`
+                            : "N/A"}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
                 </>
               )}
               <hr />
@@ -213,8 +215,8 @@ function Bill({
                 <span style={{ textAlign: "right" }}>
                   {unitPrice
                     ? `${new Intl.NumberFormat("vi-VN").format(
-                        unitPrice * pondVolume - totalDiscountPrice
-                      )} VND`
+                      unitPrice * pondVolume - totalDiscountPrice
+                    )} VND`
                     : "Loading VND"}
                 </span>
               </div>
