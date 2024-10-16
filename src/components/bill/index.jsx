@@ -3,7 +3,10 @@ import { Modal } from "antd";
 import PropTypes from "prop-types";
 import "./index.css";
 import api from "../../config/axios";
+import { useNavigate } from "react-router-dom";
+
 function Bill({
+  constructionOrderId,
   unitPrice,
   pondVolume,
   promotionList = [],
@@ -11,11 +14,17 @@ function Bill({
   comboId,
   quotationId,
 }) {
-  const [modalType, setModalType] = useState(null);
-  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
-  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const [isManagerApproveModalOpen, setIsManagerApproveModalOpen] =
+    useState(false);
+  const [isManagerRejectModalOpen, setIsManagerRejectModalOpen] =
+    useState(false);
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
-  const [isRejectCustomerOpen, setIsRejectCustomerOpen] = useState(false);
+  const [isCustomerApproveModalOpen, setIsCustomerApproveModalOpen] =
+    useState(false);
+  const [isCustomerRejectModalOpen, setIsCustomerRejectModalOpen] =
+    useState(false);
+
   let totalDiscountPrice = 0;
   if (Array.isArray(promotionList)) {
     promotionList.forEach((promotion) => {
@@ -25,71 +34,91 @@ function Bill({
   } else {
     console.warn("promotionList is not defined or is not an array");
   }
-  const handleQuotation = async () => {
-    const value = {
-      combo: comboId,
-      pondVolume: pondVolume,
-      quotationFile: null,
-      status: "MANAGER_PENDING",
-    };
+
+  const quotationValue = {
+    combo: comboId,
+    pondVolume: pondVolume,
+    quotationFile: null,
+  };
+
+  const handleSendQuotation = async () => {
     try {
-      await api.put(`quotation/${quotationId}`, value);
+      await api.put(`quotation/${quotationId}`, {
+        ...quotationValue,
+        status: "MANAGER_PENDING",
+      });
       console.log("Quotation updated successfully");
+      navigate("/consulting/ongoing-consultation");
     } catch (error) {
       console.error("Error updating quotation:", error);
     }
   };
-  const handleApproveQuotation = async () => {
-    const value = {
-      combo: comboId,
-      pondVolume: pondVolume,
-      quotationFile: null,
-      status: "CUSTOMER_PENDING",
-    };
+
+  const handleManagerApproveQuotation = async () => {
     try {
-      await api.put(`quotation/${quotationId}`, value);
+      await api.put(`quotation/${quotationId}`, {
+        ...quotationValue,
+        status: "CUSTOMER_PENDING",
+      });
       console.log("Quotation updated successfully");
+      navigate("/manager");
     } catch (error) {
       console.error("Error updating quotation:", error);
     }
   };
-  const handleRejectQuotation = async () => {
-    const value = {
-      combo: comboId,
-      pondVolume: pondVolume,
-      quotationFile: null,
-      status: "MANAGER_REJECTED",
-    };
+
+  const handleManagerRejectQuotation = async () => {
     try {
-      await api.put(`quotation/${quotationId}`, value);
+      await api.put(`quotation/${quotationId}`, {
+        ...quotationValue,
+        status: "MANAGER_REJECTED",
+      });
       console.log("Quotation updated successfully");
+      navigate("/manager");
     } catch (error) {
       console.error("Error updating quotation:", error);
     }
   };
-  const handleRejectCustomerQuotation = async () => {
-    const value = {
-      combo: comboId,
-      pondVolume: pondVolume,
-      quotationFile: null,
-      status: "CUSTOMER_REJECTED",
-    };
+  const handleCustomerApproveQuotation = async () => {
     try {
-      await api.put(`quotation/${quotationId}`, value);
+      await api.put(`quotation/${quotationId}`, {
+        ...quotationValue,
+        status: "CUSTOMER_CONFIRMED",
+      });
       console.log("Quotation updated successfully");
+      navigate(`/order/${constructionOrderId}`);
     } catch (error) {
       console.error("Error updating quotation:", error);
     }
   };
+  const handleCustomerRejectQuotation = async () => {
+    try {
+      await api.put(`quotation/${quotationId}`, {
+        ...quotationValue,
+        status: "CUSTOMER_REJECTED",
+      });
+      console.log("Quotation updated successfully");
+      navigate("/history");
+    } catch (error) {
+      console.error("Error updating quotation:", error);
+    }
+  };
+
   const renderButtons = () => {
     switch (actor) {
       case "manager":
         return (
           <>
-            <button className="btn" onClick={() => setIsApproveModalOpen(true)}>
+            <button
+              className="btn"
+              onClick={() => setIsManagerApproveModalOpen(true)}
+            >
               Phê duyệt
             </button>
-            <button className="btn" onClick={() => setIsRejectModalOpen(true)}>
+            <button
+              className="btn"
+              onClick={() => setIsManagerRejectModalOpen(true)}
+            >
               Từ chối
             </button>
           </>
@@ -103,10 +132,15 @@ function Bill({
       case "customer":
         return (
           <>
-            <button className="btn">Thanh toán</button>
             <button
               className="btn"
-              onClick={() => setIsRejectCustomerOpen(true)}
+              onClick={() => setIsCustomerApproveModalOpen(true)}
+            >
+              Chấp thuận
+            </button>
+            <button
+              className="btn"
+              onClick={() => setIsCustomerRejectModalOpen(true)}
             >
               Từ chối
             </button>
@@ -137,97 +171,123 @@ function Bill({
                 <span style={{ fontWeight: "bold" }}>Thể tích</span>
                 <span style={{ textAlign: "right" }}>{pondVolume} m3</span>
               </div>
+              {promotionList.length > 0 && (
+                <>
+                  <hr />
+                  <p style={{ marginTop: "20px" }}>THANH TOÁN</p>
+                  <div className="details">
+                    <span style={{ fontWeight: "bold" }}>Thành tiền</span>
+                    <span style={{ textAlign: "right" }}>
+                      {unitPrice
+                        ? `${new Intl.NumberFormat("vi-VN").format(
+                            unitPrice * pondVolume
+                          )} VND`
+                        : "Loading VND"}
+                    </span>
+                    <p style={{ marginTop: "20px" }}>GIẢM GIÁ</p>
+                    {promotionList.map((promotion, index) => (
+                      <div key={index}>
+                        <div className="details">
+                          <span style={{ fontWeight: "bold" }}>
+                            {promotion.content || "Giảm giá"}
+                          </span>
+                          <span style={{ textAlign: "right" }}>
+                            {unitPrice && pondVolume
+                              ? `-${new Intl.NumberFormat("vi-VN").format(
+                                  promotion.discountPercent *
+                                    unitPrice *
+                                    pondVolume
+                                )} VND`
+                              : "N/A"}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
               <hr />
               <p style={{ marginTop: "20px" }}>THANH TOÁN</p>
               <div className="details">
-                <span style={{ fontWeight: "bold" }}>Thành tiền</span>
+                <span style={{ fontWeight: "bold" }}>Tổng cộng</span>
                 <span style={{ textAlign: "right" }}>
                   {unitPrice
                     ? `${new Intl.NumberFormat("vi-VN").format(
-                        unitPrice * pondVolume
+                        unitPrice * pondVolume - totalDiscountPrice
                       )} VND`
                     : "Loading VND"}
                 </span>
-                {promotionList.map((promotion, index) => (
-                  <React.Fragment key={index}>
-                    <span style={{ fontWeight: "bold" }}>Giảm giá</span>
-                    <span style={{ textAlign: "right" }}>
-                      {promotion.content || "N/A"}{" "}
-                    </span>
-                    <span style={{ fontWeight: "bold" }}></span>
-                    <span style={{ textAlign: "right", gap: "1px" }}>
-                      {unitPrice && pondVolume
-                        ? new Intl.NumberFormat("vi-VN").format(
-                            promotion.discountPercent * unitPrice * pondVolume
-                          ) + " VND"
-                        : "N/A"}{" "}
-                    </span>
-                  </React.Fragment>
-                ))}
               </div>
             </div>
           </div>
         </div>
       </div>
+
       <div className="card checkout">
         <div className="footer">
-          <label className="price">
-            {unitPrice
-              ? `${new Intl.NumberFormat("vi-VN").format(
-                  unitPrice * pondVolume - totalDiscountPrice
-                )} VND`
-              : "Loading VND"}
-          </label>
-          {renderButtons()}
+          <div className="container-button">{renderButtons()}</div>
         </div>
       </div>
 
       <Modal
         title="Xác nhận phê duyệt"
-        open={isApproveModalOpen}
+        open={isManagerApproveModalOpen}
         onOk={() => {
-          handleApproveQuotation();
+          handleManagerApproveQuotation();
         }}
-        onCancel={() => setIsApproveModalOpen(false)}
+        onCancel={() => setIsManagerApproveModalOpen(false)}
       >
         <p>Bạn có chắc chắn muốn phê duyệt báo giá này không?</p>
       </Modal>
 
       <Modal
         title="Xác nhận từ chối"
-        open={isRejectModalOpen}
+        open={isManagerRejectModalOpen}
         onOk={() => {
-          handleRejectQuotation();
+          handleManagerRejectQuotation();
         }}
-        onCancel={() => setIsRejectModalOpen(false)}
+        onCancel={() => setIsManagerRejectModalOpen(false)}
+      >
+        <p>Bạn có chắc chắn muốn từ chối báo giá này không?</p>
+      </Modal>
+
+      <Modal
+        title="Xác nhận từ chối báo giá"
+        open={isCustomerRejectModalOpen}
+        onOk={() => {
+          handleCustomerRejectQuotation();
+        }}
+        onCancel={() => setIsCustomerRejectModalOpen(false)}
       >
         <p>Bạn có chắc chắn muốn từ chối báo giá này không?</p>
       </Modal>
       <Modal
-        title="Xác nhận từ chối"
-        open={isRejectCustomerOpen}
+        title="Xác nhận chấp thuận báo giá"
+        open={isCustomerApproveModalOpen}
         onOk={() => {
-          handleRejectCustomerQuotation();
+          handleCustomerRejectQuotation();
         }}
-        onCancel={() => setIsRejectModalOpen(false)}
+        onCancel={() => setIsCustomerRejectModalOpen(false)}
       >
-        <p>Bạn có chắc chắn muốn từ chối báo giá này không?</p>
+        <p>Bạn có chắc chắn chấp thuận báo giá này chứ??</p>
       </Modal>
 
       <Modal
         title="Xác nhận gửi báo giá"
         open={isSendModalOpen}
         onOk={() => {
-          handleQuotation();
+          handleSendQuotation();
         }}
         onCancel={() => setIsSendModalOpen(false)}
       >
-        <p>Bạn có chắc chắn muốn gửi báo giá</p>
+        <p>Bạn có chắc chắn muốn gửi báo giá?</p>
       </Modal>
     </div>
   );
 }
+
 Bill.propTypes = {
+  constructionOrderId: PropTypes.number.isRequired,
   unitPrice: PropTypes.number.isRequired,
   pondVolume: PropTypes.number.isRequired,
   promotionList: PropTypes.array.isRequired,
