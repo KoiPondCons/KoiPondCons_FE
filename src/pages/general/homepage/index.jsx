@@ -4,6 +4,7 @@ import Footer from "../../../components/footer";
 import "./index.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import CardContent from '../../../components/card-content';
+import { Link } from 'react-router-dom'; 
 
 function HomePage() {
   const images = [
@@ -107,7 +108,10 @@ function HomePage() {
         <div>
           <a className="project-header">DỰ ÁN TIÊU BIỂU</a>
           <div className="view-all-button">
-            <button>XEM TẤT CẢ</button>
+            <Link to="/projects
+            "> {/* Thay đổi đường dẫn đến trang bạn muốn */}
+              <button>XEM TẤT CẢ</button>
+            </Link>
           </div>
         </div>
         <CardContent />
