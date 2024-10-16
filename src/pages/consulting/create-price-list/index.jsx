@@ -1,14 +1,31 @@
 import React, { useEffect, useState } from "react";
 import NavDashboard from "../../../components/navbar-dashboard";
-import { Button, Col, Form, Modal, Row, Select, Table } from "antd";
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Modal,
+  Radio,
+  Row,
+  Select,
+  Spin,
+  Table,
+  Upload,
+} from "antd";
 import api from "../../../config/axios";
 import "../../../utils/common.css";
 import FormItem from "antd/es/form/FormItem";
 import { useLocation, useParams } from "react-router-dom";
 import Bill from "../../../components/bill";
+import OrderInfor from "../../../components/order-information";
+import { RiDraftLine, RiUpload2Fill } from "react-icons/ri";
+import { toast } from "react-toastify";
+import uploadFile from "../../../utils/file";
 function PriceListStaff() {
   const { id } = useParams();
   const location = useLocation();
+  const [form] = Form.useForm();
   const { actor } = location.state;
   const [listCombo, setListCombo] = useState([]);
   const [selectedCombo, setSelectedCombo] = useState(null);
@@ -16,6 +33,70 @@ function PriceListStaff() {
   const [comboConstructionItems, setComboConstructionItems] = useState([]);
   const [comboPrice, setComboPrice] = useState();
   const [promotionList, setPromotionList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [fileData, setFileData] = useState([]);
+  const [promotions, setPromotions] = useState();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [imageSrc, setImageSrc] = useState("");
+  const handleUploadDrawing =
+    (drawingId) =>
+    async ({ fileList: newFileList }) => {
+      const updatedFileData = fileData.map((item) => {
+        if (item.id === drawingId) {
+          return { ...item, fileList: newFileList }; // Cập nhật fileList cho dòng này
+        }
+        return item; // Không thay đổi các dòng khác
+      });
+      setFileData(updatedFileData);
+      if (newFileList.length > 0) {
+        const file = newFileList[0];
+        const url = await uploadFile(file.originFileObj);
+        console.log(url);
+        try {
+          const response = await api.get(`design-drawings/${drawingId}`);
+          console.log(response.data);
+          const updatedData = {
+            designerAccount: response.data.designerAccount.id,
+            status: "MANAGER_PENDING",
+            designFile: url,
+          };
+          console.log(updatedData);
+
+          await api.put(`design-drawings/${drawingId}`, updatedData);
+          toast.success("Nộp bản vẽ thành công!");
+        } catch (error) {
+          console.log(error.response);
+        }
+      }
+    };
+
+  const showModal = (src) => {
+    console.log("Modal is opening with image source:", src);
+    setImageSrc(src);
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleDeleteFile = async (drawingId) => {
+    try {
+      const response = await api.get(`design-drawings/${drawingId}`);
+      console.log(response.data);
+      const updatedData = {
+        designerAccount: response.data.designerAccount.id,
+        status: "DESIGNING",
+        designFile: "N/A",
+      };
+      console.log(updatedData);
+
+      await api.put(`design-drawings/${drawingId}`, updatedData);
+      toast.success("Xóa bản vẽ thành công!");
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   const columnsPackage = [
     {
       title: "STT",
@@ -39,40 +120,40 @@ function PriceListStaff() {
   ];
 
   const fecthCombo = async () => {
+    setLoading(true);
     try {
       const response = await api.get("combos");
       setListCombo(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
+
   const fetchConstructionOrder = async () => {
+    setLoading(true);
     try {
       const response = await api.get(`orders/${id}`);
       setConstructionOrder(response.data);
       console.log(response.data);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
-
   useEffect(() => {
     fecthCombo();
     fetchConstructionOrder();
   }, []);
-
-  useEffect(() => {
-    if (constructionOrder) {
-      console.log(constructionOrder.data);
-    }
-  }, [constructionOrder]);
-
   const handleSelectChange = (value) => {
     setSelectedCombo(value);
     console.log("Selected combo:", value);
   };
 
   const fetchConstructionItems = async () => {
+    setLoading(true);
     try {
       if (selectedCombo) {
         const response = await api.get(
@@ -83,9 +164,13 @@ function PriceListStaff() {
       }
     } catch (error) {
       console.log("Bug at fetchConstructionItems, " + error);
+    } finally {
+      setLoading(false);
     }
   };
+
   const fetchComboPrice = async () => {
+    setLoading(true);
     try {
       const response = await api.get(
         `comboprices/combo/volume/${selectedCombo}/${constructionOrder.quotationResponse.pondVolume}`
@@ -94,9 +179,13 @@ function PriceListStaff() {
       console.log(response.data);
     } catch (error) {
       console.log("Bug at fetchComboPrice, " + error);
+    } finally {
+      setLoading(false);
     }
   };
+
   const fecthPromotionList = async () => {
+    setLoading(true);
     try {
       const response = await api.get(
         `promotions/quotation/${constructionOrder.quotationResponse.id}`
@@ -106,19 +195,30 @@ function PriceListStaff() {
       console.log(response.data);
     } catch (error) {
       console.log("Bug at fecthPromotion, " + error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fecthPromotions = async () => {
+    try {
+      const response = await api.get(
+        `promotions/customer/${constructionOrder.customer.id}`
+      );
+      setPromotions(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.warn(error);
     }
   };
   useEffect(() => {
     fetchConstructionItems();
     fetchComboPrice();
     fecthPromotionList();
+    fecthPromotions();
   }, [selectedCombo]);
-  useEffect(() => {
-    if (comboPrice) {
-      console.log(comboPrice.data);
-    }
-  }, [comboPrice]);
+
   const isComboSelected = selectedCombo !== null;
+
   useEffect(() => {
     if (
       actor === "manager" &&
@@ -128,71 +228,43 @@ function PriceListStaff() {
       setSelectedCombo(constructionOrder.quotationResponse.combo.id);
     }
   }, [actor, constructionOrder]);
+  const [designed, setDesigned] = useState();
+  const handleSelectChangeDesigned = async (e) => {
+    const radioChoose = e.target.value === "true";
+    setDesigned(radioChoose);
+  };
+  const handlePromotion = async (selectedPromotionIds) => {
+    try {
+      for (const promotionId of selectedPromotionIds) {
+        await api.put(
+          `quotations/promo/${constructionOrder.quotationResponse.id}/${promotionId}`
+        );
+      }
+      console.log("Promotion updated successfully!");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const onFinish = (values) => {
+    handlePromotion(values.promotionIds);
+    fecthPromotionList();
+  };
   return (
     <NavDashboard actor={actor}>
-      <h1>THÔNG TIN ĐƠN HÀNG</h1>
-      <Form layout="vertical">
-        <Row gutter={24}>
-          <Col span={8}>
-            <label>Họ tên</label>
-            <div className="display-input">
-              <span>
-                {constructionOrder ? constructionOrder.customerName : "N/A"}
-              </span>
-            </div>
-          </Col>
-          <Col span={8}>
-            <label>Số điện thoại</label>
-            <div className="display-input">
-              <span>
-                {constructionOrder ? constructionOrder.customerPhone : "N/A"}
-              </span>
-            </div>
-          </Col>
-          <Col span={8}>
-            <label>Email</label>
-            <div className="display-input">
-              <span>
-                {constructionOrder
-                  ? constructionOrder.customer.account.email
-                  : "N/A"}
-              </span>
-            </div>
-          </Col>
-          <Col span={16}>
-            <label>Địa chỉ thi công</label>
-            <div className="display-input">
-              <span>
-                {constructionOrder ? constructionOrder.pondAddress : "N/A"}
-              </span>
-            </div>
-          </Col>
-          <Col span={8}>
-            <label>Thể tích hồ</label>
-            <div className="display-input">
-              <span>
-                {constructionOrder && constructionOrder.quotationResponse
-                  ? constructionOrder.quotationResponse.pondVolume
-                  : "N/A"}
-              </span>
-            </div>
-          </Col>
-          <Col span={24}>
-            <label>Nội dung khách hàng yêu cầu</label>
-            <div className="display-input" style={{ textAlign: "justify" }}>
-              {constructionOrder
-                ? constructionOrder.customerDescription
-                : "N/A"}
-            </div>
-          </Col>
-          {actor === "consulting" && (
-            <>
+      <OrderInfor constructionOrder={constructionOrder} />
+      <Spin spinning={loading}></Spin>
+      {actor === "consulting" && (
+        <>
+          <Form style={{ padding: "20px" }}>
+            <Row gutter={24}>
               <Col span={12}>
                 <FormItem
                   name="comboId"
-                  label="Gói"
+                  label="Chọn gói"
                   key="packages"
                   rules={[{ required: true, message: "Vui lòng chọn gói!" }]}
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }}
                 >
                   <Select placeholder="Chọn gói" onChange={handleSelectChange}>
                     {listCombo.map((combo) => (
@@ -203,13 +275,102 @@ function PriceListStaff() {
                   </Select>
                 </FormItem>
               </Col>
-              <Col span={12} style={{ display: "flex", alignItems: "center" }}>
-                <Button>Tạo bảng báo giá</Button>
+              <Col span={12}>
+                <FormItem
+                  label="Khách hàng đã có bản vẽ thiết kế?"
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }}
+                >
+                  <Radio.Group
+                    defaultValue="false"
+                    onChange={handleSelectChangeDesigned}
+                  >
+                    <Radio.Button value="true">Có</Radio.Button>
+                    <Radio.Button value="false">Chưa</Radio.Button>
+                  </Radio.Group>
+                </FormItem>
               </Col>
-            </>
-          )}
-        </Row>
-      </Form>
+            </Row>
+            {designed &&
+            constructionOrder &&
+            constructionOrder.designDrawingResponse ? (
+              constructionOrder.designDrawingResponse.status !== "DESIGNING" ? (
+                <div
+                  style={{ textAlign: "center", cursor: "pointer" }}
+                  onClick={() =>
+                    showModal(
+                      `${constructionOrder.designDrawingResponse?.designFile}`
+                    )
+                  }
+                >
+                  <RiDraftLine size={30} />
+                  <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                    Xem file thiết kế
+                  </p>
+                </div>
+              ) : (
+                <div style={{ textAlign: "center", cursor: "pointer" }}>
+                  <Upload
+                    fileList={
+                      fileData.find(
+                        (item) =>
+                          item.id ===
+                          constructionOrder.designDrawingResponse?.id
+                      )?.fileList || []
+                    }
+                    onChange={handleUploadDrawing(
+                      constructionOrder.designDrawingResponse?.id
+                    )}
+                    maxCount={1}
+                    showUploadList={{
+                      showRemoveIcon: true,
+                      showDownloadIcon: true,
+                    }}
+                  >
+                    <div style={{ textAlign: "center" }}>
+                      <RiUpload2Fill size={30} />
+                      <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                        Upload file thiết kế
+                      </p>
+                    </div>
+                  </Upload>
+                </div>
+              )
+            ) : (
+              <Spin spinning={loading} />
+            )}
+          </Form>
+          <Form form={form} onFinish={onFinish}>
+            <Col span={12}>
+              <FormItem
+                name="promotionIds" // Đổi thành promotionIds
+                label="Chọn ưu đãi khuyến mãi"
+                key="promotionId"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+              >
+                <Checkbox.Group>
+                  {promotions?.length > 0 ? (
+                    promotions.map((promotion) => (
+                      <Checkbox key={promotion.id} value={promotion.id}>
+                        {promotion.content}
+                      </Checkbox>
+                    ))
+                  ) : (
+                    <div>Không có khuyến mãi</div>
+                  )}
+                </Checkbox.Group>
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <Button type="primary" htmlType="submit">
+                Lưu khuyến mãi
+              </Button>
+            </Col>
+          </Form>
+        </>
+      )}
+
       {isComboSelected && (
         <>
           <div className="price-list-staff-result">
@@ -224,6 +385,7 @@ function PriceListStaff() {
           {comboPrice && constructionOrder && (
             <div className="container-bill">
               <Bill
+                constructionOrderId={constructionOrder.id}
                 actor={actor}
                 unitPrice={comboPrice.unitPrice}
                 pondVolume={constructionOrder.quotationResponse.pondVolume}
