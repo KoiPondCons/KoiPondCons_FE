@@ -120,14 +120,18 @@ hr {
   background-color: #5c3e11; /* Slightly lighter gray on hover */
 }
 
+.container-button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .btn {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 150px;
   height: 36px;
-  margin-right: 15px;
   background: #555555; /* Medium gray button */
   border-radius: 7px;
   border: 1px solid #2e2e2e; /* Dark gray border */
@@ -135,7 +139,16 @@ hr {
   font-size: 1rem;
   font-weight: 600;
   transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+  flex-grow: 1; /* Expand based on available space */
+  flex-basis: 50%; /* Each button takes 50% of the container's width */
+  max-width: 50%; /* Limit each button to 50% width */
+  margin-right: 15px; /* Space between buttons */
 }
-.btn:hover {
-  background-color: #5c3e11; /* Slightly lighter gray on hover */
+
+.btn:last-child {
+  margin-right: 0; /* Remove right margin from the last button */
+}
+
+.container-button.single-btn .btn {
+  width: 100%; /* Make the button take 100% width when only one button */
 }
