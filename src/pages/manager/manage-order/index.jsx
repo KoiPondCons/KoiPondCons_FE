@@ -7,12 +7,15 @@ import TableTemplate from "../../../components/table";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import moment from "moment";
+import { MdOutlinePriceChange } from "react-icons/md";
 function OrderManagement() {
   const navigate = useNavigate();
+  const actor = "manager";
   const [requests, setRequests] = useState([]);
   const fetchConsultationRequests = async () => {
     const response = await api.get("orders");
     setRequests(response.data);
+    console.log(response.data);
   };
   useEffect(() => {
     fetchConsultationRequests();
@@ -27,6 +30,13 @@ function OrderManagement() {
       title: "Họ tên",
       dataIndex: "customerName",
       key: "customerName",
+    },
+    {
+      title: "Ngày gửi đơn",
+      key: "requestDate",
+      render: (record) => (
+        <p>{moment(record.requestDate).format("DD/MM/YYYY")}</p>
+      ),
     },
     {
       title: "Trạng thái",
@@ -72,23 +82,42 @@ function OrderManagement() {
       },
     },
     {
-      title: "Ngày gửi đơn",
-      key: "requestDate",
-      render: (record) => (
-        <p>{moment(record.requestDate).format("DD/MM/YYYY")}</p>
-      ),
-    },
-    {
-      title: "chi tiết",
-      key: "actions",
-      render: (_, record) => {
-        return (
-          <AiOutlineUnorderedList
-            onClick={() =>
-              navigate(`/order-detail/${record.id}`, { state: "manager" })
-            }
-          />
-        );
+      title: "",
+      key: "",
+      render: (record) => {
+        if (record.quotationResponse.status === "MANAGER_PENDING") {
+          return (
+            <div style={{ textAlign: "center", cursor: "pointer" }}>
+              <MdOutlinePriceChange
+                style={{ cursor: "pointer" }}
+                size={30}
+                onClick={() => {
+                  navigate(`/consulting/price-list-staff/${record.id}`, {
+                    state: { actor },
+                  });
+                }}
+              />
+              <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                Duyệt báo giá
+              </p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ textAlign: "center", cursor: "pointer" }}>
+              <AiOutlineUnorderedList
+                style={{ cursor: "pointer" }}
+                size={30}
+                onClick={() =>
+                  navigate(`/order-detail/${record.id}`, {
+                    state: { actor },
+                  })
+                }
+              />
+              <p style={{ fontSize: "10px", fontStyle: "italic" }}>Chi tiết</p>
+            </div>
+          );
+        }
       },
     },
   ];
