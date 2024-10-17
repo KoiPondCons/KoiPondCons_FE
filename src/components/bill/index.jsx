@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import "./index.css";
 import api from "../../config/axios";
 import { useNavigate } from "react-router-dom";
+import { TiDelete } from "react-icons/ti";
 
 function Bill({
   constructionOrderId,
@@ -13,8 +14,10 @@ function Bill({
   actor,
   comboId,
   quotationId,
+  onPromotionDeleted,
 }) {
   const navigate = useNavigate();
+
   const [isManagerApproveModalOpen, setIsManagerApproveModalOpen] =
     useState(false);
   const [isManagerRejectModalOpen, setIsManagerRejectModalOpen] =
@@ -24,7 +27,8 @@ function Bill({
     useState(false);
   const [isCustomerRejectModalOpen, setIsCustomerRejectModalOpen] =
     useState(false);
-
+  const [isDeletePromotionOpen, setIsDeletePromotionOpen] = useState(false);
+  const [promotionIdToDelete, setPromotionIdToDelete] = useState(null);
   let totalDiscountPrice = 0;
   if (Array.isArray(promotionList)) {
     promotionList.forEach((promotion) => {
@@ -150,7 +154,16 @@ function Bill({
         return null;
     }
   };
-
+  const handleDeletePromotion = async (promotionId) => {
+    try {
+      await api.delete(`quotations/promo/${quotationId}/${promotionId}`);
+      console.log("Delete promotion success");
+      onPromotionDeleted();
+      setIsDeletePromotionOpen(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="container" style={{ marginBottom: "30px" }}>
       <div className="card cart">
@@ -164,8 +177,8 @@ function Bill({
                 <span style={{ textAlign: "right" }}>
                   {unitPrice
                     ? `${new Intl.NumberFormat("vi-VN").format(
-                      unitPrice
-                    )} VND/m3`
+                        unitPrice
+                      )} VND/m3`
                     : "Loading VND/m3"}
                 </span>
                 <span style={{ fontWeight: "bold" }}>Thể tích</span>
@@ -180,8 +193,8 @@ function Bill({
                     <span style={{ textAlign: "right" }}>
                       {unitPrice
                         ? `${new Intl.NumberFormat("vi-VN").format(
-                          unitPrice * pondVolume
-                        )} VND`
+                            unitPrice * pondVolume
+                          )} VND`
                         : "Loading VND"}
                     </span>
 
@@ -190,18 +203,29 @@ function Bill({
                   </div>
                   {promotionList.map((promotion, index) => (
                     <div key={index}>
-                      <div className="details" style={{padding:'0 30px'}}>
-                        <span style={{ fontWeight: "bold"}}>
+                      <div className="details" style={{ padding: "0 30px" }}>
+                        <span style={{ fontWeight: "bold" }}>
                           {promotion.content || "Giảm giá"}
                         </span>
-                        <span style={{ textAlign: "right" ,marginBottom:'40px'}}>
+                        <span
+                          style={{ textAlign: "right", marginBottom: "40px" }}
+                        >
                           {unitPrice && pondVolume
                             ? `-${new Intl.NumberFormat("vi-VN").format(
-                              promotion.discountPercent *
-                              unitPrice *
-                              pondVolume
-                            )} VND`
+                                promotion.discountPercent *
+                                  unitPrice *
+                                  pondVolume
+                              )} VND`
                             : "N/A"}
+                          {actor === "consulting" ? (
+                            <TiDelete
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                                setPromotionIdToDelete(promotion.id);
+                                setIsDeletePromotionOpen(true);
+                              }}
+                            />
+                          ) : null}
                         </span>
                       </div>
                     </div>
@@ -215,8 +239,8 @@ function Bill({
                 <span style={{ textAlign: "right" }}>
                   {unitPrice
                     ? `${new Intl.NumberFormat("vi-VN").format(
-                      unitPrice * pondVolume - totalDiscountPrice
-                    )} VND`
+                        unitPrice * pondVolume - totalDiscountPrice
+                      )} VND`
                     : "Loading VND"}
                 </span>
               </div>
@@ -230,7 +254,16 @@ function Bill({
           <div className="container-button">{renderButtons()}</div>
         </div>
       </div>
-
+      <Modal
+        title="Xác nhận xóa mã khuyến mãi"
+        open={isDeletePromotionOpen}
+        onOk={() => {
+          handleDeletePromotion(promotionIdToDelete);
+        }}
+        onCancel={() => setIsDeletePromotionOpen(false)}
+      >
+        <p>Bạn có chắc chắn muốn xóa mã khuyến mãi này không</p>
+      </Modal>
       <Modal
         title="Xác nhận phê duyệt"
         open={isManagerApproveModalOpen}
@@ -296,6 +329,7 @@ Bill.propTypes = {
   actor: PropTypes.string.isRequired,
   comboId: PropTypes.number.isRequired,
   quotationId: PropTypes.number.isRequired,
+  onPromotionDeleted: PropTypes.func.isRequired,
 };
 
 export default Bill;
