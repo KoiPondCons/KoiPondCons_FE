@@ -1,22 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal } from "antd";
+import { Button, Modal, Spin } from "antd";
 import "./index.css";
 import TableTemplate from "../../../components/table";
 import api from "../../../config/axios";
 import { useNavigate } from "react-router-dom";
+import LoadingPage from "../../../components/loading";
 function ConsultationRequests() {
   const [requests, setRequests] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const fetchConsultationRequests = async () => {
-    const response = await api.get("orders/status", {
-      params: {
-        status: "REQUESTED",
-      },
-    });
-    console.log(response.data);
-    setRequests(response.data);
+    setLoading(true);
+    try {
+      const response = await api.get("orders/status", {
+        params: {
+          status: "REQUESTED",
+        },
+      });
+      console.log(response.data);
+      setRequests(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -82,7 +91,7 @@ function ConsultationRequests() {
           </Button>
           <Modal
             title="Xác nhận tư vấn"
-            open={isModalOpen}
+            open={isModalOpen && selectedOrder?.id === record.id}
             onOk={handleOk}
             onCancel={handleCancel}
           >
@@ -96,12 +105,16 @@ function ConsultationRequests() {
   const title = "Khách hàng cần tư vấn";
   return (
     <div>
-      <TableTemplate
-        columns={columns}
-        requests={requests}
-        title={title}
-        actor="consulting"
-      />
+      {loading ? (
+        <LoadingPage />
+      ) : (
+        <TableTemplate
+          columns={columns}
+          requests={requests}
+          title={title}
+          actor="consulting"
+        />
+      )}
     </div>
   );
 }

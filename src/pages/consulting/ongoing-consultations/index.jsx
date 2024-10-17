@@ -6,7 +6,7 @@ import "./index.css";
 import { useNavigate } from "react-router-dom";
 import TableTemplate from "../../../components/table";
 import api from "../../../config/axios";
-import { Spin } from "antd";
+import LoadingPage from "../../../components/loading";
 function OngoingConsultations() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
@@ -28,10 +28,6 @@ function OngoingConsultations() {
   useEffect(() => {
     fetchConsultationRequests();
   }, []);
-  if (loading) {
-    return <Spin size="large" />;
-  }
-
   const columns = [
     {
       title: "ID",
@@ -139,12 +135,16 @@ function OngoingConsultations() {
   const title = "Khách hàng đang tư vấn";
   return (
     <div>
-      <TableTemplate
-        columns={columns}
-        requests={requests}
-        title={title}
-        actor="consulting"
-      />
+      {loading ? (
+        <LoadingPage />
+      ) : (
+        <TableTemplate
+          columns={columns}
+          requests={requests}
+          title={title}
+          actor="consulting"
+        />
+      )}
     </div>
   );
 }
