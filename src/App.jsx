@@ -1,7 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NotFound from "./pages/general/not-found"; // Thêm import cho NotFound
-import Loading from "./pages/general/loading"
 // Staff page
 //Consulting
 import ConsultationRequests from "./pages/consulting/consultation-requests";
@@ -158,10 +157,6 @@ function App() {
     {
       path: "*", // Route cho các đường dẫn không tồn tại
       element: <NotFound />, // Chuyển hướng đến trang NotFound
-    },
-    {
-      path: "load", // Route cho các đường dẫn không tồn tại
-      element: <Loading />, // Chuyển hướng đến trang NotFound
     },
   ]);
 
