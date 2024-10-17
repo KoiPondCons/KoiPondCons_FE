@@ -242,11 +242,20 @@ function PriceListStaff() {
       }
       console.log("Promotion updated successfully!");
     } catch (error) {
-      console.error(error);
+      console.error("Error updating promotions:", error);
+      throw error;
     }
   };
-  const onFinish = (values) => {
-    handlePromotion(values.promotionIds);
+
+  const onFinish = async (values) => {
+    try {
+      await handlePromotion(values.promotionIds);
+      await fecthPromotionList();
+    } catch (error) {
+      console.error("Error in onFinish:", error);
+    }
+  };
+  const handleSavePromotionButton = () => {
     fecthPromotionList();
   };
   return (
@@ -275,98 +284,107 @@ function PriceListStaff() {
                   </Select>
                 </FormItem>
               </Col>
-              <Col span={12}>
-                <FormItem
-                  label="Khách hàng đã có bản vẽ thiết kế?"
-                  labelCol={{ span: 24 }}
-                  wrapperCol={{ span: 24 }}
-                >
-                  <Radio.Group
-                    defaultValue="false"
-                    onChange={handleSelectChangeDesigned}
-                  >
-                    <Radio.Button value="true">Có</Radio.Button>
-                    <Radio.Button value="false">Chưa</Radio.Button>
-                  </Radio.Group>
-                </FormItem>
-              </Col>
             </Row>
-            {designed &&
-            constructionOrder &&
-            constructionOrder.designDrawingResponse ? (
-              constructionOrder.designDrawingResponse.status !== "DESIGNING" ? (
-                <div
-                  style={{ textAlign: "center", cursor: "pointer" }}
-                  onClick={() =>
-                    showModal(
-                      `${constructionOrder.designDrawingResponse?.designFile}`
-                    )
-                  }
-                >
-                  <RiDraftLine size={30} />
-                  <p style={{ fontSize: "10px", fontStyle: "italic" }}>
-                    Xem file thiết kế
-                  </p>
-                </div>
-              ) : (
-                <div style={{ textAlign: "center", cursor: "pointer" }}>
-                  <Upload
-                    fileList={
-                      fileData.find(
-                        (item) =>
-                          item.id ===
-                          constructionOrder.designDrawingResponse?.id
-                      )?.fileList || []
-                    }
-                    onChange={handleUploadDrawing(
-                      constructionOrder.designDrawingResponse?.id
-                    )}
-                    maxCount={1}
-                    showUploadList={{
-                      showRemoveIcon: true,
-                      showDownloadIcon: true,
-                    }}
-                  >
-                    <div style={{ textAlign: "center" }}>
-                      <RiUpload2Fill size={30} />
-                      <p style={{ fontSize: "10px", fontStyle: "italic" }}>
-                        Upload file thiết kế
-                      </p>
-                    </div>
-                  </Upload>
-                </div>
-              )
-            ) : (
-              <Spin spinning={loading} />
-            )}
           </Form>
-          <Form form={form} onFinish={onFinish}>
-            <Col span={12}>
-              <FormItem
-                name="promotionIds" // Đổi thành promotionIds
-                label="Chọn ưu đãi khuyến mãi"
-                key="promotionId"
-                labelCol={{ span: 24 }}
-                wrapperCol={{ span: 24 }}
-              >
-                <Checkbox.Group>
-                  {promotions?.length > 0 ? (
-                    promotions.map((promotion) => (
-                      <Checkbox key={promotion.id} value={promotion.id}>
-                        {promotion.content}
-                      </Checkbox>
-                    ))
+          <Form
+            style={{ padding: "0px 20px 20px 20px" }}
+            form={form}
+            onFinish={onFinish}
+          >
+            {selectedCombo ? (
+              <Row>
+                <Col span={12}>
+                  <FormItem
+                    name="promotionIds" // Đổi thành promotionIds
+                    label="Chọn ưu đãi khuyến mãi"
+                    key="promotionId"
+                    labelCol={{ span: 24 }}
+                    wrapperCol={{ span: 24 }}
+                  >
+                    <Checkbox.Group>
+                      {promotions?.length > 0 ? (
+                        promotions.map((promotion) => (
+                          <Checkbox key={promotion.id} value={promotion.id}>
+                            {promotion.content}
+                          </Checkbox>
+                        ))
+                      ) : (
+                        <div>Không có khuyến mãi</div>
+                      )}
+                    </Checkbox.Group>
+                  </FormItem>
+                  <Button type="primary" htmlType="submit">
+                    Lưu khuyến mãi
+                  </Button>
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="Khách hàng đã có bản vẽ thiết kế?"
+                    labelCol={{ span: 24 }}
+                    wrapperCol={{ span: 24 }}
+                  >
+                    <Radio.Group
+                      defaultValue="false"
+                      onChange={handleSelectChangeDesigned}
+                    >
+                      <Radio.Button value="true">Có</Radio.Button>
+                      <Radio.Button value="false">Chưa</Radio.Button>
+                    </Radio.Group>
+                  </FormItem>
+                  {designed &&
+                  constructionOrder &&
+                  constructionOrder.designDrawingResponse ? (
+                    constructionOrder.designDrawingResponse.status !==
+                    "DESIGNING" ? (
+                      <div
+                        style={{ textAlign: "center", cursor: "pointer" }}
+                        onClick={() =>
+                          showModal(
+                            `${constructionOrder.designDrawingResponse?.designFile}`
+                          )
+                        }
+                      >
+                        <RiDraftLine size={30} />
+                        <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                          Xem file thiết kế
+                        </p>
+                      </div>
+                    ) : (
+                      <div style={{ textAlign: "center", cursor: "pointer" }}>
+                        <Upload
+                          fileList={
+                            fileData.find(
+                              (item) =>
+                                item.id ===
+                                constructionOrder.designDrawingResponse?.id
+                            )?.fileList || []
+                          }
+                          onChange={handleUploadDrawing(
+                            constructionOrder.designDrawingResponse?.id
+                          )}
+                          maxCount={1}
+                          showUploadList={{
+                            showRemoveIcon: true,
+                            showDownloadIcon: true,
+                          }}
+                        >
+                          <div style={{ textAlign: "center" }}>
+                            <RiUpload2Fill size={30} />
+                            <p
+                              style={{ fontSize: "10px", fontStyle: "italic" }}
+                            >
+                              Upload file thiết kế
+                            </p>
+                          </div>
+                        </Upload>
+                      </div>
+                    )
                   ) : (
-                    <div>Không có khuyến mãi</div>
+                    <Spin spinning={loading} />
                   )}
-                </Checkbox.Group>
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <Button type="primary" htmlType="submit">
-                Lưu khuyến mãi
-              </Button>
-            </Col>
+                </Col>
+              </Row>
+            ) : null}
           </Form>
         </>
       )}
@@ -392,6 +410,7 @@ function PriceListStaff() {
                 promotionList={promotionList}
                 comboId={selectedCombo}
                 quotationId={constructionOrder.quotationResponse.id}
+                onPromotionDeleted={fecthPromotionList}
               />
             </div>
           )}
