@@ -128,10 +128,10 @@ function OrderCustomer() {
   return (
     <div>
       <Header />
-      <div style={{ backgroundColor: "white" }}>
+      <div style={{ backgroundColor: "white" ,padding:"30px 10%"}}>
         <div>
           <OrderInfor constructionOrder={constructionOrder} />
-          <h1>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
+          <h1 style={{textAlign:"center",margin:"40px 0 10px"}}>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
           <Form layout="vertical">
             <Row gutter={24}>
               <Col span={4}>
@@ -215,7 +215,7 @@ function OrderCustomer() {
               </Col>
             </Row>
           </Form>
-          <h1>Thanh toán</h1>
+          <h1 style={{textAlign:"center",margin:"40px 0"}}>Thanh toán</h1>
           <Table columns={columns} dataSource={data} />
         </div>
         <Modal
