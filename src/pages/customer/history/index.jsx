@@ -70,18 +70,7 @@ function HistoryPage() {
                       </div>
                     </Col>
                     <Col span={4}>
-                      <button
-                        style={{
-                          backgroundColor: "#000",
-                          color: "#fff",
-                          border: "none",
-                          padding: "8px 16px",
-                          borderRadius: "4px",
-                          marginBottom: "8px",
-                        }}
-                      >
-                        Hủy đơn
-                      </button>
+                      <button className="btn">Hủy đơn</button>
                       {constructionOrder.consultantAccount && (
                         <Link
                           to={{
