@@ -5,7 +5,8 @@ import {
   Checkbox,
   Col,
   Form,
-  Modal,
+  Input,
+  InputNumber,
   Radio,
   Row,
   Select,
@@ -38,6 +39,7 @@ function PriceListStaff() {
   const [promotions, setPromotions] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
+  const [newPondVolume, setNewPondVolume] = useState();
   const handleUploadDrawing =
     (drawingId) =>
     async ({ fileList: newFileList }) => {
@@ -235,28 +237,57 @@ function PriceListStaff() {
   };
   const handlePromotion = async (selectedPromotionIds) => {
     try {
-      for (const promotionId of selectedPromotionIds) {
-        await api.put(
-          `quotations/promo/${constructionOrder.quotationResponse.id}/${promotionId}`
-        );
+      if (selectedPromotionIds.length !== null) {
+        for (const promotionId of selectedPromotionIds) {
+          await api.put(
+            `quotations/promo/${constructionOrder.quotationResponse.id}/${promotionId}`
+          );
+        }
+        console.log("Promotion updated successfully!");
+      } else {
+        console.log("Không thêm khuyến mãi");
       }
-      console.log("Promotion updated successfully!");
     } catch (error) {
       console.error("Error updating promotions:", error);
       throw error;
     }
   };
+  const handlePondVolumeChange = (value) => {
+    if (!isNaN(value) && value >= 0) {
+      setNewPondVolume(value);
+    }
+  };
 
+  const handleUpdatePondVolume = async () => {
+    try {
+      if (newPondVolume == null) {
+        console.log("Giữ nguyên thể tích hồ");
+      } else {
+        const value = {
+          comboId: constructionOrder.quotationResponse?.combo?.id || null,
+          quotationquotationFile: "",
+          pondVolume: newPondVolume,
+          status: constructionOrder.quotationResponse.status,
+        };
+        await api.put(
+          `quotation/${constructionOrder.quotationResponse.id}`,
+          value
+        );
+        console.log("Thay đổi pondVolume thành: " + newPondVolume);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const onFinish = async (values) => {
     try {
-      await handlePromotion(values.promotionIds);
+      await handleUpdatePondVolume();
+      await handlePromotion(values.promotionIds || []);
       await fecthPromotionList();
+      await fetchConstructionOrder();
     } catch (error) {
       console.error("Error in onFinish:", error);
     }
-  };
-  const handleSavePromotionButton = () => {
-    fecthPromotionList();
   };
   return (
     <NavDashboard actor={actor}>
@@ -287,15 +318,31 @@ function PriceListStaff() {
             </Row>
           </Form>
           <Form
+            layout="vertical"
             style={{ padding: "0px 20px 20px 20px" }}
             form={form}
             onFinish={onFinish}
           >
             {selectedCombo ? (
-              <Row>
-                <Col span={12}>
+              <Row gutter={24}>
+                <Col span={6}>
                   <FormItem
-                    name="promotionIds" // Đổi thành promotionIds
+                    name="pondValue"
+                    label="Thể tích hồ"
+                    key="pondValue"
+                    rules={[]}
+                  >
+                    <InputNumber
+                      value={constructionOrder.quotationResponse.pondVolume}
+                      min={8}
+                      max={10000}
+                      onChange={handlePondVolumeChange}
+                    />
+                  </FormItem>
+                </Col>
+                <Col span={10}>
+                  <FormItem
+                    name="promotionIds"
                     label="Chọn ưu đãi khuyến mãi"
                     key="promotionId"
                     labelCol={{ span: 24 }}
@@ -313,11 +360,8 @@ function PriceListStaff() {
                       )}
                     </Checkbox.Group>
                   </FormItem>
-                  <Button type="primary" htmlType="submit">
-                    Lưu khuyến mãi
-                  </Button>
                 </Col>
-                <Col span={12}>
+                <Col span={8}>
                   <FormItem
                     label="Khách hàng đã có bản vẽ thiết kế?"
                     labelCol={{ span: 24 }}
@@ -383,6 +427,9 @@ function PriceListStaff() {
                     <Spin spinning={loading} />
                   )}
                 </Col>
+                <Button type="primary" htmlType="submit">
+                  Lưu thay đổi
+                </Button>
               </Row>
             ) : null}
           </Form>
