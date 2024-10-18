@@ -1,9 +1,8 @@
-import { Col, Form, Input, Modal, Popover, Row, Select, Table } from "antd";
-import React, { useEffect, useState } from "react";
+import { Button, Col, Form, Input, Modal, Row, Table } from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import { Progress } from "antd";
 import api from "../../config/axios";
 import "./index.css";
-import NavDashboard from "../../components/navbar-dashboard";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import "../../components/table/index.css";
 import { AiOutlineFile } from "react-icons/ai";
@@ -12,40 +11,24 @@ import moment from "moment";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import OrderInfor from "../../components/order-information";
+
 function OrderCustomer() {
   const navigate = useNavigate();
   const location = useLocation();
   const actor = location.state;
+  const paymentSectionRef = useRef(null);
   const { id } = useParams();
   const [constructionOrder, setConstructionOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
-  const fecthFreeConstructors = async () => {
-    try {
-      const response = await api.get("account/free-constructors");
-      setFreeConstructors(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.log("Bug at fecthFreeConstructors, " + error);
-    }
-  };
-  const fecthFreeDesigners = async () => {
-    try {
-      const response = await api.get("account/free-designers");
-      setFreeDesigners(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.log("Bug at fecthFreeDesigners, " + error);
-    }
-  };
   const fetchConstructionOrder = async () => {
     try {
       const response = await api.get(`orders/${id}`);
       setConstructionOrder(response.data);
       console.log(response.data);
-      console.log(actor);
+      console.log("Actor ở đây là:" + actor);
     } catch (err) {
       setError(err);
     } finally {
@@ -54,9 +37,12 @@ function OrderCustomer() {
   };
   useEffect(() => {
     fetchConstructionOrder();
-    fecthFreeConstructors();
-    fecthFreeDesigners();
   }, [id]);
+  useEffect(() => {
+    if (location.state?.scrollToPayment && paymentSectionRef.current) {
+      paymentSectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [constructionOrder]);
   const showModal = (src) => {
     console.log("Modal is opening with image source:", src);
     setImageSrc(src);
@@ -69,12 +55,11 @@ function OrderCustomer() {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data: {error.message}</div>;
-  const finalPrice = "800000000";
   const columns = [
     {
       title: "Các đợt thanh toán",
-      dataIndex: "paymentPhase",
-      key: "paymentPhase",
+      dataIndex: "period",
+      key: "period",
     },
     {
       title: "Nội dung",
@@ -86,52 +71,41 @@ function OrderCustomer() {
       dataIndex: "amount",
       key: "amount",
     },
+    {
+      title: "Thanh toán",
+      render: (record) => {
+        const value = {
+          amount: "500000",
+          orderInfo: "Hello",
+        };
+
+        const handlePayment = async () => {
+          const linkPayment = await api.post("submitOrder", null, {
+            params: value,
+          });
+          window.location.href = linkPayment.data;
+        };
+        return (
+          <Button
+            onClick={() => {
+              handlePayment();
+            }}
+          >
+            Thanh toán
+          </Button>
+        );
+      },
+    },
   ];
-  const data = [];
-  if (constructionOrder.isDesigned) {
-    data.push(
-      {
-        key: "1",
-        paymentPhase: "Đợt thanh toán 1",
-        content: "Thanh toán để bắt đầu thi công",
-        amount: (finalPrice * 0.5).toLocaleString("vi-VN") + " VND",
-      },
-      {
-        key: "2",
-        paymentPhase: "Đợt thanh toán 2",
-        content: "Thanh toán bàn giao hồ cá",
-        amount: (finalPrice * 0.5).toLocaleString("vi-VN") + " VND",
-      }
-    );
-  } else {
-    data.push(
-      {
-        key: "1",
-        paymentPhase: "Đợt thanh toán 1",
-        content: "Thanh toán để bắt đầu thiết kế bản vẽ hồ cá",
-        amount: (finalPrice * 0.2).toLocaleString("vi-VN") + " VND",
-      },
-      {
-        key: "2",
-        paymentPhase: "Đợt thanh toán 2",
-        content: "Thanh toán để bắt đầu thi công",
-        amount: (finalPrice * 0.3).toLocaleString("vi-VN") + " VND",
-      },
-      {
-        key: "3",
-        paymentPhase: "Đợt thanh toán 3",
-        content: "Thanh toán bàn giao hồ cá",
-        amount: (finalPrice * 0.5).toLocaleString("vi-VN") + " VND",
-      }
-    );
-  }
   return (
     <div>
       <Header />
       <div style={{ backgroundColor: "white", padding: "30px 10%" }}>
         <div>
           <OrderInfor constructionOrder={constructionOrder} />
-          <h1 style={{ textAlign: "center", margin: "40px 0 10px" }}>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
+          <h1 style={{ textAlign: "center", margin: "40px 0 10px" }}>
+            ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG
+          </h1>
           <Form layout="vertical">
             <Row gutter={24}>
               <Col span={4}>
@@ -215,8 +189,16 @@ function OrderCustomer() {
               </Col>
             </Row>
           </Form>
-          <h1 style={{ textAlign: "center", margin: "40px 0" }}>Thanh toán</h1>
-          <Table columns={columns} dataSource={data} />
+          <h1
+            ref={paymentSectionRef}
+            style={{ textAlign: "center", margin: "40px 0" }}
+          >
+            Thanh toán
+          </h1>
+          <Table
+            columns={columns}
+            dataSource={constructionOrder.consOrderPaymentList}
+          />
         </div>
         <Modal
           title="Hình ảnh thiết kế"

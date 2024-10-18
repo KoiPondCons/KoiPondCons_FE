@@ -10,7 +10,7 @@ import Bill from "../../components/bill";
 function PriceListCustomer() {
   const { id } = useParams();
   const location = useLocation();
-  const { actor } = location.state || "customer";
+  const actor = location.state?.actor || "customer";
   const [constructionOrder, setConstructionOrder] = useState({});
   const [comboConstructionItems, setComboConstructionItems] = useState([]);
   const [comboPrice, setComboPrice] = useState();
@@ -23,6 +23,7 @@ function PriceListCustomer() {
       console.log(comboId.data);
       console.log("fetchConstructionOrder");
       console.log(response.data);
+      console.log("Actor: " + actor);
     } catch (err) {
       console.log(err);
     }
@@ -94,6 +95,7 @@ function PriceListCustomer() {
 
         <Bill
           actor={actor}
+          constructionOrderId={constructionOrder.id}
           unitPrice={comboPrice?.unitPrice}
           pondVolume={constructionOrder.quotationResponse?.pondVolume}
           promotionList={comboConstructionItems.quotationResponse?.promotions}
