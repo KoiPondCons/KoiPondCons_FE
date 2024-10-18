@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import TableTemplate from "../../../components/table";
 import api from "../../../config/axios";
 import LoadingPage from "../../../components/loading";
+import { Spin } from "antd";
 function OngoingConsultations() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
@@ -135,16 +136,14 @@ function OngoingConsultations() {
   const title = "Khách hàng đang tư vấn";
   return (
     <div>
-      {loading ? (
-        <LoadingPage />
-      ) : (
+      <Spin spinning={loading} indicator={<LoadingPage />}>
         <TableTemplate
           columns={columns}
           requests={requests}
           title={title}
           actor="consulting"
         />
-      )}
+      </Spin>
     </div>
   );
 }
