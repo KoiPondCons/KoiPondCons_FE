@@ -122,7 +122,7 @@ function ContactPage() {
                       name="pondVolume"
                       labelCol={{ span: 24 }}
                     >
-                      <Input type="Number" min={4} />
+                      <Input type="Number" min={8} max={10000} />
                     </FormItem>
                   </Col>
                   <Col span={14}>
