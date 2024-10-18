@@ -7,6 +7,8 @@ import {
   Form,
   Input,
   InputNumber,
+  Modal,
+  Popconfirm,
   Radio,
   Row,
   Select,
@@ -23,6 +25,11 @@ import OrderInfor from "../../../components/order-information";
 import { RiDraftLine, RiUpload2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import uploadFile from "../../../utils/file";
+import {
+  DeleteOutlined,
+  QuestionCircleOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 function PriceListStaff() {
   const { id } = useParams();
   const location = useLocation();
@@ -35,47 +42,45 @@ function PriceListStaff() {
   const [comboPrice, setComboPrice] = useState();
   const [promotionList, setPromotionList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [fileData, setFileData] = useState([]);
+  const [fileList, setFileList] = useState([]);
+  // const [uploadStatus, setUploadStatus] = useState(false);
   const [promotions, setPromotions] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
   const [newPondVolume, setNewPondVolume] = useState();
-  const handleUploadDrawing =
-    (drawingId) =>
-    async ({ fileList: newFileList }) => {
-      const updatedFileData = fileData.map((item) => {
-        if (item.id === drawingId) {
-          return { ...item, fileList: newFileList }; // Cập nhật fileList cho dòng này
-        }
-        return item; // Không thay đổi các dòng khác
-      });
-      setFileData(updatedFileData);
-      if (newFileList.length > 0) {
-        const file = newFileList[0];
-        const url = await uploadFile(file.originFileObj);
-        console.log(url);
-        try {
-          const response = await api.get(`design-drawings/${drawingId}`);
-          console.log(response.data);
-          const updatedData = {
-            designerAccount: response.data.designerAccount.id,
-            status: "MANAGER_PENDING",
-            designFile: url,
-          };
-          console.log(updatedData);
+  const [imageUrl, setImageUrl] = useState("N/A");
 
-          await api.put(`design-drawings/${drawingId}`, updatedData);
-          toast.success("Nộp bản vẽ thành công!");
-        } catch (error) {
-          console.log(error.response);
-        }
-      }
-    };
+  // const fileList = [
+  //   {
+  //     uid: '0',
+  //     name: 'xxx.png',
+  //     status: 'uploading',
+  //     percent: 33,
+  //   },
+  //   {
+  //     uid: '-1',
+  //     name: 'yyy.png',
+  //     status: 'done',
+  //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  //     thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  //   },
+  //   {
+  //     uid: '-2',
+  //     name: 'zzz.png',
+  //     status: 'error',
+  //   },
+  // ];
+
+  const handleUploadChange = ({ fileList: newFileList }) =>
+    setFileList(newFileList);
+
+  const handleUploadDrawing = () => {};
 
   const showModal = (src) => {
     console.log("Modal is opening with image source:", src);
     setImageSrc(src);
     setIsModalVisible(true);
+    console.log(isModalVisible);
   };
 
   const handleCancel = () => {
@@ -87,13 +92,12 @@ function PriceListStaff() {
       const response = await api.get(`design-drawings/${drawingId}`);
       console.log(response.data);
       const updatedData = {
-        designerAccount: response.data.designerAccount.id,
         status: "DESIGNING",
         designFile: "N/A",
       };
-      console.log(updatedData);
-
       await api.put(`design-drawings/${drawingId}`, updatedData);
+      fetchConstructionOrder();
+      setFileList([]);
       toast.success("Xóa bản vẽ thành công!");
     } catch (error) {
       console.log(error.response);
@@ -280,11 +284,30 @@ function PriceListStaff() {
     }
   };
   const onFinish = async (values) => {
+    // setImageUrl("N/A");
+    var url = "N/A";
+    if (fileList.length > 0) {
+      const file = fileList[0];
+      url = await uploadFile(file.originFileObj);
+      console.log(url);
+    }
     try {
       await handleUpdatePondVolume();
       await handlePromotion(values.promotionIds || []);
       await fecthPromotionList();
       await fetchConstructionOrder();
+      constructionOrder.designDrawingResponse.designFile = url;
+      if (url !== "N/A") {
+        constructionOrder.designDrawingResponse.status = "MANAGER_PENDING";
+      } else {
+        constructionOrder.designDrawingResponse.status = "DESIGNING";
+      }
+      await api.put(
+        `design-drawings/${constructionOrder.designDrawingResponse.id}`,
+        constructionOrder.designDrawingResponse
+      );
+      fetchConstructionOrder();
+      toast.success("Lưu thành công!");
     } catch (error) {
       console.error("Error in onFinish:", error);
     }
@@ -380,37 +403,47 @@ function PriceListStaff() {
                   constructionOrder.designDrawingResponse ? (
                     constructionOrder.designDrawingResponse.status !==
                     "DESIGNING" ? (
-                      <div
-                        style={{ textAlign: "center", cursor: "pointer" }}
-                        onClick={() =>
-                          showModal(
-                            `${constructionOrder.designDrawingResponse?.designFile}`
-                          )
-                        }
-                      >
-                        <RiDraftLine size={30} />
-                        <p style={{ fontSize: "10px", fontStyle: "italic" }}>
-                          Xem file thiết kế
-                        </p>
+                      <div>
+                        <div
+                          style={{ textAlign: "center", cursor: "pointer" }}
+                          onClick={() =>
+                            showModal(
+                              `${constructionOrder.designDrawingResponse?.designFile}`
+                            )
+                          }
+                        >
+                          <RiDraftLine size={30} />
+                          <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                            Xem file thiết kế
+                          </p>
+                        </div>
+                        <Popconfirm style={{display: 'inline'}}
+                          title="Xóa bản vẽ"
+                          description="Bạn có chắc muốn xóa bản vẽ?"
+                          onConfirm={() => handleDeleteFile(constructionOrder.designDrawingResponse.id)}
+                          icon={
+                            <QuestionCircleOutlined
+                              style={{
+                                color: "red",
+                              }}
+                            />
+                          }
+                        >
+                          <Button
+                            icon={<DeleteOutlined />} 
+                            danger
+                          >
+                            Xóa
+                          </Button>
+                        </Popconfirm>
                       </div>
                     ) : (
                       <div style={{ textAlign: "center", cursor: "pointer" }}>
                         <Upload
-                          fileList={
-                            fileData.find(
-                              (item) =>
-                                item.id ===
-                                constructionOrder.designDrawingResponse?.id
-                            )?.fileList || []
-                          }
-                          onChange={handleUploadDrawing(
-                            constructionOrder.designDrawingResponse?.id
-                          )}
+                          listType="picture"
+                          defaultFileList={fileList}
+                          onChange={handleUploadChange}
                           maxCount={1}
-                          showUploadList={{
-                            showRemoveIcon: true,
-                            showDownloadIcon: true,
-                          }}
                         >
                           <div style={{ textAlign: "center" }}>
                             <RiUpload2Fill size={30} />
@@ -461,6 +494,21 @@ function PriceListStaff() {
               />
             </div>
           )}
+          <Modal
+            title="Hình ảnh bản vẽ"
+            visible={isModalVisible}
+            onCancel={handleCancel}
+            footer={null}
+            width={800}
+            height={700}
+          >
+            <img
+              alt="Design"
+              src={imageSrc}
+              style={{ width: "100%", height: "auto" }}
+            />
+            <Button>Download</Button>
+          </Modal>
         </>
       )}
     </NavDashboard>
