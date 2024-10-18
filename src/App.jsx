@@ -11,12 +11,18 @@ import OngoingConsultations from "./pages/consulting/ongoing-consultations";
 //Designer
 import Designer from "./pages/designer";
 //Manager
+import StaffMangager from "./pages/manager/manage-staff"
+import ConstructionOrders from "./pages/manager/construction-orders"
+import ManageDesign from "./pages/manager/manage-design"
+import ManageQuote from "./pages/manager/manage-quote"
+import CustomerProfileManagement from "./pages/manager/customer-profile-management"
+import MaintenanceOrders from "./pages/manager/maintenance-orders"
 
 //Customer
 import HistoryPage from "./pages/customer/history";
 import OrderCustomer from "./pages/order-detail-customer";
 import PriceListCustomer from "./pages/price-list-customer";
-// Home page
+//Homepage
 import LoginPage from "./pages/general/login";
 import RegisterPage from "./pages/general/register";
 import HomePage from "./pages/general/homepage";
@@ -132,22 +138,31 @@ function App() {
     //Manager
     {
       path: "manager/design-management",
+      element: <ManageDesign/>,
     },
     {
       path: "manager/staff-management",
+      element:<StaffMangager/>,
+    },
+    {
+      path: "manager/construction-orders",
+      element: <ConstructionOrders/>,
     },
     {
       path: "manager/quote-management",
+      element: <ManageQuote/>,
     },
     {
       path: "manager",
       element: <OrderManagement />,
     },
     {
-      path: "manager/maintenance-orders",
+      path: "manager/customer-profile-management",
+      element: <CustomerProfileManagement/>,
     },
     {
-      path: "manager/customer-profile-management",
+      path: "manager/maintenance-orders",
+      element: <MaintenanceOrders/>,
     },
     //PAYMENT
     {
