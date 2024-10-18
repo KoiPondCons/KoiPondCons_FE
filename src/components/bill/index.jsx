@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Modal } from "antd";
 import PropTypes from "prop-types";
 import "./index.css";
@@ -90,7 +90,9 @@ function Bill({
         status: "CUSTOMER_CONFIRMED",
       });
       console.log("Quotation updated successfully");
-      navigate(`/order/${constructionOrderId}`);
+      navigate(`/order/${constructionOrderId}`, {
+        state: { scrollToPayment: true },
+      });
     } catch (error) {
       console.error("Error updating quotation:", error);
     }
@@ -300,9 +302,9 @@ function Bill({
         title="Xác nhận chấp thuận báo giá"
         open={isCustomerApproveModalOpen}
         onOk={() => {
-          handleCustomerRejectQuotation();
+          handleCustomerApproveQuotation();
         }}
-        onCancel={() => setIsCustomerRejectModalOpen(false)}
+        onCancel={() => setIsCustomerApproveModalOpen(false)}
       >
         <p>Bạn có chắc chắn chấp thuận báo giá này chứ??</p>
       </Modal>
