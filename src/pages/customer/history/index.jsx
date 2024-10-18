@@ -29,7 +29,12 @@ function HistoryPage() {
       <CommonPageTemplate title={title} context={context} banner={banner}>
         <div className="history-page-container">
           <Card
-            title={<h1 style={{ textAlign: "center" }}>Lịch sử đơn hàng</h1>}
+            style={{ borderRadius: "20px" }}
+            title={
+              <h1 style={{ textAlign: "center", margin: "20px 0" }}>
+                Lịch sử đơn hàng
+              </h1>
+            }
           >
             {constructionOrders && constructionOrders.length > 0 ? (
               constructionOrders.map((constructionOrder) => (
@@ -38,7 +43,7 @@ function HistoryPage() {
                   style={{
                     backgroundColor: "#f0f4f8",
                     borderRadius: "8px",
-                    padding: "16px",
+                    padding: "30px",
                     marginBottom: "16px",
                   }}
                 >
@@ -70,18 +75,29 @@ function HistoryPage() {
                       </div>
                     </Col>
                     <Col span={4}>
-                      <button className="btn">Hủy đơn</button>
-                      {constructionOrder.consultantAccount && (
-                        <Link
-                          to={{
-                            pathname: `/order/${constructionOrder.id}`,
-                            state: "customer",
-                          }}
-                          style={{ color: "#007bff" }}
-                        >
-                          Chi tiết
-                        </Link>
-                      )}
+                      <button
+                        style={{
+                          backgroundColor: "#000",
+                          border: "none",
+                        }}
+                      >
+                        Hủy đơn
+                      </button>
+                      <button>
+                        {constructionOrder.consultantAccount && (
+                          <Link
+                            to={{
+                              pathname: `/order/${constructionOrder.id}`,
+                              state: "customer",
+                            }}
+                            style={{
+                              color: "#007bff",
+                            }}
+                          >
+                            Chi tiết
+                          </Link>
+                        )}
+                      </button>
                     </Col>
                   </Row>
                 </Card>
