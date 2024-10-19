@@ -55,7 +55,7 @@ const PaymentResponse = () => {
   if (loading) return <LoadingPage />;
   return (
     <div>
-      {statePayment?.success ? (
+      {statePayment?.status ? (
         <h1>Thanh toán thành công</h1>
       ) : (
         <h1>Thanh toán thất bại</h1>
