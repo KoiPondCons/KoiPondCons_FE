@@ -97,6 +97,7 @@ function PriceListCustomer() {
           constructionOrder={constructionOrder}
           actor={actor}
           unitPrice={comboPrice?.unitPrice}
+          selectCombo={constructionOrder?.quotationResponse?.combo?.id}
           // pondVolume={constructionOrder.quotationResponse.pondVolume}
           // promotionList={promotionList}
           // comboId={selectedCombo}

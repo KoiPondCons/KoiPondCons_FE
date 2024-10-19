@@ -225,7 +225,7 @@ function PriceListStaff() {
       constructionOrder &&
       constructionOrder.quotationResponse
     ) {
-      setSelectedCombo(constructionOrder.quotationResponse.combo.id);
+      setSelectedCombo(constructionOrder?.quotationResponse?.combo?.id);
     }
   }, [actor, constructionOrder]);
   const [designed, setDesigned] = useState();
@@ -502,6 +502,7 @@ function PriceListStaff() {
                 actor={actor}
                 unitPrice={comboPrice.unitPrice}
                 onPromotionDeleted={fecthPromotionList}
+                selectCombo={selectedCombo}
               />
             </div>
           )}

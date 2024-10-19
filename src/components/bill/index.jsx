@@ -6,7 +6,13 @@ import api from "../../config/axios";
 import { useNavigate } from "react-router-dom";
 import { TiDelete } from "react-icons/ti";
 
-function Bill({ unitPrice, actor, onPromotionDeleted, constructionOrder }) {
+function Bill({
+  unitPrice,
+  actor,
+  onPromotionDeleted,
+  selectCombo,
+  constructionOrder,
+}) {
   const navigate = useNavigate();
 
   const [isManagerApproveModalOpen, setIsManagerApproveModalOpen] =
@@ -34,7 +40,7 @@ function Bill({ unitPrice, actor, onPromotionDeleted, constructionOrder }) {
   }
 
   const quotationValue = {
-    combo: constructionOrder.quotationResponse?.combo?.id,
+    combo: selectCombo,
     pondVolume: constructionOrder.quotationResponse?.pondVolume,
     quotationFile: null,
   };
@@ -359,6 +365,7 @@ Bill.propTypes = {
   actor: PropTypes.string.isRequired,
   onPromotionDeleted: PropTypes.func.isRequired,
   unitPrice: PropTypes.number.isRequired,
+  selectCombo: PropTypes.number.isRequired,
   constructionOrder: PropTypes.shape({
     customerDescription: PropTypes.string,
     customerEmail: PropTypes.string,
