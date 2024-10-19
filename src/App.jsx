@@ -39,9 +39,8 @@ import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
 import OrderManagement from "./pages/manager/manage-order";
 import PriceListStaff from "./pages/consulting/create-price-list";
-
-import PaymentConfirm from "./pages/payment";
 import PaymentResponse from "./components/payment-response";
+import DesignReview from "./pages/design-review";
 function App() {
   const router = createBrowserRouter([
     {
@@ -167,16 +166,16 @@ function App() {
     },
     //PAYMENT
     {
-      path: "payment",
-      element: <PaymentConfirm />,
-    },
-    {
       path: "payment-response",
       element: <PaymentResponse />,
     },
     {
       path: "*", // Route cho các đường dẫn không tồn tại
       element: <NotFound />, // Chuyển hướng đến trang NotFound
+    },
+    {
+      path: "design-review/:id",
+      element: <DesignReview />,
     },
   ]);
 
