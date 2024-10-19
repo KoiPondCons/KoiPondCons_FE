@@ -13,7 +13,7 @@ import OrderInfor from "../../components/order-information";
 function Order() {
   const navigate = useNavigate();
   const location = useLocation();
-  const actor = location.state;
+  const { actor } = location.state;
   const { id } = useParams();
   const [constructionOrder, setConstructionOrder] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -175,7 +175,7 @@ function Order() {
                 </span>
               </div>
               <Form.Item label="Nhà thiết kế">
-                {constructionOrder.quotationResponse?.status ===
+                {constructionOrder.quotationResponse?.status !==
                 "CUSTOMER_CONFIRMED" ? (
                   <div className="display-input">
                     <span>Chờ hoàn thành báo giá</span>
@@ -214,14 +214,16 @@ function Order() {
               </Form.Item>
 
               <Form.Item label="Người chịu trách nhiệm thi công">
-                {constructionOrder.constructionOrder?.designDrawingResponse
-                  ?.status !== "CUSTOMER_CONFIRMED" ? (
+                {constructionOrder?.designDrawingResponse?.status !==
+                "CUSTOMER_CONFIRMED" ? (
                   <div className="display-input">
                     <span>Chờ hoàn thành thiết kế</span>
                   </div>
                 ) : constructionOrder.constructorAccount?.name ? (
                   <div className="display-input">
-                    <span>{constructionOrder.constructorAccount.name}</span>
+                    <span>
+                      {constructionOrder.constructorAccount.name || "N/A"}
+                    </span>
                   </div>
                 ) : actor === "manager" ? (
                   <div>
