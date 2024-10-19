@@ -92,7 +92,19 @@ function ActiveProject() {
       <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
     );
   }
-
+  const now = new Date();
+  const handleConstructed = async (constructionOrder) => {
+    const value = {
+      dateStart: constructionOrder.requestDate,
+      dateEnd: now.toISOString(),
+      finished: true,
+    };
+    try {
+      await api.put();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div>
       <NavDashboard actor="construction">
@@ -119,7 +131,11 @@ function ActiveProject() {
             </div>
             <div>
               <div
-                style={{ textAlign: "center", cursor: "pointer", width: '120px' }}
+                style={{
+                  textAlign: "center",
+                  cursor: "pointer",
+                  width: "120px",
+                }}
                 onClick={() =>
                   showModal(`${order.designDrawingResponse?.designFile}`)
                 }
