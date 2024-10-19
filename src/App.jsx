@@ -11,12 +11,12 @@ import OngoingConsultations from "./pages/consulting/ongoing-consultations";
 //Designer
 import Designer from "./pages/designer";
 //Manager
-import StaffMangager from "./pages/manager/manage-staff"
-import ConstructionOrders from "./pages/manager/construction-orders"
-import ManageDesign from "./pages/manager/manage-design"
-import ManageQuote from "./pages/manager/manage-quote"
-import CustomerProfileManagement from "./pages/manager/customer-profile-management"
-import MaintenanceOrders from "./pages/manager/maintenance-orders"
+import StaffMangager from "./pages/manager/manage-staff";
+import ConstructionOrders from "./pages/manager/construction-orders";
+import ManageDesign from "./pages/manager/manage-design";
+import ManageQuote from "./pages/manager/manage-quote";
+import CustomerProfileManagement from "./pages/manager/customer-profile-management";
+import MaintenanceOrders from "./pages/manager/maintenance-orders";
 
 //Customer
 import HistoryPage from "./pages/customer/history";
@@ -41,6 +41,7 @@ import OrderManagement from "./pages/manager/manage-order";
 import PriceListStaff from "./pages/consulting/create-price-list";
 
 import PaymentConfirm from "./pages/payment";
+import PaymentResponse from "./components/payment-response";
 function App() {
   const router = createBrowserRouter([
     {
@@ -138,19 +139,19 @@ function App() {
     //Manager
     {
       path: "manager/design-management",
-      element: <ManageDesign/>,
+      element: <ManageDesign />,
     },
     {
       path: "manager/staff-management",
-      element:<StaffMangager/>,
+      element: <StaffMangager />,
     },
     {
       path: "manager/construction-orders",
-      element: <ConstructionOrders/>,
+      element: <ConstructionOrders />,
     },
     {
       path: "manager/quote-management",
-      element: <ManageQuote/>,
+      element: <ManageQuote />,
     },
     {
       path: "manager",
@@ -158,16 +159,20 @@ function App() {
     },
     {
       path: "manager/customer-profile-management",
-      element: <CustomerProfileManagement/>,
+      element: <CustomerProfileManagement />,
     },
     {
       path: "manager/maintenance-orders",
-      element: <MaintenanceOrders/>,
+      element: <MaintenanceOrders />,
     },
     //PAYMENT
     {
       path: "payment",
       element: <PaymentConfirm />,
+    },
+    {
+      path: "payment-response",
+      element: <PaymentResponse />,
     },
     {
       path: "*", // Route cho các đường dẫn không tồn tại
