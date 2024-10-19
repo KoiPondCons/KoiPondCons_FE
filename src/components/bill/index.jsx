@@ -1,21 +1,12 @@
 import React, { useRef, useState } from "react";
-import { Modal } from "antd";
+import { Modal, Table } from "antd";
 import PropTypes from "prop-types";
 import "./index.css";
 import api from "../../config/axios";
 import { useNavigate } from "react-router-dom";
 import { TiDelete } from "react-icons/ti";
 
-function Bill({
-  constructionOrderId,
-  unitPrice,
-  pondVolume,
-  promotionList = [],
-  actor,
-  comboId,
-  quotationId,
-  onPromotionDeleted,
-}) {
+function Bill({ unitPrice, actor, onPromotionDeleted, constructionOrder }) {
   const navigate = useNavigate();
 
   const [isManagerApproveModalOpen, setIsManagerApproveModalOpen] =
@@ -30,9 +21,12 @@ function Bill({
   const [isDeletePromotionOpen, setIsDeletePromotionOpen] = useState(false);
   const [promotionIdToDelete, setPromotionIdToDelete] = useState(null);
   let totalDiscountPrice = 0;
-  if (Array.isArray(promotionList)) {
-    promotionList.forEach((promotion) => {
-      const discountPrice = promotion.discountPercent * unitPrice * pondVolume;
+  if (Array.isArray(constructionOrder?.quotationResponse?.promotions)) {
+    constructionOrder.quotationResponse.promotions.forEach((promotion) => {
+      const discountPrice =
+        promotion.discountPercent *
+        unitPrice *
+        constructionOrder.quotationResponse.pondVolume;
       totalDiscountPrice += discountPrice;
     });
   } else {
@@ -40,14 +34,14 @@ function Bill({
   }
 
   const quotationValue = {
-    combo: comboId,
-    pondVolume: pondVolume,
+    combo: constructionOrder.quotationResponse?.combo?.id,
+    pondVolume: constructionOrder.quotationResponse?.pondVolume,
     quotationFile: null,
   };
 
   const handleSendQuotation = async () => {
     try {
-      await api.put(`quotation/${quotationId}`, {
+      await api.put(`quotation/${constructionOrder.quotationResponse?.id}`, {
         ...quotationValue,
         status: "MANAGER_PENDING",
       });
@@ -60,7 +54,7 @@ function Bill({
 
   const handleManagerApproveQuotation = async () => {
     try {
-      await api.put(`quotation/${quotationId}`, {
+      await api.put(`quotation/${constructionOrder.quotationResponse?.id}`, {
         ...quotationValue,
         status: "CUSTOMER_PENDING",
       });
@@ -73,7 +67,7 @@ function Bill({
 
   const handleManagerRejectQuotation = async () => {
     try {
-      await api.put(`quotation/${quotationId}`, {
+      await api.put(`quotation/${constructionOrder.quotationResponse?.id}`, {
         ...quotationValue,
         status: "MANAGER_REJECTED",
       });
@@ -85,12 +79,12 @@ function Bill({
   };
   const handleCustomerApproveQuotation = async () => {
     try {
-      await api.put(`quotation/${quotationId}`, {
+      await api.put(`quotation/${constructionOrder.quotationResponse?.id}`, {
         ...quotationValue,
         status: "CUSTOMER_CONFIRMED",
       });
       console.log("Quotation updated successfully");
-      navigate(`/order/${constructionOrderId}`, {
+      navigate(`/order/${constructionOrder.id}`, {
         state: { scrollToPayment: true },
       });
     } catch (error) {
@@ -99,7 +93,7 @@ function Bill({
   };
   const handleCustomerRejectQuotation = async () => {
     try {
-      await api.put(`quotation/${quotationId}`, {
+      await api.put(`quotation/${constructionOrder.quotationResponse?.id}`, {
         ...quotationValue,
         status: "CUSTOMER_REJECTED",
       });
@@ -158,7 +152,9 @@ function Bill({
   };
   const handleDeletePromotion = async (promotionId) => {
     try {
-      await api.delete(`quotations/promo/${quotationId}/${promotionId}`);
+      await api.delete(
+        `quotations/promo/${constructionOrder.quotationResponse.id}/${promotionId}`
+      );
       console.log("Delete promotion success");
       onPromotionDeleted();
       setIsDeletePromotionOpen(false);
@@ -166,6 +162,23 @@ function Bill({
       console.error(error);
     }
   };
+  const columns = [
+    {
+      title: "Các đợt thanh toán",
+      dataIndex: "period",
+      key: "period",
+    },
+    {
+      title: "Nội dung",
+      dataIndex: "content",
+      key: "content",
+    },
+    {
+      title: "Số tiền cần thanh toán",
+      dataIndex: "amount",
+      key: "amount",
+    },
+  ];
   return (
     <div className="container" style={{ marginBottom: "30px" }}>
       <div className="card cart">
@@ -184,9 +197,11 @@ function Bill({
                     : "Loading VND/m3"}
                 </span>
                 <span style={{ fontWeight: "bold" }}>Thể tích</span>
-                <span style={{ textAlign: "right" }}>{pondVolume} m3</span>
+                <span style={{ textAlign: "right" }}>
+                  {constructionOrder.quotationResponse?.pondVolume} m3
+                </span>
               </div>
-              {promotionList.length > 0 && (
+              {constructionOrder.quotationResponse?.promotions.length > 0 && (
                 <>
                   <hr />
                   <p style={{ marginTop: "20px" }}>HÓA ĐƠN TẠM TÍNH</p>
@@ -195,7 +210,8 @@ function Bill({
                     <span style={{ textAlign: "right" }}>
                       {unitPrice
                         ? `${new Intl.NumberFormat("vi-VN").format(
-                            unitPrice * pondVolume
+                            unitPrice *
+                              constructionOrder.quotationResponse?.pondVolume
                           )} VND`
                         : "Loading VND"}
                     </span>
@@ -203,35 +219,39 @@ function Bill({
                     <p style={{ marginTop: "20px" }}>GIẢM GIÁ</p>
                     <span></span>
                   </div>
-                  {promotionList.map((promotion, index) => (
-                    <div key={index}>
-                      <div className="details" style={{ padding: "0 30px" }}>
-                        <span style={{ fontWeight: "bold" }}>
-                          {promotion.content || "Giảm giá"}
-                        </span>
-                        <span
-                          style={{ textAlign: "right", marginBottom: "40px" }}
-                        >
-                          {unitPrice && pondVolume
-                            ? `-${new Intl.NumberFormat("vi-VN").format(
-                                promotion.discountPercent *
-                                  unitPrice *
-                                  pondVolume
-                              )} VND`
-                            : "N/A"}
-                          {actor === "consulting" ? (
-                            <TiDelete
-                              style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                setPromotionIdToDelete(promotion.id);
-                                setIsDeletePromotionOpen(true);
-                              }}
-                            />
-                          ) : null}
-                        </span>
+                  {constructionOrder.quotationResponse?.promotions.map(
+                    (promotion, index) => (
+                      <div key={index}>
+                        <div className="details" style={{ padding: "0 30px" }}>
+                          <span style={{ fontWeight: "bold" }}>
+                            {promotion.content || "Giảm giá"}
+                          </span>
+                          <span
+                            style={{ textAlign: "right", marginBottom: "40px" }}
+                          >
+                            {unitPrice &&
+                            constructionOrder.quotationResponse?.pondVolume
+                              ? `-${new Intl.NumberFormat("vi-VN").format(
+                                  promotion.discountPercent *
+                                    unitPrice *
+                                    constructionOrder.quotationResponse
+                                      ?.pondVolume
+                                )} VND`
+                              : "N/A"}
+                            {actor === "consulting" ? (
+                              <TiDelete
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                  setPromotionIdToDelete(promotion.id);
+                                  setIsDeletePromotionOpen(true);
+                                }}
+                              />
+                            ) : null}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </>
               )}
               <hr />
@@ -241,11 +261,23 @@ function Bill({
                 <span style={{ textAlign: "right" }}>
                   {unitPrice
                     ? `${new Intl.NumberFormat("vi-VN").format(
-                        unitPrice * pondVolume - totalDiscountPrice
+                        unitPrice *
+                          constructionOrder.quotationResponse?.pondVolume -
+                          totalDiscountPrice
                       )} VND`
                     : "Loading VND"}
                 </span>
               </div>
+              <p style={{ fontSize: "1.2rem" }}>
+                Chúng tôi sẽ chia việc thanh toán thành các đợt nhỏ để thuận
+                tiện cho quý khách. Nếu có thắc mắc, xin vui lòng liên hệ qua
+                số: {constructionOrder.consultantAccount.phone}.
+              </p>
+              <Table
+                columns={columns}
+                dataSource={constructionOrder.consOrderPaymentList}
+                pagination={false}
+              ></Table>
             </div>
           </div>
         </div>
@@ -324,14 +356,45 @@ function Bill({
 }
 
 Bill.propTypes = {
-  constructionOrderId: PropTypes.number.isRequired,
-  unitPrice: PropTypes.number.isRequired,
-  pondVolume: PropTypes.number.isRequired,
-  promotionList: PropTypes.array.isRequired,
   actor: PropTypes.string.isRequired,
-  comboId: PropTypes.number.isRequired,
-  quotationId: PropTypes.number.isRequired,
   onPromotionDeleted: PropTypes.func.isRequired,
+  unitPrice: PropTypes.number.isRequired,
+  constructionOrder: PropTypes.shape({
+    customerDescription: PropTypes.string,
+    customerEmail: PropTypes.string,
+    customerName: PropTypes.string,
+    customerPhone: PropTypes.string,
+    designed: PropTypes.bool,
+    id: PropTypes.number,
+    pondAddress: PropTypes.string,
+    consultantAccount: PropTypes.shape({
+      phone: PropTypes.string,
+    }).isRequired,
+    quotationResponse: PropTypes.shape({
+      combo: PropTypes.shape({
+        id: PropTypes.number,
+      }),
+      id: PropTypes.number,
+      pondVolume: PropTypes.number,
+      promotions: PropTypes.arrayOf(PropTypes.object),
+      status: PropTypes.string,
+      statusDescription: PropTypes.string,
+    }).isRequired,
+    requestDate: PropTypes.string,
+    status: PropTypes.string,
+    statusDescription: PropTypes.string,
+    consOrderPaymentList: PropTypes.arrayOf(
+      PropTypes.shape({
+        amount: PropTypes.number,
+        content: PropTypes.string,
+        id: PropTypes.number,
+        paid: PropTypes.bool,
+        paidAt: PropTypes.string,
+        paymentMethod: PropTypes.string,
+        period: PropTypes.number,
+      })
+    ).isRequired,
+  }).isRequired,
 };
 
 export default Bill;
