@@ -101,6 +101,12 @@ function OrderManagement() {
               )}
             </div>
           );
+        } else if (record.status === "CONSTRUCTING") {
+          return (
+            <div style={textStyle}>
+              {!record.constructorAccount && <p>Chờ chỉ định nhà thiết kế</p>}
+            </div>
+          );
         } else {
           return (
             <div style={textStyle}>
