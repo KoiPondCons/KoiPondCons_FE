@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Modal, Row } from "antd";
+import { Card, Col, Modal, Row, Spin } from "antd";
 import "./index.css";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import CommonPageTemplate from "../../../components/common-page-template";
 import api from "../../../config/axios";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
+import { LoadingOutlined } from "@ant-design/icons";
 function HistoryPage() {
   const title = "Lịch sử đơn hàng";
   const context = "Trang chủ »  Lịch sử đơn hàng";
@@ -15,14 +16,17 @@ function HistoryPage() {
   const [constructionOrders, setConstructionOrders] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
-
+  const [loading, setLoading] = useState();
   const fecthConstructionOrders = async () => {
+    setLoading(true);
     try {
       const response = await api.get("orders/customer");
       setConstructionOrders(response.data);
       console.log(response.data);
     } catch (error) {
       console.log("Error at fecthConstructionOrders", error);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -57,7 +61,20 @@ function HistoryPage() {
               </h1>
             }
           >
-            {constructionOrders && constructionOrders.length > 0 ? (
+            {loading ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: "40vh",
+                }}
+              >
+                <Spin
+                  indicator={<LoadingOutlined style={{ fontSize: 48 }} />}
+                />
+              </div>
+            ) : constructionOrders && constructionOrders.length > 0 ? (
               constructionOrders.map((constructionOrder) => (
                 <Card
                   key={constructionOrder.id}
@@ -76,17 +93,11 @@ function HistoryPage() {
                       <div className="history-construction-order-info">
                         <p>Mã đơn: {constructionOrder.id}</p>
                         <p>Trạng thái: {constructionOrder.statusDescription}</p>
-                        {constructionOrder.status !== "REQUESTED" &&
-                        constructionOrder.consultantAccount ? (
-                          <p>
-                            Số tư vấn viên:{" "}
-                            {constructionOrder.consultantAccount.phone}
-                          </p>
-                        ) : (
-                          <p>
-                            Số tư vấn viên: Chưa có tư vấn viên được chỉ định
-                          </p>
-                        )}
+                        <p>
+                          Số tư vấn viên:{" "}
+                          {constructionOrder?.consultantAccount?.phone ||
+                            "Chưa có tư vấn viên được chỉ định"}
+                        </p>
                         <time dateTime={constructionOrder.requestDate}>
                           Ngày gửi đơn:{" "}
                           {moment(constructionOrder.requestDate).format(
