@@ -43,7 +43,9 @@ function ConsultationRequests() {
     await api.put(`orders/consultant/${selectedOrder.id}`);
     await api.put(`orders/${selectedOrder.id}`, selectedOrder);
     console.log("Update order status success");
-    navigate("/consulting/ongoing-consultation");
+    navigate(`/consulting/price-list-staff/${selectedOrder.id}`, {
+      state: {actor: "consulting"},
+    })
     setIsModalOpen(false);
   };
 

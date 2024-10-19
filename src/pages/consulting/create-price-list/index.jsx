@@ -7,6 +7,7 @@ import {
   Form,
   Input,
   InputNumber,
+  message,
   Modal,
   Popconfirm,
   Radio,
@@ -49,27 +50,7 @@ function PriceListStaff() {
   const [imageSrc, setImageSrc] = useState("");
   const [newPondVolume, setNewPondVolume] = useState();
   const [imageUrl, setImageUrl] = useState("N/A");
-
-  // const fileList = [
-  //   {
-  //     uid: '0',
-  //     name: 'xxx.png',
-  //     status: 'uploading',
-  //     percent: 33,
-  //   },
-  //   {
-  //     uid: '-1',
-  //     name: 'yyy.png',
-  //     status: 'done',
-  //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  //     thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  //   },
-  //   {
-  //     uid: '-2',
-  //     name: 'zzz.png',
-  //     status: 'error',
-  //   },
-  // ];
+  var isDesigned = false;
 
   const handleUploadChange = ({ fileList: newFileList }) =>
     setFileList(newFileList);
@@ -96,7 +77,7 @@ function PriceListStaff() {
         designFile: "N/A",
       };
       await api.put(`design-drawings/${drawingId}`, updatedData);
-      fetchConstructionOrder();
+      await fetchConstructionOrder();
       setFileList([]);
       toast.success("Xóa bản vẽ thành công!");
     } catch (error) {
@@ -142,7 +123,9 @@ function PriceListStaff() {
     try {
       const response = await api.get(`orders/${id}`);
       setConstructionOrder(response.data);
-      console.log(response.data);
+      setDesigned(response.data.designed);
+      isDesigned = response.data.designed;
+      console.log(response.data, "trong fetch");
     } catch (err) {
       console.log(err);
     } finally {
@@ -152,7 +135,17 @@ function PriceListStaff() {
   useEffect(() => {
     fecthCombo();
     fetchConstructionOrder();
+    
   }, []);
+
+  const handleUpdateOrder = async (orderId, order) => {
+    try {
+      const response = await api.put(`/orders/${orderId}`, order)
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
   const handleSelectChange = (value) => {
     setSelectedCombo(value);
     console.log("Selected combo:", value);
@@ -221,7 +214,11 @@ function PriceListStaff() {
     fetchComboPrice();
     fecthPromotionList();
     fecthPromotions();
+    console.log(constructionOrder, "haha");
+    console.log(isDesigned, "biến trong fetch");
+
   }, [selectedCombo]);
+
 
   const isComboSelected = selectedCombo !== null;
 
@@ -237,7 +234,10 @@ function PriceListStaff() {
   const [designed, setDesigned] = useState();
   const handleSelectChangeDesigned = async (e) => {
     const radioChoose = e.target.value === "true";
+    isDesigned = radioChoose;
+    console.log(isDesigned, "biến của tui");
     setDesigned(radioChoose);
+    
   };
   const handlePromotion = async (selectedPromotionIds) => {
     try {
@@ -284,32 +284,50 @@ function PriceListStaff() {
     }
   };
   const onFinish = async (values) => {
-    // setImageUrl("N/A");
-    var url = "N/A";
+    var url = constructionOrder.designDrawingResponse.designFile;
     if (fileList.length > 0) {
       const file = fileList[0];
       url = await uploadFile(file.originFileObj);
       console.log(url);
     }
+    if (designed) {
+      if (url === "N/A") {
+        message.error('Xin vui lòng upload file!');
+        return;
+      }
+    }
+    else {
+      url = "N/A";
+    }
+    
     try {
       await handleUpdatePondVolume();
       await handlePromotion(values.promotionIds || []);
       await fecthPromotionList();
-      await fetchConstructionOrder();
+      // await fetchConstructionOrder();
       constructionOrder.designDrawingResponse.designFile = url;
+
       if (url !== "N/A") {
         constructionOrder.designDrawingResponse.status = "MANAGER_PENDING";
+        constructionOrder.designed = true;
       } else {
         constructionOrder.designDrawingResponse.status = "DESIGNING";
+        constructionOrder.designed = false;
       }
+      await handleUpdateOrder(constructionOrder.id, constructionOrder);
       await api.put(
         `design-drawings/${constructionOrder.designDrawingResponse.id}`,
         constructionOrder.designDrawingResponse
       );
-      fetchConstructionOrder();
+      
+
+      setFileList([]);
+      await fetchConstructionOrder();
       toast.success("Lưu thành công!");
+      
     } catch (error) {
       console.error("Error in onFinish:", error);
+      toast.error(error.response.data);
     }
   };
   return (
@@ -356,7 +374,7 @@ function PriceListStaff() {
                     rules={[]}
                   >
                     <InputNumber
-                      value={constructionOrder.quotationResponse.pondVolume}
+                    defaultValue={constructionOrder.quotationResponse.pondVolume}
                       min={8}
                       max={10000}
                       onChange={handlePondVolumeChange}
@@ -386,19 +404,20 @@ function PriceListStaff() {
                 </Col>
                 <Col span={8}>
                   <FormItem
-                    label="Khách hàng đã có bản vẽ thiết kế?"
+                    label="Sử dụng thiết kế mẫu?"
                     labelCol={{ span: 24 }}
                     wrapperCol={{ span: 24 }}
                   >
                     <Radio.Group
-                      defaultValue="false"
+                      defaultValue={constructionOrder.designed + ''}
                       onChange={handleSelectChangeDesigned}
+                      
                     >
                       <Radio.Button value="true">Có</Radio.Button>
-                      <Radio.Button value="false">Chưa</Radio.Button>
+                      <Radio.Button value="false">Không có</Radio.Button>
                     </Radio.Group>
                   </FormItem>
-                  {designed &&
+                  {designed == true &&
                   constructionOrder &&
                   constructionOrder.designDrawingResponse ? (
                     constructionOrder.designDrawingResponse.status !==
@@ -437,7 +456,7 @@ function PriceListStaff() {
                           </Button>
                         </Popconfirm>
                       </div>
-                    ) : (
+                    ) :  (
                       <div style={{ textAlign: "center", cursor: "pointer" }}>
                         <Upload
                           listType="picture"
@@ -455,7 +474,7 @@ function PriceListStaff() {
                           </div>
                         </Upload>
                       </div>
-                    )
+                    ) 
                   ) : (
                     <Spin spinning={loading} />
                   )}
