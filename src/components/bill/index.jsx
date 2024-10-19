@@ -271,7 +271,7 @@ function Bill({ unitPrice, actor, onPromotionDeleted, constructionOrder }) {
               <p style={{ fontSize: "1.2rem" }}>
                 Chúng tôi sẽ chia việc thanh toán thành các đợt nhỏ để thuận
                 tiện cho quý khách. Nếu có thắc mắc, xin vui lòng liên hệ qua
-                số: {constructionOrder.consultantAccount.phone}.
+                số: {constructionOrder.consultantAccount?.phone}.
               </p>
               <Table
                 columns={columns}
