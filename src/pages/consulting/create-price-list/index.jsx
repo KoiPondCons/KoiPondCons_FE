@@ -135,16 +135,15 @@ function PriceListStaff() {
   useEffect(() => {
     fecthCombo();
     fetchConstructionOrder();
-    
   }, []);
 
   const handleUpdateOrder = async (orderId, order) => {
     try {
-      const response = await api.put(`/orders/${orderId}`, order)
+      const response = await api.put(`/orders/${orderId}`, order);
     } catch (error) {
       console.log(error.response);
     }
-  }
+  };
 
   const handleSelectChange = (value) => {
     setSelectedCombo(value);
@@ -216,9 +215,7 @@ function PriceListStaff() {
     fecthPromotions();
     console.log(constructionOrder, "haha");
     console.log(isDesigned, "biến trong fetch");
-
   }, [selectedCombo]);
-
 
   const isComboSelected = selectedCombo !== null;
 
@@ -237,7 +234,6 @@ function PriceListStaff() {
     isDesigned = radioChoose;
     console.log(isDesigned, "biến của tui");
     setDesigned(radioChoose);
-    
   };
   const handlePromotion = async (selectedPromotionIds) => {
     try {
@@ -292,14 +288,13 @@ function PriceListStaff() {
     }
     if (designed) {
       if (url === "N/A") {
-        message.error('Xin vui lòng upload file!');
+        message.error("Xin vui lòng upload file!");
         return;
       }
-    }
-    else {
+    } else {
       url = "N/A";
     }
-    
+
     try {
       await handleUpdatePondVolume();
       await handlePromotion(values.promotionIds || []);
@@ -319,12 +314,10 @@ function PriceListStaff() {
         `design-drawings/${constructionOrder.designDrawingResponse.id}`,
         constructionOrder.designDrawingResponse
       );
-      
 
       setFileList([]);
       await fetchConstructionOrder();
       toast.success("Lưu thành công!");
-      
     } catch (error) {
       console.error("Error in onFinish:", error);
       toast.error(error.response.data);
@@ -374,7 +367,9 @@ function PriceListStaff() {
                     rules={[]}
                   >
                     <InputNumber
-                    defaultValue={constructionOrder.quotationResponse.pondVolume}
+                      defaultValue={
+                        constructionOrder.quotationResponse.pondVolume
+                      }
                       min={8}
                       max={10000}
                       onChange={handlePondVolumeChange}
@@ -409,9 +404,8 @@ function PriceListStaff() {
                     wrapperCol={{ span: 24 }}
                   >
                     <Radio.Group
-                      defaultValue={constructionOrder.designed + ''}
+                      defaultValue={constructionOrder.designed + ""}
                       onChange={handleSelectChangeDesigned}
-                      
                     >
                       <Radio.Button value="true">Có</Radio.Button>
                       <Radio.Button value="false">Không có</Radio.Button>
@@ -436,10 +430,15 @@ function PriceListStaff() {
                             Xem file thiết kế
                           </p>
                         </div>
-                        <Popconfirm style={{display: 'inline'}}
+                        <Popconfirm
+                          style={{ display: "inline" }}
                           title="Xóa bản vẽ"
                           description="Bạn có chắc muốn xóa bản vẽ?"
-                          onConfirm={() => handleDeleteFile(constructionOrder.designDrawingResponse.id)}
+                          onConfirm={() =>
+                            handleDeleteFile(
+                              constructionOrder.designDrawingResponse.id
+                            )
+                          }
                           icon={
                             <QuestionCircleOutlined
                               style={{
@@ -448,15 +447,12 @@ function PriceListStaff() {
                             />
                           }
                         >
-                          <Button
-                            icon={<DeleteOutlined />} 
-                            danger
-                          >
+                          <Button icon={<DeleteOutlined />} danger>
                             Xóa
                           </Button>
                         </Popconfirm>
                       </div>
-                    ) :  (
+                    ) : (
                       <div style={{ textAlign: "center", cursor: "pointer" }}>
                         <Upload
                           listType="picture"
@@ -474,7 +470,7 @@ function PriceListStaff() {
                           </div>
                         </Upload>
                       </div>
-                    ) 
+                    )
                   ) : (
                     <Spin spinning={loading} />
                   )}
@@ -502,13 +498,9 @@ function PriceListStaff() {
           {comboPrice && constructionOrder && (
             <div className="container-bill">
               <Bill
-                constructionOrderId={constructionOrder.id}
+                constructionOrder={constructionOrder}
                 actor={actor}
                 unitPrice={comboPrice.unitPrice}
-                pondVolume={constructionOrder.quotationResponse.pondVolume}
-                promotionList={promotionList}
-                comboId={selectedCombo}
-                quotationId={constructionOrder.quotationResponse.id}
                 onPromotionDeleted={fecthPromotionList}
               />
             </div>
