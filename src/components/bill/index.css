@@ -140,8 +140,7 @@ hr {
   font-weight: 600;
   transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
   flex-grow: 1; /* Expand based on available space */
-  flex-basis: 50%; /* Each button takes 50% of the container's width */
-  max-width: 50%; /* Limit each button to 50% width */
+  flex-basis: 50%; 
   margin-right: 15px; /* Space between buttons */
   cursor: pointer;
 }

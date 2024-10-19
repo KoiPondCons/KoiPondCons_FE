@@ -1,7 +1,7 @@
 .history-page-container {
   padding: 5% 10%;
 }
-.history-page-container button {
+/* .history-page-container button {
   border: none;
   background-color: rgba(255, 255, 255,0);
   color: #fff;
@@ -11,7 +11,7 @@
   padding: 8px 16px;
   display: block;
   justify-content: center;
-}
+} */
 
 .history-construction-order-info p {
 font-size: 1.2rem;
