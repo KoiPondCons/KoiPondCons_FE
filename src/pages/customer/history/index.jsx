@@ -50,6 +50,20 @@ function HistoryPage() {
     }
   };
   const renderButtons = (constructionOrder) => {
+    if (constructionOrder.quotationResponse.status === "CUSTOMER_PENDING") {
+      return (
+        <Button
+          className="btn"
+          onClick={() => {
+            navigate(`/price-list/${constructionOrder.id}`, {
+              state: "customer",
+            });
+          }}
+        >
+          Duyệt báo giá
+        </Button>
+      );
+    }
     if (
       constructionOrder.status === "REQUESTED" ||
       constructionOrder.status === "PROCESSING"
@@ -67,27 +81,13 @@ function HistoryPage() {
       );
     }
 
-    if (constructionOrder.quotationResponse.status === "CUSTOMER_PENDING") {
-      return (
-        <Button
-          className="btn"
-          onClick={() => {
-            navigate(`/price-list/${constructionOrder.id}`, {
-              state: "customer",
-            });
-          }}
-        >
-          Duyệt báo giá
-        </Button>
-      );
-    }
     if (constructionOrder.designDrawingResponse.status === "CUSTOMER_PENDING") {
       return (
         <Button
           className="btn"
           onClick={() => {
-            navigate(`/price-list/${constructionOrder.id}`, {
-              state: "customer",
+            navigate(`/design-review/${constructionOrder.id}`, {
+              state: { actor: "customer" },
             });
           }}
         >
