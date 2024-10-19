@@ -84,7 +84,8 @@ function Header() {
             <Link to="/blog">BLOG</Link>
           </li>
           <li>
-            <Link to="/contact">LIÊN HỆ</Link>
+            <a href="/contact">LIÊN HỆ</a>
+            {/* <Link to="/contact">LIÊN HỆ</Link> */}
           </li>
         </ul>
         <div className="navbar-auth">
