@@ -99,15 +99,13 @@ function OrderCustomer() {
         const isCustomerApprovedDesign =
           constructionOrder.designDrawingResponse.status ===
           "CUSTOMER_CONFIRMED";
-        const isOrderConstructed =
-          constructionOrder.status === "CONSTRUCTING" ||
-          constructionOrder.status === "CONSTRUCTED";
+        const isOrderConstructed = constructionOrder.status === "CONSTRUCTED";
         return (
           <div>
             {record.period === 1 &&
               (isFirstPeriodPaid ? (
                 <>
-                  Đợt 1: Đã thanh toán vào lúc{" "}
+                  Đã thanh toán vào lúc{" "}
                   {moment(firstPayment.paidAt).format("DD/MM/YYYY HH:mm:ss")}
                 </>
               ) : (
@@ -123,7 +121,7 @@ function OrderCustomer() {
               (isFirstPeriodPaid && isCustomerApprovedDesign ? (
                 isSecondPeriodPaid ? (
                   <>
-                    Đợt 2: Đã thanh toán vào lúc{" "}
+                    Đã thanh toán vào lúc{" "}
                     {moment(secondPayment.paidAt).format("DD/MM/YYYY HH:mm:ss")}
                   </>
                 ) : (
@@ -135,16 +133,14 @@ function OrderCustomer() {
                   </Button>
                 )
               ) : (
-                <span>
-                  Chờ thanh toán đợt 1 và xác nhận thiết kế từ khách hàng
-                </span>
+                <span>Chờ xác nhận thiết kế từ khách hàng</span>
               ))}
 
             {record.period === 3 &&
               (isSecondPeriodPaid && isOrderConstructed ? (
                 isThirdPeriodPaid ? (
                   <>
-                    Đợt 3: Đã thanh toán vào lúc{" "}
+                    Đã thanh toán vào lúc{" "}
                     {moment(thirdPayment.paidAt).format("DD/MM/YYYY HH:mm:ss")}
                   </>
                 ) : (
@@ -156,7 +152,7 @@ function OrderCustomer() {
                   </Button>
                 )
               ) : (
-                <span>Chờ thanh toán đợt 2 và bàn giao công trình</span>
+                <span>Chờ bàn giao công trình</span>
               ))}
           </div>
         );
