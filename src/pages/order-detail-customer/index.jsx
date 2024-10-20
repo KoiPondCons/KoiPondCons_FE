@@ -79,24 +79,86 @@ function OrderCustomer() {
       title: "Thanh toán",
       align: "center",
       render: (record) => {
-        const handlePayment = async () => {
+        const handlePayment = async (paymentId) => {
           try {
-            const linkPayment = await api.post(`submitOrder/${record.id}`);
+            const linkPayment = await api.post(`submitOrder/${paymentId}`);
             window.location.href = linkPayment.data;
           } catch (error) {
             console.error("Payment error: ", error);
           }
         };
+        const paymentList = constructionOrder.consOrderPaymentList || [];
 
-        return record.paid ? (
-          <>
-            Đã thanh toán vào lúc{" "}
-            {moment(record.paidAt).format("DD/MM/YYYY HH:mm:ss")}
-          </>
-        ) : (
-          <Button type="primary" onClick={handlePayment}>
-            Thanh toán
-          </Button>
+        const firstPayment = paymentList.find((p) => p.period === 1);
+        const secondPayment = paymentList.find((p) => p.period === 2);
+        const thirdPayment = paymentList.find((p) => p.period === 3);
+
+        const isFirstPeriodPaid = firstPayment?.paid;
+        const isSecondPeriodPaid = secondPayment?.paid;
+        const isThirdPeriodPaid = thirdPayment?.paid;
+        const isCustomerApprovedDesign =
+          constructionOrder.designDrawingResponse.status ===
+          "CUSTOMER_CONFIRMED";
+        const isOrderConstructed =
+          constructionOrder.status === "CONSTRUCTING" ||
+          constructionOrder.status === "CONSTRUCTED";
+        return (
+          <div>
+            {record.period === 1 &&
+              (isFirstPeriodPaid ? (
+                <>
+                  Đợt 1: Đã thanh toán vào lúc{" "}
+                  {moment(firstPayment.paidAt).format("DD/MM/YYYY HH:mm:ss")}
+                </>
+              ) : (
+                <Button
+                  type="primary"
+                  onClick={() => handlePayment(firstPayment.id)}
+                >
+                  Thanh toán đợt 1
+                </Button>
+              ))}
+
+            {record.period === 2 &&
+              (isFirstPeriodPaid && isCustomerApprovedDesign ? (
+                isSecondPeriodPaid ? (
+                  <>
+                    Đợt 2: Đã thanh toán vào lúc{" "}
+                    {moment(secondPayment.paidAt).format("DD/MM/YYYY HH:mm:ss")}
+                  </>
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={() => handlePayment(secondPayment.id)}
+                  >
+                    Thanh toán đợt 2
+                  </Button>
+                )
+              ) : (
+                <span>
+                  Chờ thanh toán đợt 1 và xác nhận thiết kế từ khách hàng
+                </span>
+              ))}
+
+            {record.period === 3 &&
+              (isSecondPeriodPaid && isOrderConstructed ? (
+                isThirdPeriodPaid ? (
+                  <>
+                    Đợt 3: Đã thanh toán vào lúc{" "}
+                    {moment(thirdPayment.paidAt).format("DD/MM/YYYY HH:mm:ss")}
+                  </>
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={() => handlePayment(thirdPayment.id)}
+                  >
+                    Thanh toán đợt 3
+                  </Button>
+                )
+              ) : (
+                <span>Chờ thanh toán đợt 2 và bàn giao công trình</span>
+              ))}
+          </div>
         );
       },
     },
