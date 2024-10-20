@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import TableTemplate from "../../components/table";
 import { RiDraftLine, RiUpload2Fill } from "react-icons/ri";
-import { Button, Modal, Popconfirm, Upload } from "antd";
+import { Button, Modal, Popconfirm, Spin, Upload } from "antd";
 import uploadFile from "../../utils/file";
 import api from "../../config/axios";
 import { toast } from "react-toastify";
 import { DeleteOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import LoadingPage from "../../components/loading";
 
 function Designer() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -13,7 +14,7 @@ function Designer() {
   const [listDrawings, setListDrawings] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [fileData, setFileData] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   const handleChangeImage =
     async (id) =>
     async ({ fileList: newFileList }) => {
@@ -47,6 +48,7 @@ function Designer() {
   const handleUploadDrawing =
     (drawingId) =>
     async ({ fileList: newFileList }) => {
+      setLoading(true);
       const updatedFileData = fileData.map((item) => {
         if (item.id === drawingId) {
           return { ...item, fileList: newFileList }; // Cập nhật fileList cho dòng này
@@ -73,6 +75,8 @@ function Designer() {
           fetchDrawings();
         } catch (error) {
           console.log(error.response);
+        } finally {
+          setLoading(false);
         }
       }
     };
@@ -210,12 +214,15 @@ function Designer() {
   ];
   return (
     <>
-      <TableTemplate
-        actor="designer"
-        title="Xem đơn thiết kế"
-        columns={columns}
-        requests={listDrawings}
-      ></TableTemplate>
+      <Spin spinning={loading} indicator={<LoadingPage />}>
+        <TableTemplate
+          actor="designer"
+          title="Xem đơn thiết kế"
+          columns={columns}
+          requests={listDrawings}
+        ></TableTemplate>
+      </Spin>
+
       <Modal
         title="Hình ảnh thiết kế"
         visible={isModalVisible}

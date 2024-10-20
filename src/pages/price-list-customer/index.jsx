@@ -94,13 +94,15 @@ function PriceListCustomer() {
         </div>
 
         <Bill
+          constructionOrder={constructionOrder}
           actor={actor}
-          constructionOrderId={constructionOrder.id}
           unitPrice={comboPrice?.unitPrice}
-          pondVolume={constructionOrder.quotationResponse?.pondVolume}
-          promotionList={comboConstructionItems.quotationResponse?.promotions}
-          comboId={constructionOrder.quotationResponse?.combo?.id}
-          quotationId={constructionOrder.quotationResponse?.id}
+          selectCombo={constructionOrder?.quotationResponse?.combo?.id}
+          // pondVolume={constructionOrder.quotationResponse.pondVolume}
+          // promotionList={promotionList}
+          // comboId={selectedCombo}
+          // quotationId={constructionOrder.quotationResponse.id}
+          // onPromotionDeleted={fecthPromotionList}
         />
         <Footer />
       </div>

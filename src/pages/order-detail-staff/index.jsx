@@ -13,7 +13,7 @@ import OrderInfor from "../../components/order-information";
 function Order() {
   const navigate = useNavigate();
   const location = useLocation();
-  const actor = location.state;
+  const { actor } = location.state;
   const { id } = useParams();
   const [constructionOrder, setConstructionOrder] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -103,7 +103,49 @@ function Order() {
       alert("Vui lòng chọn nhà thiết kế");
     }
   };
+  const columns = [
+    {
+      title: "Các đợt thanh toán",
+      dataIndex: "period",
+      key: "period",
+      align: "center",
+    },
+    {
+      title: "Nội dung",
+      dataIndex: "content",
+      key: "content",
+      align: "center",
+    },
+    {
+      title: "Số tiền cần thanh toán",
+      dataIndex: "amount",
+      key: "amount",
+      align: "center",
+    },
+    {
+      title: "Thanh toán",
+      align: "center",
+      render: (record) => {
+        const handlePayment = async () => {
+          try {
+            const linkPayment = await api.post(`submitOrder/${record.id}`);
+            window.location.href = linkPayment.data;
+          } catch (error) {
+            console.error("Payment error: ", error);
+          }
+        };
 
+        return record.paid ? (
+          <>
+            Đã thanh toán vào lúc{" "}
+            {moment(record.paidAt).format("DD/MM/YYYY HH:mm:ss")}
+          </>
+        ) : (
+          <p>Chưa thanh toán</p>
+        );
+      },
+    },
+  ];
   return (
     <NavDashboard actor={actor}>
       <div>
@@ -133,7 +175,7 @@ function Order() {
                 </span>
               </div>
               <Form.Item label="Nhà thiết kế">
-                {constructionOrder.quotationResponse?.status ===
+                {constructionOrder.quotationResponse?.status !==
                 "CUSTOMER_CONFIRMED" ? (
                   <div className="display-input">
                     <span>Chờ hoàn thành báo giá</span>
@@ -172,14 +214,16 @@ function Order() {
               </Form.Item>
 
               <Form.Item label="Người chịu trách nhiệm thi công">
-                {constructionOrder.constructionOrder?.designDrawingResponse
-                  ?.status !== "CUSTOMER_CONFIRMED" ? (
+                {constructionOrder?.designDrawingResponse?.status !==
+                "CUSTOMER_CONFIRMED" ? (
                   <div className="display-input">
                     <span>Chờ hoàn thành thiết kế</span>
                   </div>
                 ) : constructionOrder.constructorAccount?.name ? (
                   <div className="display-input">
-                    <span>{constructionOrder.constructorAccount.name}</span>
+                    <span>
+                      {constructionOrder.constructorAccount.name || "N/A"}
+                    </span>
                   </div>
                 ) : actor === "manager" ? (
                   <div>
@@ -253,6 +297,11 @@ function Order() {
             </Col>
           </Row>
         </Form>
+        <Table
+          columns={columns}
+          dataSource={constructionOrder.consOrderPaymentList}
+          pagination={false}
+        />
       </div>
 
       <Modal

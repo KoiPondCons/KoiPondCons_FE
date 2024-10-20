@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Table } from "antd";
+import { Button, Col, Form, Modal, Row, Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { Progress } from "antd";
 import api from "../../config/axios";
@@ -11,6 +11,7 @@ import moment from "moment";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import OrderInfor from "../../components/order-information";
+import LoadingPage from "../../components/loading";
 
 function OrderCustomer() {
   const navigate = useNavigate();
@@ -53,46 +54,107 @@ function OrderCustomer() {
     setIsModalVisible(false);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <LoadingPage />;
   if (error) return <div>Error fetching data: {error.message}</div>;
   const columns = [
     {
       title: "Các đợt thanh toán",
       dataIndex: "period",
       key: "period",
+      align: "center",
     },
     {
       title: "Nội dung",
       dataIndex: "content",
       key: "content",
+      align: "center",
     },
     {
       title: "Số tiền cần thanh toán",
       dataIndex: "amount",
       key: "amount",
+      align: "center",
     },
     {
       title: "Thanh toán",
+      align: "center",
       render: (record) => {
-        const value = {
-          amount: "500000",
-          orderInfo: "Hello",
+        const handlePayment = async (paymentId) => {
+          try {
+            const linkPayment = await api.post(`submitOrder/${paymentId}`);
+            window.location.href = linkPayment.data;
+          } catch (error) {
+            console.error("Payment error: ", error);
+          }
         };
+        const paymentList = constructionOrder.consOrderPaymentList || [];
 
-        const handlePayment = async () => {
-          const linkPayment = await api.post("submitOrder", null, {
-            params: value,
-          });
-          window.location.href = linkPayment.data;
-        };
+        const firstPayment = paymentList.find((p) => p.period === 1);
+        const secondPayment = paymentList.find((p) => p.period === 2);
+        const thirdPayment = paymentList.find((p) => p.period === 3);
+
+        const isFirstPeriodPaid = firstPayment?.paid;
+        const isSecondPeriodPaid = secondPayment?.paid;
+        const isThirdPeriodPaid = thirdPayment?.paid;
+        const isCustomerApprovedDesign =
+          constructionOrder.designDrawingResponse.status ===
+          "CUSTOMER_CONFIRMED";
+        const isOrderConstructed = constructionOrder.status === "CONSTRUCTED";
         return (
-          <Button
-            onClick={() => {
-              handlePayment();
-            }}
-          >
-            Thanh toán
-          </Button>
+          <div>
+            {record.period === 1 &&
+              (isFirstPeriodPaid ? (
+                <>
+                  Đã thanh toán vào lúc{" "}
+                  {moment(firstPayment.paidAt).format("DD/MM/YYYY HH:mm:ss")}
+                </>
+              ) : (
+                <Button
+                  type="primary"
+                  onClick={() => handlePayment(firstPayment.id)}
+                >
+                  Thanh toán đợt 1
+                </Button>
+              ))}
+
+            {record.period === 2 &&
+              (isFirstPeriodPaid && isCustomerApprovedDesign ? (
+                isSecondPeriodPaid ? (
+                  <>
+                    Đã thanh toán vào lúc{" "}
+                    {moment(secondPayment.paidAt).format("DD/MM/YYYY HH:mm:ss")}
+                  </>
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={() => handlePayment(secondPayment.id)}
+                  >
+                    Thanh toán đợt 2
+                  </Button>
+                )
+              ) : (
+                <span>Chờ xác nhận thiết kế từ khách hàng</span>
+              ))}
+
+            {record.period === 3 &&
+              (isSecondPeriodPaid && isOrderConstructed ? (
+                isThirdPeriodPaid ? (
+                  <>
+                    Đã thanh toán vào lúc{" "}
+                    {moment(thirdPayment.paidAt).format("DD/MM/YYYY HH:mm:ss")}
+                  </>
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={() => handlePayment(thirdPayment.id)}
+                  >
+                    Thanh toán đợt 3
+                  </Button>
+                )
+              ) : (
+                <span>Chờ bàn giao công trình</span>
+              ))}
+          </div>
         );
       },
     },
@@ -198,6 +260,7 @@ function OrderCustomer() {
           <Table
             columns={columns}
             dataSource={constructionOrder.consOrderPaymentList}
+            pagination={false}
           />
         </div>
         <Modal

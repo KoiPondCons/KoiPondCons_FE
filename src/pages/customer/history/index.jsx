@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Modal, Row, Spin } from "antd";
+import { Button, Card, Col, Modal, Row, Spin } from "antd";
 import "./index.css";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import CommonPageTemplate from "../../../components/common-page-template";
 import api from "../../../config/axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { LoadingOutlined } from "@ant-design/icons";
 function HistoryPage() {
@@ -48,6 +48,65 @@ function HistoryPage() {
     } catch (error) {
       console.error(error);
     }
+  };
+  const renderButtons = (constructionOrder) => {
+    if (constructionOrder.quotationResponse.status === "CUSTOMER_PENDING") {
+      return (
+        <Button
+          className="btn"
+          onClick={() => {
+            navigate(`/price-list/${constructionOrder.id}`, {
+              state: "customer",
+            });
+          }}
+        >
+          Duyệt báo giá
+        </Button>
+      );
+    }
+    if (
+      constructionOrder.status === "REQUESTED" ||
+      constructionOrder.status === "PROCESSING"
+    ) {
+      return (
+        <Button
+          className="btn"
+          onClick={() => {
+            setSelectedOrderId(constructionOrder.id);
+            setIsModalOpen(true);
+          }}
+        >
+          Hủy đơn
+        </Button>
+      );
+    }
+
+    if (constructionOrder.designDrawingResponse.status === "CUSTOMER_PENDING") {
+      return (
+        <Button
+          className="btn"
+          onClick={() => {
+            navigate(`/design-review/${constructionOrder.id}`, {
+              state: { actor: "customer" },
+            });
+          }}
+        >
+          Duyệt thiết kế
+        </Button>
+      );
+    }
+    return (
+      <Button
+        className="btn"
+        onClick={() => {
+          navigate(`/order/${constructionOrder.id}`, {
+            state: "customer",
+          });
+        }}
+      >
+        Chi tiết
+      </Button>
+    );
   };
   return (
     <div>
@@ -106,60 +165,7 @@ function HistoryPage() {
                         </time>
                       </div>
                     </Col>
-                    <Col span={4}>
-                      {constructionOrder?.quotationResponse?.status ===
-                      "CUSTOMER_PENDING" ? (
-                        <button
-                          style={{
-                            backgroundColor: "#000",
-                            border: "none",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            navigate(`/price-list/${constructionOrder.id}`, {
-                              state: "customer",
-                            });
-                          }}
-                        >
-                          Duyệt báo giá
-                        </button>
-                      ) : (
-                        <>
-                          {constructionOrder.status === "REQUESTED" ||
-                          constructionOrder.status === "PROCESSING" ? (
-                            <button
-                              style={{
-                                backgroundColor: "#000",
-                                border: "none",
-                                cursor: "pointer",
-                              }}
-                              onClick={() => {
-                                setSelectedOrderId(constructionOrder.id);
-                                setIsModalOpen(true);
-                              }}
-                            >
-                              Hủy đơn
-                            </button>
-                          ) : (
-                            <button>
-                              {constructionOrder.consultantAccount && (
-                                <Link
-                                  to={{
-                                    pathname: `/order/${constructionOrder.id}`,
-                                    state: { actor: "customer" },
-                                  }}
-                                  style={{
-                                    color: "#007bff",
-                                  }}
-                                >
-                                  Chi tiết
-                                </Link>
-                              )}
-                            </button>
-                          )}
-                        </>
-                      )}
-                    </Col>
+                    <Col span={4}>{renderButtons(constructionOrder)}</Col>
                   </Row>
                 </Card>
               ))

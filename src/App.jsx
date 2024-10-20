@@ -11,12 +11,12 @@ import OngoingConsultations from "./pages/consulting/ongoing-consultations";
 //Designer
 import Designer from "./pages/designer";
 //Manager
-import StaffMangager from "./pages/manager/manage-staff"
-import ConstructionOrders from "./pages/manager/construction-orders"
-import ManageDesign from "./pages/manager/manage-design"
-import ManageQuote from "./pages/manager/manage-quote"
-import CustomerProfileManagement from "./pages/manager/customer-profile-management"
-import MaintenanceOrders from "./pages/manager/maintenance-orders"
+import StaffMangager from "./pages/manager/manage-staff";
+import ConstructionOrders from "./pages/manager/construction-orders";
+import ManageDesign from "./pages/manager/manage-design";
+import ManageQuote from "./pages/manager/manage-quote";
+import CustomerProfileManagement from "./pages/manager/customer-profile-management";
+import MaintenanceOrders from "./pages/manager/maintenance-orders";
 
 //Customer
 import HistoryPage from "./pages/customer/history";
@@ -39,10 +39,16 @@ import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
 import OrderManagement from "./pages/manager/manage-order";
 import PriceListStaff from "./pages/consulting/create-price-list";
+<<<<<<< HEAD
 import PayFailed from "./pages/general/pay-failed";
 import PaySuccess from "./pages/general/pay-success";
 import PaymentConfirm from "./pages/payment";
 
+=======
+import PaymentResponse from "./components/payment-response";
+import DesignReview from "./pages/design-review";
+import ConstructionOrderDetail from "./pages/construction-staff/construction-order-detail";
+>>>>>>> 2ad645dca982fe98a66f715ecbe4c8cb6980e90d
 function App() {
   const router = createBrowserRouter([
     {
@@ -132,6 +138,10 @@ function App() {
       path: "construction/history-construction",
       element: <HistoryConstruction />,
     },
+    {
+      path: "construction/history-construction/construction-order-detail/:id",
+      element: <ConstructionOrderDetail />,
+    },
     //Designer
     {
       path: "designer",
@@ -140,19 +150,19 @@ function App() {
     //Manager
     {
       path: "manager/design-management",
-      element: <ManageDesign/>,
+      element: <ManageDesign />,
     },
     {
       path: "manager/staff-management",
-      element:<StaffMangager/>,
+      element: <StaffMangager />,
     },
     {
       path: "manager/construction-orders",
-      element: <ConstructionOrders/>,
+      element: <ConstructionOrders />,
     },
     {
       path: "manager/quote-management",
-      element: <ManageQuote/>,
+      element: <ManageQuote />,
     },
     {
       path: "manager",
@@ -160,16 +170,16 @@ function App() {
     },
     {
       path: "manager/customer-profile-management",
-      element: <CustomerProfileManagement/>,
+      element: <CustomerProfileManagement />,
     },
     {
       path: "manager/maintenance-orders",
-      element: <MaintenanceOrders/>,
+      element: <MaintenanceOrders />,
     },
     //PAYMENT
     {
-      path: "payment",
-      element: <PaymentConfirm />,
+      path: "payment-response",
+      element: <PaymentResponse />,
     },
     {
       path: "payment-failed",
@@ -182,6 +192,10 @@ function App() {
     {
       path: "*", // Route cho các đường dẫn không tồn tại
       element: <NotFound />, // Chuyển hướng đến trang NotFound
+    },
+    {
+      path: "design-review/:id",
+      element: <DesignReview />,
     },
   ]);
 
