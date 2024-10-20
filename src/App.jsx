@@ -41,6 +41,7 @@ import OrderManagement from "./pages/manager/manage-order";
 import PriceListStaff from "./pages/consulting/create-price-list";
 import PaymentResponse from "./components/payment-response";
 import DesignReview from "./pages/design-review";
+import ConstructionOrderDetail from "./pages/construction-staff/construction-order-detail";
 function App() {
   const router = createBrowserRouter([
     {
@@ -129,6 +130,10 @@ function App() {
     {
       path: "construction/history-construction",
       element: <HistoryConstruction />,
+    },
+    {
+      path: "construction/history-construction/construction-order-detail/:id",
+      element: <ConstructionOrderDetail />,
     },
     //Designer
     {
