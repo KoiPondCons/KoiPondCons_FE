@@ -99,7 +99,10 @@ function OrderCustomer() {
         const isCustomerApprovedDesign =
           constructionOrder.designDrawingResponse.status ===
           "CUSTOMER_CONFIRMED";
-        const isOrderConstructed = constructionOrder.status === "CONSTRUCTED";
+        const isOrderConstructed =
+          constructionOrder.status === "CONSTRUCTED" ||
+          constructionOrder.status === "FINISHED" ||
+          constructionOrder.status === "CLOSED";
         return (
           <div>
             {record.period === 1 &&
