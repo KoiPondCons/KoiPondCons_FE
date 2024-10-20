@@ -176,7 +176,7 @@ function PriceListStaff() {
       setComboPrice(response.data);
       console.log(response.data);
     } catch (error) {
-      console.log("Bug at fetchComboPrice, " + error);
+      console.error("Bug at fetchComboPrice, " + error);
     } finally {
       setLoading(false);
     }
@@ -299,6 +299,7 @@ function PriceListStaff() {
       await handleUpdatePondVolume();
       await handlePromotion(values.promotionIds || []);
       await fecthPromotionList();
+      await fetchComboPrice();
       // await fetchConstructionOrder();
       constructionOrder.designDrawingResponse.designFile = url;
 
