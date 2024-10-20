@@ -173,16 +173,19 @@ function Bill({
       title: "Các đợt thanh toán",
       dataIndex: "period",
       key: "period",
+      align: "center"
     },
     {
       title: "Nội dung",
       dataIndex: "content",
       key: "content",
+      align: "center"
     },
     {
       title: "Số tiền cần thanh toán",
       dataIndex: "amount",
       key: "amount",
+      align: "center"
     },
   ];
   return (
@@ -274,16 +277,17 @@ function Bill({
                     : "Loading VND"}
                 </span>
               </div>
-              <p style={{ fontSize: "1.2rem" }}>
-                Chúng tôi sẽ chia việc thanh toán thành các đợt nhỏ để thuận
-                tiện cho quý khách. Nếu có thắc mắc, xin vui lòng liên hệ qua
-                số: {constructionOrder.consultantAccount?.phone}.
-              </p>
+              
               <Table
                 columns={columns}
                 dataSource={constructionOrder.consOrderPaymentList}
                 pagination={false}
               ></Table>
+              <p style={{fontStyle:"italic",textAlign: "center",fontWeight:"lighter", fontSize: "1rem", marginTop: "20px",padding: "0px 100px" }}>
+                Chúng tôi sẽ chia việc thanh toán thành các đợt nhỏ để thuận
+                tiện cho quý khách. <br /><strong>Nếu có thắc mắc, xin vui lòng liên hệ qua
+                số: {constructionOrder.consultantAccount?.phone}.</strong>
+              </p>
             </div>
           </div>
         </div>
