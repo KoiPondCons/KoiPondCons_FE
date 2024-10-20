@@ -39,8 +39,10 @@ import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
 import OrderManagement from "./pages/manager/manage-order";
 import PriceListStaff from "./pages/consulting/create-price-list";
-
+import PayFailed from "./pages/general/pay-failed";
+import PaySuccess from "./pages/general/pay-success";
 import PaymentConfirm from "./pages/payment";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -168,6 +170,14 @@ function App() {
     {
       path: "payment",
       element: <PaymentConfirm />,
+    },
+    {
+      path: "payment-failed",
+      element: <PayFailed />,
+    },
+    {
+      path: "payment-success",
+      element: <PaySuccess />,
     },
     {
       path: "*", // Route cho các đường dẫn không tồn tại
