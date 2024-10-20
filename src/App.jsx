@@ -39,16 +39,14 @@ import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
 import OrderManagement from "./pages/manager/manage-order";
 import PriceListStaff from "./pages/consulting/create-price-list";
-<<<<<<< HEAD
 import PayFailed from "./pages/general/pay-failed";
 import PaySuccess from "./pages/general/pay-success";
-import PaymentConfirm from "./pages/payment";
 
-=======
+
 import PaymentResponse from "./components/payment-response";
 import DesignReview from "./pages/design-review";
 import ConstructionOrderDetail from "./pages/construction-staff/construction-order-detail";
->>>>>>> 2ad645dca982fe98a66f715ecbe4c8cb6980e90d
+
 function App() {
   const router = createBrowserRouter([
     {
