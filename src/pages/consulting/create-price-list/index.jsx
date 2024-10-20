@@ -327,7 +327,7 @@ function PriceListStaff() {
   return (
     <NavDashboard actor={actor}>
       <OrderInfor constructionOrder={constructionOrder} />
-      <Spin spinning={loading}></Spin>
+      <div style={{ display: "flex", justifyContent: "center", margin: "auto" }}><Spin spinning={loading}></Spin></div>
       {actor === "consulting" && (
         <>
           <Form style={{ padding: "20px" }}>

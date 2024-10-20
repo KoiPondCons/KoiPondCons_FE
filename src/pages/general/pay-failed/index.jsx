@@ -7,7 +7,7 @@ function payFailed() {
     return (
         <div className='notfound404-container'>
             <div className='notfound404-shape'>
-                <div style={{ margin: "40px auto" }}><img src={paySuccess} alt="" /></div>
+                <div style={{ margin: "0px auto" }}><img src={paySuccess} alt="" /></div>
                 <h1>Thanh toán thất bại</h1>
                 <p>Oops! Đã có lỗi xảy ra</p>
                 <p>Vui lòng thử lại hoặc liên hệ với chúng tôi để được hỗ trợ.
