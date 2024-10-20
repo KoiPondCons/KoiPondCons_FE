@@ -41,6 +41,8 @@
 .sidebar li {
     margin: 20px 0; /* Khoảng cách giữa các mục */
     cursor: pointer; /* Con trỏ khi di chuột qua */
+    text-decoration: none;
+
 }
 .sidebar li.selected {
     border: 2px solid gray; /* Khung bo viền */
