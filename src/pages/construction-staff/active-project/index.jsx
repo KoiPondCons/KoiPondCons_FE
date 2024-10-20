@@ -6,8 +6,9 @@ import NavDashboard from "../../../components/navbar-dashboard";
 import { RiDraftLine } from "react-icons/ri";
 import api from "../../../config/axios";
 import OrderInfor from "../../../components/order-information";
-import { LoadingOutlined } from "@ant-design/icons";
+import { DoubleRightOutlined, LoadingOutlined } from "@ant-design/icons";
 import moment from "moment";
+import { Link, useNavigate } from "react-router-dom";
 // import format from 'date-fns';
 
 function ActiveProject() {
@@ -16,7 +17,10 @@ function ActiveProject() {
   const [buttonLoading, setButtonLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
+  const [isOrderFetched, setOrderFetched] = useState(false);
   const strict = useRef(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const navigate = useNavigate();
 
   const fetchOrder = async () => {
     console.log("Fetching order");
@@ -27,6 +31,8 @@ function ActiveProject() {
       // console.log(order);
     } catch (error) {
       console.log(error.response.data);
+    } finally {
+      setOrderFetched(true);
     }
   };
 
@@ -54,6 +60,7 @@ function ActiveProject() {
 
   const handleUpdate = async (detailId, newValues) => {
     setButtonLoading(true);
+    setConfirmLoading(true);
     try {
       const response = await api.put(
         `/staffconstructiondetail/${detailId}`,
@@ -71,6 +78,7 @@ function ActiveProject() {
       await fetchOrder();
       await fetchTaskList(order.id);
       setButtonLoading(false);
+      setConfirmLoading(false);
     } catch (error) {
       console.log(error.response.data);
     }
@@ -87,26 +95,37 @@ function ActiveProject() {
     setIsModalVisible(false);
   };
 
-  if (!order) {
+  const handleConstructed = async () => {
+    const updateData = {
+      "status": "CONSTRUCTED",
+      "confirmedDate": new Date(),
+      "customerName": order.customerName,
+      "customerPhone": order.customerPhone,
+      "customerEmail": order.customerEmail,
+      "pondAddress": order.pondAddress,
+      "designed": order.designed
+    };
+    try {
+      const response = await api.put(`/orders/${order.id}`, updateData);
+      console.log(response.data, "data update nè");
+      navigate(`/construction/history-construction/construction-order-detail/${order.id}`);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+    //cập nhật status order
+    //navigate qua chi tiết dự án đã thi công
+  };
+
+  if (!isOrderFetched) {
     return (
       <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
     );
   }
-  const now = new Date();
-  const handleConstructed = async (constructionOrder) => {
-    const value = {
-      dateStart: constructionOrder.requestDate,
-      dateEnd: now.toISOString(),
-      finished: true,
-    };
-    try {
-      await api.put();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  
   return (
-    <div>
+    <>
+      {order ? (
+        <div>
       <NavDashboard actor="construction">
         <label>
           <b>Mã dự án: {order.id}</b>
@@ -180,7 +199,6 @@ function ActiveProject() {
                         console.log(task, "task của tui");
                         handleUpdate(task.id, updateData);
                       }}
-                      // loading={buttonLoading}
                     >
                       Bắt đầu
                     </Button>
@@ -202,17 +220,20 @@ function ActiveProject() {
                           Modal.confirm({
                             title: "Xác nhận",
                             content: "Nhấn OK để hoàn thành thi công!",
-                            // onOk={}
+                            okButtonProps: {confirmLoading},
+                            onOk() {
+                              handleUpdate(task.id, updateData);
+                              handleConstructed();
+                            },
                           });
                         } else handleUpdate(task.id, updateData);
                       }}
-                      // loading={buttonLoading}
                     >
                       Nhấn hoàn thành
                     </Button>
                   ) : task.finished ? (
                     <div style={{ fontSize: "16px", padding: "10px" }}>
-                      Đã xong ngày {moment("2024-10-15").format("DD/MM/YYYY")}
+                      Đã xong ngày {moment(task.dateEnd).format("DD/MM/YYYY")}
                     </div>
                   ) : null}
                 </div>
@@ -237,6 +258,14 @@ function ActiveProject() {
         </Modal>
       </NavDashboard>
     </div>
+      ) : (
+        <NavDashboard actor="construction">
+          <h3 style={{marginBottom: "20px"}}>Không có dự án nào đang thực hiện!</h3>
+          <Link to="/construction/history-construction"><DoubleRightOutlined />Xem lịch sử dự án thi công</Link>
+        </NavDashboard>
+      )}
+    </>
+    
   );
 }
 
