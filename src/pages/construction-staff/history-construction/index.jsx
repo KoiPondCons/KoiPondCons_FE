@@ -1,44 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 import TableTemplate from "../../../components/table";
-import { Button } from "antd";
+import { Button, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
+import api from "../../../config/axios";
+import { LoadingOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
 
 function HistoryConstruction() {
   const navigate = useNavigate();
-  const { id } = "1";
-  const handleClick = (id) => {
-    navigate(`/order-detail/1`);
+  const [listOrder, setListOrder] = useState([]);
+  const [isOrderListFetched, setOrderListFetched] = useState(false);
+
+  const fetchConstructedOrder = async () => {
+    try {
+      const response = await api.get("/orders/constructor/current/finished");
+      setListOrder(response.data);
+      console.log("Fetch order list successfully!");
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.response.data);
+    } finally {
+      setOrderListFetched(true);
+    }
   };
-  const requests = [
-    {
-      construction_order_id: "123456",
-      pond_address: "3154 Kiehn Branch",
-      confirmed_date: "2071-12-08T06:37:42.547Z",
-      customer_rating: "5",
-    },
-  ];
+
+  useEffect(() => {
+    fetchConstructedOrder();
+  }, []);
+
+  const handleClick = (id) => {
+    navigate(`construction-order-detail/${id}`);
+  };
+  
   const columns = [
     {
       title: "Mã dự án",
-      dataIndex: "construction_order_id",
-      key: "construction_order_id",
+      dataIndex: "id",
+      key: "id",
+      width: "150px",
     },
     {
-      title: "Địa chỉ",
-      dataIndex: "pond_address",
-      key: "pond_address",
+      title: "Địa chỉ thi công",
+      dataIndex: "pondAddress",
+      key: "pondAddress",
+      width: "550px",
     },
     {
       title: "Ngày bàn giao",
-      dataIndex: "confirmed_date",
-      key: "confirmed_date",
+      dataIndex: "confirmedDate",
+      key: "confirmedDate",
+      width: "200px",
+      render: (text) => {
+        return `${dayjs(text).format('DD/MM/YYYY')}`;
     },
-    {
-      title: "Đánh giá khách hàng",
-      dataIndex: "customer_rating",
-      key: "customer_rating",
-      render: (text, record) => <span>{text} sao</span>,
     },
     {
       title: "Thao tác",
@@ -55,11 +70,18 @@ function HistoryConstruction() {
       ),
     },
   ];
+
+  if (!isOrderListFetched) {
+    return (
+      <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+    );
+  }
+
   return (
     <div>
       <TableTemplate
         columns={columns}
-        requests={requests}
+        requests={listOrder}
         title="Lịch sử dự án"
         actor="construction"
       />

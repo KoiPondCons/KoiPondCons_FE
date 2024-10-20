@@ -1,4 +1,4 @@
-import React, { children } from "react";
+import React, { children, useEffect, useState } from "react";
 import "./index.css";
 import "@ant-design/icons";
 import {
@@ -6,10 +6,30 @@ import {
   SettingOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import IMGDashboard from "../../images/Dashboard.png"; // Nhập hình ảnh
 
 const NavDashboard = ({ children, actor }) => {
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (token !== null) {
+      setIsLoggedIn(true);
+    }
+  }, [token]);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   const links = {
     consulting: [
       {
@@ -71,13 +91,13 @@ const NavDashboard = ({ children, actor }) => {
         </div>
 
         <div className="content">
-          <div class="navbar-admin">
-            <div class="menu-icon">☰</div>
-            <div class="greeting">Xin chào, admin!</div>
-            <div class="icons">
+          <div className="navbar-admin">
+            <div className="menu-icon">☰</div>
+            <div className="greeting">Xin chào, admin!</div>
+            <div className="icons">
               <BellOutlined className="icon noti" />
               <SettingOutlined className="icon setting" />
-              <LogoutOutlined className="icon logout" />
+              <LogoutOutlined className="icon logout" onClick={handleLogout} />
             </div>
           </div>
           {children}
