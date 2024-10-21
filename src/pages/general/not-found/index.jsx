@@ -13,7 +13,9 @@ function NotFound() {
                 <p>Trang bạn đang tìm không tồn tại hoặc đã bị xoá.                </p>
                 <p>Click vào nút bên dưới để quay lại trang chủ.
                 </p>
-                <button onClick={() => navigate('/homepage')}>VỀ TRANG CHỦ</button> 
+                <div style={{display: "flex", justifyContent: "center"}}>
+                    <button onClick={() => navigate('/homepage')}>VỀ TRANG CHỦ</button> 
+                </div>
             </div>
         </div>
     );

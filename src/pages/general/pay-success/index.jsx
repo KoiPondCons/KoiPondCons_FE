@@ -12,7 +12,7 @@ function payFailed() {
                 <p>Cám ơn quý khách đã tin tưởng và sử dụng dịch vụ của chúng tôi.</p>
                 <p>Trở về trang chủ hoặc xem lịch sử đơn hàng.
                 </p>
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div style={{display: "flex", justifyContent: "center"}}>
                     <button onClick={() => navigate('/homepage')}>VỀ TRANG CHỦ</button>
                     <button onClick={() => navigate('/history')}>XEM LỊCH SỬ ĐƠN HÀNG</button>
                 </div>
