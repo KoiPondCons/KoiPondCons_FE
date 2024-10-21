@@ -126,15 +126,6 @@ function Order() {
       title: "Thanh toán",
       align: "center",
       render: (record) => {
-        const handlePayment = async () => {
-          try {
-            const linkPayment = await api.post(`submitOrder/${record.id}`);
-            window.location.href = linkPayment.data;
-          } catch (error) {
-            console.error("Payment error: ", error);
-          }
-        };
-
         return record.paid ? (
           <>
             Đã thanh toán vào lúc{" "}
