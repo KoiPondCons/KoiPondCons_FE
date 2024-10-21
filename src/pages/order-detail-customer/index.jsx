@@ -53,7 +53,14 @@ function OrderCustomer() {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
+  const handlePayment = async (paymentId) => {
+    try {
+      const linkPayment = await api.post(`submitOrder/${paymentId}`);
+      window.location.href = linkPayment.data;
+    } catch (error) {
+      console.error("Payment error: ", error);
+    }
+  };
   if (loading) return <LoadingPage />;
   if (error) return <div>Error fetching data: {error.message}</div>;
   const columns = [
@@ -79,14 +86,6 @@ function OrderCustomer() {
       title: "Thanh toán",
       align: "center",
       render: (record) => {
-        const handlePayment = async (paymentId) => {
-          try {
-            const linkPayment = await api.post(`submitOrder/${paymentId}`);
-            window.location.href = linkPayment.data;
-          } catch (error) {
-            console.error("Payment error: ", error);
-          }
-        };
         const paymentList = constructionOrder.consOrderPaymentList || [];
 
         const firstPayment = paymentList.find((p) => p.period === 1);
@@ -103,7 +102,42 @@ function OrderCustomer() {
           constructionOrder.status === "CONSTRUCTED" ||
           constructionOrder.status === "FINISHED" ||
           constructionOrder.status === "CLOSED";
-        return (
+        return constructionOrder.designed ? (
+          <div>
+            {record.period === 1 &&
+              (isFirstPeriodPaid ? (
+                <>
+                  Đã thanh toán vào lúc{" "}
+                  {moment(firstPayment.paidAt).format("DD/MM/YYYY HH:mm:ss")}
+                </>
+              ) : (
+                <Button
+                  type="primary"
+                  onClick={() => handlePayment(firstPayment.id)}
+                >
+                  Thanh toán đợt 1
+                </Button>
+              ))}
+            {record.period === 2 &&
+              (isFirstPeriodPaid && isOrderConstructed ? (
+                isSecondPeriodPaid ? (
+                  <>
+                    Đã thanh toán vào lúc{" "}
+                    {moment(secondPayment.paidAt).format("DD/MM/YYYY HH:mm:ss")}
+                  </>
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={() => handlePayment(secondPayment.id)}
+                  >
+                    Thanh toán đợt 2
+                  </Button>
+                )
+              ) : (
+                <span>Chờ bàn giao công trình</span>
+              ))}
+          </div>
+        ) : (
           <div>
             {record.period === 1 &&
               (isFirstPeriodPaid ? (
@@ -177,7 +211,7 @@ function OrderCustomer() {
                 <div className="progress">
                   <Progress
                     type="circle"
-                    percent={constructionOrder?.constructionProgress}
+                    percent={constructionOrder?.constructionProgress || 0}
                   />
                 </div>
                 <h3
