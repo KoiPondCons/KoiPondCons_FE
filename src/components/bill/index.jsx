@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Modal, Table } from "antd";
 import PropTypes from "prop-types";
 import "./index.css";
@@ -12,6 +12,7 @@ function Bill({
   onPromotionDeleted,
   selectCombo,
   constructionOrder,
+  consOrderPayment,
 }) {
   const navigate = useNavigate();
 
@@ -26,6 +27,7 @@ function Bill({
     useState(false);
   const [isDeletePromotionOpen, setIsDeletePromotionOpen] = useState(false);
   const [promotionIdToDelete, setPromotionIdToDelete] = useState(null);
+
   let totalDiscountPrice = 0;
   if (Array.isArray(constructionOrder?.quotationResponse?.promotions)) {
     constructionOrder.quotationResponse.promotions.forEach((promotion) => {
@@ -173,19 +175,19 @@ function Bill({
       title: "Các đợt thanh toán",
       dataIndex: "period",
       key: "period",
-      align: "center"
+      align: "center",
     },
     {
       title: "Nội dung",
       dataIndex: "content",
       key: "content",
-      align: "center"
+      align: "center",
     },
     {
       title: "Số tiền cần thanh toán",
       dataIndex: "amount",
       key: "amount",
-      align: "center"
+      align: "center",
     },
   ];
   return (
@@ -277,16 +279,28 @@ function Bill({
                     : "Loading VND"}
                 </span>
               </div>
-              
+
               <Table
                 columns={columns}
-                dataSource={constructionOrder.consOrderPaymentList}
+                dataSource={consOrderPayment}
                 pagination={false}
               ></Table>
-              <p style={{fontStyle:"italic",textAlign: "center",fontWeight:"lighter", fontSize: "1rem", marginTop: "20px",padding: "0px 100px" }}>
+              <p
+                style={{
+                  fontStyle: "italic",
+                  textAlign: "center",
+                  fontWeight: "lighter",
+                  fontSize: "1rem",
+                  marginTop: "20px",
+                  padding: "0px 100px",
+                }}
+              >
                 Chúng tôi sẽ chia việc thanh toán thành các đợt nhỏ để thuận
-                tiện cho quý khách. <br /><strong>Nếu có thắc mắc, xin vui lòng liên hệ qua
-                số: {constructionOrder.consultantAccount?.phone}.</strong>
+                tiện cho quý khách. <br />
+                <strong>
+                  Nếu có thắc mắc, xin vui lòng liên hệ qua số:{" "}
+                  {constructionOrder.consultantAccount?.phone}.
+                </strong>
               </p>
             </div>
           </div>
@@ -406,6 +420,7 @@ Bill.propTypes = {
       })
     ).isRequired,
   }).isRequired,
+  consOrderPayment: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default Bill;
