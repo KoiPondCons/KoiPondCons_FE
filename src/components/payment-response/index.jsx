@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import api from "../../config/axios";
-import { message, Spin } from "antd";
 import LoadingPage from "../loading";
-
+import paySuccess from "../../images/payment-success.png";
+import payFail from "../../images/payment-fail.png";
 const PaymentResponse = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const getQueryParams = () => {
@@ -56,9 +57,45 @@ const PaymentResponse = () => {
   return (
     <div>
       {statePayment?.status ? (
-        <h1>Thanh toán thành công</h1>
+        <div className="notfound404-container">
+          <div className="notfound404-shape">
+            <div style={{ margin: "40px auto" }}>
+              <img src={paySuccess} alt="" />
+            </div>
+            <h1>Thanh toán thành công</h1>
+            <p>
+              Cám ơn quý khách đã tin tưởng và sử dụng dịch vụ của chúng tôi.
+            </p>
+            <p>Trở về trang chủ hoặc xem lịch sử đơn hàng.</p>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <button onClick={() => navigate("/homepage")}>
+                VỀ TRANG CHỦ
+              </button>
+              <button onClick={() => navigate("/history")}>
+                XEM LỊCH SỬ ĐƠN HÀNG
+              </button>
+            </div>
+          </div>
+        </div>
       ) : (
-        <h1>Thanh toán thất bại</h1>
+        <div className="notfound404-container">
+          <div className="notfound404-shape">
+            <div style={{ margin: "0px auto" }}>
+              <img src={payFail} alt="" />
+            </div>
+            <h1>Thanh toán thất bại</h1>
+            <p>Oops! Đã có lỗi xảy ra</p>
+            <p>Vui lòng thử lại hoặc liên hệ với chúng tôi để được hỗ trợ.</p>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <button onClick={() => navigate("/homepage")}>
+                VỀ TRANG CHỦ
+              </button>
+              <button onClick={() => navigate("/history")}>
+                XEM LỊCH SỬ ĐƠN HÀNG
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
