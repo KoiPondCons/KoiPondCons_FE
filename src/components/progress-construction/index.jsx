@@ -82,58 +82,60 @@ function ProgressConstruction() {
       <label>
         <b>Mã dự án: {order.id}</b>
       </label>
-      <Row gutter={60}>
-        <Col span={18}>
-          <OrderInfor constructionOrder={order} />
-        </Col>
+      <div style={{ backgroundColor: "white" }}>
+        <Row gutter={60}>
+          <Col span={18}>
+            <OrderInfor constructionOrder={order} />
+          </Col>
 
-        <Col
-          span={6}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <div className="progressss">
-            <Progress type="circle" percent={order.constructionProgress} />
-            <h3 style={{ margin: " 20px 20px 20px 30px" }}>Tiến độ </h3>
-          </div>
-          <div>
-            <div
-              style={{
-                textAlign: "center",
-                cursor: "pointer",
-                width: "120px",
-              }}
-              onClick={() =>
-                showModal(`${order.designDrawingResponse?.designFile}`)
-              }
-            >
-              <RiDraftLine size={50} />
-              <p style={{ fontSize: "14px", fontStyle: "italic" }}>
-                Xem file thiết kế
-              </p>
+          <Col
+            span={6}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <div className="progressss">
+              <Progress type="circle" percent={order.constructionProgress} />
+              <h3 style={{ margin: " 20px 20px 20px 30px" }}>Tiến độ </h3>
             </div>
-          </div>
-        </Col>
-        <Modal
-          title="Hình ảnh bản vẽ"
-          open={isModalVisible}
-          onCancel={handleCancel}
-          footer={null}
-          width={900}
-          height={700}
-        >
-          <img
-            alt="Design"
-            src={imageSrc}
-            style={{ width: "100%", height: "auto" }}
-          />
-          <Button>Download</Button>
-        </Modal>
-      </Row>
-      <h1 style={{ marginTop: "50px" }}>Bảng hạng mục</h1>
+            <div>
+              <div
+                style={{
+                  textAlign: "center",
+                  cursor: "pointer",
+                  width: "120px",
+                }}
+                onClick={() =>
+                  showModal(`${order.designDrawingResponse?.designFile}`)
+                }
+              >
+                <RiDraftLine size={50} />
+                <p style={{ fontSize: "14px", fontStyle: "italic" }}>
+                  Xem file thiết kế
+                </p>
+              </div>
+            </div>
+          </Col>
+          <Modal
+            title="Hình ảnh bản vẽ"
+            open={isModalVisible}
+            onCancel={handleCancel}
+            footer={null}
+            width={900}
+            height={700}
+          >
+            <img
+              alt="Design"
+              src={imageSrc}
+              style={{ width: "100%", height: "auto" }}
+            />
+            <Button>Download</Button>
+          </Modal>
+        </Row>
+      </div>
+      <h1 style={{ marginTop: "50px", textAlign: "center" }}>Bảng hạng mục</h1>
       <Table
         columns={columns}
         dataSource={taskList}
