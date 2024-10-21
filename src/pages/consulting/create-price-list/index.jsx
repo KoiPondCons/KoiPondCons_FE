@@ -51,7 +51,18 @@ function PriceListStaff() {
   const [newPondVolume, setNewPondVolume] = useState();
   const [imageUrl, setImageUrl] = useState("N/A");
   var isDesigned = false;
-
+  const [consOrderPayment, setConsOrderPayment] = useState();
+  const fecthConsOrder = async () => {
+    try {
+      const response = await api.get(
+        `cons-order-payment/demo/${constructionOrder.id}`
+      );
+      setConsOrderPayment(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const handleUploadChange = ({ fileList: newFileList }) =>
     setFileList(newFileList);
 
@@ -213,6 +224,7 @@ function PriceListStaff() {
     fetchComboPrice();
     fecthPromotionList();
     fecthPromotions();
+    fecthConsOrder();
     console.log(constructionOrder, "haha");
     console.log(isDesigned, "biến trong fetch");
   }, [selectedCombo]);
@@ -300,6 +312,7 @@ function PriceListStaff() {
       await handlePromotion(values.promotionIds || []);
       await fecthPromotionList();
       await fetchComboPrice();
+      await fecthConsOrder();
       // await fetchConstructionOrder();
       constructionOrder.designDrawingResponse.designFile = url;
 
@@ -327,7 +340,11 @@ function PriceListStaff() {
   return (
     <NavDashboard actor={actor}>
       <OrderInfor constructionOrder={constructionOrder} />
-      <div style={{ display: "flex", justifyContent: "center", margin: "auto" }}><Spin spinning={loading}></Spin></div>
+      <div
+        style={{ display: "flex", justifyContent: "center", margin: "auto" }}
+      >
+        <Spin spinning={loading}></Spin>
+      </div>
       {actor === "consulting" && (
         <>
           <Form style={{ padding: "20px" }}>
@@ -504,6 +521,7 @@ function PriceListStaff() {
                 unitPrice={comboPrice.unitPrice}
                 onPromotionDeleted={fecthPromotionList}
                 selectCombo={selectedCombo}
+                consOrderPayment={consOrderPayment}
               />
             </div>
           )}
