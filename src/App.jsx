@@ -42,10 +42,10 @@ import PriceListStaff from "./pages/consulting/create-price-list";
 import PayFailed from "./pages/general/pay-failed";
 import PaySuccess from "./pages/general/pay-success";
 
-
 import PaymentResponse from "./components/payment-response";
 import DesignReview from "./pages/design-review";
 import ConstructionOrderDetail from "./pages/construction-staff/construction-order-detail";
+import ProgressConstructionCustomer from "./pages/customer/progress-construction-customer";
 
 function App() {
   const router = createBrowserRouter([
@@ -104,6 +104,10 @@ function App() {
     {
       path: "price-list/:id",
       element: <PriceListCustomer />,
+    },
+    {
+      path: "history/progress-construction-customer/:id",
+      element: <ProgressConstructionCustomer />,
     },
     //Staff
     {
