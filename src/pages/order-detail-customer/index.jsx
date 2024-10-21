@@ -2,9 +2,9 @@ import { Button, Col, Form, Modal, Row, Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { Progress } from "antd";
 import api from "../../config/axios";
-import "./index.css";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import "../../components/table/index.css";
+import "./order.css";
 import { AiOutlineFile } from "react-icons/ai";
 import { RiDraftLine } from "react-icons/ri";
 import moment from "moment";
@@ -163,9 +163,13 @@ function OrderCustomer() {
     },
   ];
   return (
-    <div>
+    <div style={{
+      background: "linear-gradient(rgba(199, 209, 217, 0.9), rgba(199, 209, 217, 0.9)), " +
+        "linear-gradient(rgba(1, 0, 0, 0.16), rgba(8, 0, 0, 0.16)), " +
+        "url('https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg?alt=media&token=d7d55fab-e34f-483f-9125-b61b199abbf2')"
+    }}>
       <Header />
-      <div style={{ backgroundColor: "white", padding: "30px 10%" }}>
+      <div style={{ backgroundColor: "white", padding: "30px 0", margin: "0px 15%" }}>
         <div>
           <OrderInfor constructionOrder={constructionOrder} />
           <h1 style={{ textAlign: "center", margin: "40px 0 10px" }}>
@@ -271,6 +275,7 @@ function OrderCustomer() {
             Thanh toán
           </h1>
           <Table
+            style={{ margin: "0px 5%" }}
             columns={columns}
             dataSource={constructionOrder.consOrderPaymentList}
             pagination={false}

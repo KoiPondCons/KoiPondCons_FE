@@ -46,3 +46,6 @@
   .ant-select, .display-input {
     width: 100%; /* Đảm bảo các phần tử chiếm cùng chiều rộng */
   }
+  .ant-table-tbody td{
+    background-color: whitesmoke;
+  }
