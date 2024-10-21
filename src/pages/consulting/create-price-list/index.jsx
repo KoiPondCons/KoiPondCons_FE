@@ -53,10 +53,15 @@ function PriceListStaff() {
   var isDesigned = false;
   const [consOrderPayment, setConsOrderPayment] = useState();
   const fecthConsOrder = async () => {
+    const value = {
+      comboId: selectedCombo,
+      pondVolume: constructionOrder?.quotationResponse?.pondVolume,
+      designed: constructionOrder?.designed,
+    };
     try {
-      const response = await api.get(
-        `cons-order-payment/demo/${constructionOrder.id}`
-      );
+      const response = await api.get(`cons-order-payment/demo`, {
+        params: value,
+      });
       setConsOrderPayment(response.data);
       console.log(response.data);
     } catch (error) {

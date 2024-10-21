@@ -14,6 +14,7 @@ function PriceListCustomer() {
   const [constructionOrder, setConstructionOrder] = useState({});
   const [comboConstructionItems, setComboConstructionItems] = useState([]);
   const [comboPrice, setComboPrice] = useState();
+  const [consOrderPayment, setConsOrderPayment] = useState();
 
   const fetchConstructionOrder = async () => {
     try {
@@ -52,12 +53,29 @@ function PriceListCustomer() {
       console.log("Bug at fetchComboPrice, " + error);
     }
   };
+  const fecthConsOrder = async () => {
+    const value = {
+      comboId: constructionOrder?.quotationResponse?.combo?.id,
+      pondVolume: constructionOrder?.quotationResponse?.pondVolume,
+      designed: constructionOrder?.designed,
+    };
+    try {
+      const response = await api.get(`cons-order-payment/demo`, {
+        params: value,
+      });
+      setConsOrderPayment(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     fetchConstructionOrder();
   }, []);
   useEffect(() => {
     fetchConstructionItems();
     fetchComboPrice();
+    fecthConsOrder();
   }, [constructionOrder]);
 
   const columnsPackage = [
@@ -98,6 +116,7 @@ function PriceListCustomer() {
           actor={actor}
           unitPrice={comboPrice?.unitPrice}
           selectCombo={constructionOrder?.quotationResponse?.combo?.id}
+          consOrderPayment={consOrderPayment}
           // pondVolume={constructionOrder.quotationResponse.pondVolume}
           // promotionList={promotionList}
           // comboId={selectedCombo}
