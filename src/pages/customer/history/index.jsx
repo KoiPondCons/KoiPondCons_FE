@@ -145,7 +145,14 @@ function HistoryPage() {
                   }}
                 >
                   <Row>
-                    <Col span={4}>
+                    <Col
+                      span={4}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
                       <IoDocumentTextOutline size={100} />
                     </Col>
                     <Col span={16}>
@@ -157,6 +164,7 @@ function HistoryPage() {
                           {constructionOrder?.consultantAccount?.phone ||
                             "Chưa có tư vấn viên được chỉ định"}
                         </p>
+                        <p>Địa chỉ: {constructionOrder?.pondAddress}</p>
                         <time dateTime={constructionOrder.requestDate}>
                           Ngày gửi đơn:{" "}
                           {moment(constructionOrder.requestDate).format(
