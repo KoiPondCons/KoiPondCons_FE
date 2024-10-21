@@ -82,7 +82,7 @@ function ProgressConstruction() {
       <label>
         <b>Mã dự án: {order.id}</b>
       </label>
-      <div style={{ backgroundColor: "white" }}>
+      <div style={{ backgroundColor: "white", padding: "40px 10px" ,margin:"40px",borderRadius:"10px"}}>
         <Row gutter={60}>
           <Col span={18}>
             <OrderInfor constructionOrder={order} />

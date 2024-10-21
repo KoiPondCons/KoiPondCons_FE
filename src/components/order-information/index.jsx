@@ -10,7 +10,7 @@ function OrderInfor({ constructionOrder }) {
     );
   }
   return (
-    <div style={{ margin: "0 3%", backgroundColor: "#FFFFFF" }}>
+    <div style={{ margin: "0 3%", backgroundColor: "rgb(12, 34, 64,0)" }}>
       <h1 style={{ textAlign: "center", paddingTop: "10px" }}>
         THÔNG TIN ĐƠN HÀNG
       </h1>
