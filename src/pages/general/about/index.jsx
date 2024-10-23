@@ -9,7 +9,7 @@ function About() {
   const banner =
     "https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/jaipreet-singh-w7NUZ__mv70-unsplash.jpg?alt=media&token=c8c55d47-2f1d-4fea-bcb2-a3aa72ead9f7";
   return (
-    <div style={{display:'flex'}}>
+    <div style={{ display: "flex" }}>
       <CommonPageTemplate title={title} context={context} banner={banner}>
         {/* Giới thiệu */}
         <div className="about-container">
@@ -95,7 +95,7 @@ function About() {
         <div className="image-container">
           <img
             className="cover-image"
-            src="https://media.discordapp.net/attachments/1119844282023555113/1292127746322993187/7792008.jpg?ex=67029b3d&is=670149bd&hm=3b3a636c06853d8c2f1482b7ad9c413c9757089312971822d1d0c7a5476592ac&=&format=webp&width=1007&height=671"
+            src="https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/about.jpg?alt=media&token=0207a826-57c4-4eec-b883-5b5b50e45e44"
             alt=""
           />
           <div className="caption">
