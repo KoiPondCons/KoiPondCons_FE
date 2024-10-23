@@ -146,7 +146,10 @@ function Order() {
           <Row gutter={24}>
             <Col span={4}>
               <div className="progress">
-                <Progress type="circle" percent={80} />
+                <Progress
+                  type="circle"
+                  percent={constructionOrder?.constructionProgress}
+                />
               </div>
               <h3
                 style={{ textAlign: "center", margin: " 20px 20px 0px 20px" }}
