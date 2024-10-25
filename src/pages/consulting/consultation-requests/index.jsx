@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Spin } from "antd";
+import { Button, Modal, Radio } from "antd";
 import "./index.css";
 import TableTemplate from "../../../components/table";
 import api from "../../../config/axios";
@@ -11,14 +11,21 @@ function ConsultationRequests() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const fetchConsultationRequests = async () => {
+  const [selectedServiceType, setSelectedServiceType] =
+    useState("construction");
+  const fetchRequest = async () => {
     setLoading(true);
     try {
-      const response = await api.get("orders/status", {
-        params: {
-          status: "REQUESTED",
-        },
-      });
+      let response;
+      if (selectedServiceType == "maintenance") {
+        response = await api.get("maintenance/requested-orders");
+      } else {
+        response = await api.get("orders/status", {
+          params: {
+            status: "REQUESTED",
+          },
+        });
+      }
       console.log(response.data);
       setRequests(response.data);
     } catch (error) {
@@ -27,10 +34,17 @@ function ConsultationRequests() {
       setLoading(false);
     }
   };
-
+  const handleChangeSelectedServiceType = (e) => {
+    const value = e.target.value;
+    setSelectedServiceType(value);
+    console.log(value);
+  };
   useEffect(() => {
-    fetchConsultationRequests();
+    fetchRequest();
   }, []);
+  useEffect(() => {
+    fetchRequest();
+  }, [selectedServiceType]);
 
   const showModal = (record) => {
     setSelectedOrder(record);
@@ -44,8 +58,8 @@ function ConsultationRequests() {
     await api.put(`orders/${selectedOrder.id}`, selectedOrder);
     console.log("Update order status success");
     navigate(`/consulting/price-list-staff/${selectedOrder.id}`, {
-      state: {actor: "consulting"},
-    })
+      state: { actor: "consulting" },
+    });
     setIsModalOpen(false);
   };
 
@@ -84,22 +98,28 @@ function ConsultationRequests() {
       width: 100,
       render: (_, record) => (
         <>
-          <Button
-            className="button-template"
-            type="primary"
-            onClick={() => showModal(record)}
-          >
-            Tư vấn
-          </Button>
-          <Modal
-            title="Xác nhận tư vấn"
-            open={isModalOpen && selectedOrder?.id === record.id}
-            onOk={handleOk}
-            onCancel={handleCancel}
-          >
-            <p>Khách: {record.customerName}</p>
-            <p>Số điện thoại: {record.customerPhone}</p>
-          </Modal>
+          {selectedServiceType === "construction" ? (
+            <>
+              <Button
+                className="button-template"
+                type="primary"
+                onClick={() => showModal(record)}
+              >
+                Tư vấn
+              </Button>
+              <Modal
+                title="Xác nhận tư vấn"
+                open={isModalOpen && selectedOrder?.id === record.id}
+                onOk={handleOk}
+                onCancel={handleCancel}
+              >
+                <p>Khách: {record.customerName}</p>
+                <p>Số điện thoại: {record.customerPhone}</p>
+              </Modal>
+            </>
+          ) : (
+            <div></div>
+          )}
         </>
       ),
     },
@@ -115,7 +135,19 @@ function ConsultationRequests() {
           requests={requests}
           title={title}
           actor="consulting"
-        />
+        >
+          <div className="radio-filter">
+            <Radio.Group
+              block
+              defaultValue="a"
+              size="large"
+              onChange={handleChangeSelectedServiceType}
+            >
+              <Radio.Button value="construction">Thi công</Radio.Button>
+              <Radio.Button value="maintenance">Dịch vụ</Radio.Button>
+            </Radio.Group>
+          </div>
+        </TableTemplate>
       )}
     </div>
   );
