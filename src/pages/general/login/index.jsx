@@ -64,7 +64,7 @@ function LoginPage() {
         <p className="forgot-password">
           <a>Quên mật khẩu?</a>
         </p>
-        <button>Đăng nhập</button>
+        <button className="login-button">Đăng nhập</button>
         <p className="prompt">
           Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
         </p>

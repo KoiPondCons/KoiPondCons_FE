@@ -37,3 +37,7 @@ h1{
     text-align: center;
     margin: 5px
   }
+.radio-filter {
+    text-align: right;
+    margin-bottom: 1%;
+}

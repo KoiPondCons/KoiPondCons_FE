@@ -1,7 +1,7 @@
 import React, { useState } from "react"; // Import useState
 import "./index.css";
 import CommonPageTemplate from "../../../components/common-page-template";
-import { Form, Input, Select, Row, Col, Button } from "antd";
+import { Form, Input, Select, Row, Col, Button, Radio } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import { LuMapPin, LuMail, LuPhone } from "react-icons/lu";
 import { useForm } from "antd/es/form/Form";
@@ -23,9 +23,14 @@ function ContactPage() {
   const banner =
     "https://images.unsplash.com/photo-1670879919941-b939366624c5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   const [isRequested, setRequested] = useState(false);
+  const [isConstruction, setIsConstruction] = useState(null);
   const handleSubmitOrder = async (value) => {
     try {
-      const response = await api.post("orders", value);
+      if (isConstruction) {
+        await api.post("orders", value);
+      } else {
+        await api.post("maintenance", value);
+      }
       toast.success("Gửi yêu cầu thành công!");
       setRequested(true);
     } catch (error) {
@@ -33,7 +38,10 @@ function ContactPage() {
       console.log(error.response.data);
     }
   };
-
+  const handleOnChangeService = (value) => {
+    setIsConstruction(value);
+    console.log("Chọn dịch vụ: " + value);
+  };
   return (
     <CommonPageTemplate context={context} title={title} banner={banner}>
       {isRequested ? (
@@ -128,7 +136,7 @@ function ContactPage() {
                   <Col span={14}>
                     <FormItem
                       label="Dịch vụ"
-                      name="designed"
+                      name="service"
                       labelCol={{ span: 24 }}
                       rules={[
                         {
@@ -138,20 +146,65 @@ function ContactPage() {
                       ]}
                     >
                       <Select
+                        onChange={handleOnChangeService}
                         style={{ flex: 1 }}
                         options={[
                           {
-                            value: "false",
-                            label: "Thiết kế và thi công hồ cá Koi",
+                            value: false,
+                            label: "Dịch vụ",
                           },
                           {
-                            value: "true",
-                            label: "Thi công hồ cá Koi theo mẫu",
+                            value: true,
+                            label: "Thi công hồ cá Koi",
                           },
                         ]}
                       />
                     </FormItem>
                   </Col>
+                  {isConstruction !== null && // Chỉ hiển thị khi đã chọn dịch vụ
+                    (isConstruction ? (
+                      <Col span={24}>
+                        <FormItem
+                          label="Loại hình thi công"
+                          name="designed"
+                          labelCol={{ span: 24 }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng chọn loại hình!",
+                            },
+                          ]}
+                        >
+                          <Radio.Group>
+                            <Radio value={false}>
+                              Thiết kế và thi công hồ cá Koi
+                            </Radio>
+                            <Radio value={true}>
+                              Thi công hồ cá Koi theo mẫu
+                            </Radio>
+                          </Radio.Group>
+                        </FormItem>
+                      </Col>
+                    ) : (
+                      <Col span={24}>
+                        <FormItem
+                          label="Loại hình dịch vụ"
+                          name="warranted"
+                          labelCol={{ span: 24 }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng chọn loại hình!",
+                            },
+                          ]}
+                        >
+                          <Radio.Group>
+                            <Radio value={true}>Bảo hành</Radio>
+                            <Radio value={false}>Bảo dưỡng</Radio>
+                          </Radio.Group>
+                        </FormItem>
+                      </Col>
+                    ))}
                   <Col span={24}>
                     <FormItem
                       label="Nội dung yêu cầu"

@@ -1,13 +1,14 @@
 import React from "react";
-import { Table } from "antd";
+import { Radio, Table } from "antd";
 import "./index.css";
 import NavDashboard from "../../components/navbar-dashboard";
 import PropTypes from "prop-types";
-function TableTemplate({ columns, requests, title, actor }) {
+function TableTemplate({ children, columns, requests, title, actor }) {
   return (
     <div>
       <NavDashboard actor={actor}>
-        <h1>{title}</h1>
+        <h1 style={{ textAlign: "center", fontSize: "2.5rem" }}>{title}</h1>
+        {children}
         <Table
           className="table-template"
           columns={columns}
