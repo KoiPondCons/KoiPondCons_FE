@@ -8,12 +8,12 @@ import api from "../../../config/axios";
 function ApproveOrder() {
   const [form] = Form.useForm();
   const location = useLocation();
-  const { actor, order, serviceType } = location.state;
+  const { actor, order } = location.state;
   const navigate = useNavigate();
   const typeMaintenance = order.warranted ? "Bảo hành" : "Bảo dưỡng";
   useEffect(() => {
     console.log(actor);
-    console.log(serviceType);
+
     console.log(order);
   }, []);
   const handleCanceledOrder = async () => {
@@ -35,16 +35,14 @@ function ApproveOrder() {
       order.pondAddress = values.pondAddress;
       order.pondVolume =
         values.pondVolumeMaintenance || values.ponVolumeConstruction;
-      order.status = order.serviceType === "Dịch vụ" ? "PENDING" : "PROCESSING";
+      order.status = "PROCESSING";
 
       if (order.serviceType === "Dịch vụ") {
-        await api.put(`maintenance/set-consultant/${order.id}`);
         await api.put(`maintenance/${order.id}`, order);
         navigate(`/consulting`, {
           state: { actor: "consulting" },
         });
       } else {
-        await api.put(`orders/consultant/${order.id}`, order);
         await api.put(`orders/${order.id}`, order);
         navigate(`/consulting/price-list-staff/${order.id}`, {
           state: { actor: "consulting" },
