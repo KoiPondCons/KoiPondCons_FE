@@ -103,9 +103,11 @@ function OngoingConsultations() {
                 style={{ cursor: "pointer" }}
                 size={30}
                 onClick={() => {
-                  const actor = "consulting";
-                  navigate(`/consulting/price-list-staff/${record.id}`, {
-                    state: { actor },
+                  navigate(`/consulting/approve-order`, {
+                    state: {
+                      actor: "consulting",
+                      order: record,
+                    },
                   });
                 }}
               />
