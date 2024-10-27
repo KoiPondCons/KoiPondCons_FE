@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import TableTemplate from "../../../components/table";
 import api from "../../../config/axios";
 import { BiSolidUserDetail } from "react-icons/bi";
+import { MdDeleteOutline } from "react-icons/md";
 import { Button, Col, Form, Input, Modal, Row, Select } from "antd";
 import FormItem from "antd/es/form/FormItem";
 
@@ -50,7 +51,24 @@ function ManageStaff() {
       console.error(error);
     }
   };
+  const handleDeleteConfirmation = (id) => {
+    Modal.confirm({
+      title: "Xác nhận xóa",
+      content: "Bạn có chắc chắn muốn xóa không?",
+      okText: "Xóa",
+      cancelText: "Hủy",
+      onOk: () => handleDelete(id),
+    });
+  };
 
+  const handleDelete = async (id) => {
+    try {
+      await api.delete(`delete/${id}`);
+      fetchStaffs();
+    } catch (error) {
+      console.error("Lỗi khi xóa nhân viên:", error);
+    }
+  };
   const columns = [
     {
       title: "Mã nhân viên",
@@ -95,6 +113,18 @@ function ManageStaff() {
           />
         </>
       ),
+    },
+    {
+      title: "Xóa",
+      key: "delete",
+      render: (text, record) => {
+        return (
+          <MdDeleteOutline
+            style={{ fontSize: "40px", cursor: "pointer" }}
+            onClick={() => handleDeleteConfirmation(record.id)}
+          ></MdDeleteOutline>
+        );
+      },
     },
   ];
 
