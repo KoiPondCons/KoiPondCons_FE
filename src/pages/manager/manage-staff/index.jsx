@@ -1,6 +1,8 @@
-import React,{ useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TableTemplate from '../../../components/table'
 import api from '../../../config/axios'
+import { MdDeleteOutline } from "react-icons/md";
+
 function manageStaff() {
     const [staffs, setStaffs] = useState([]);
     const role = "CONSULTANT";
@@ -8,7 +10,15 @@ function manageStaff() {
         const response = await api.get("role/staff");
         setStaffs(response.data);
         console.log(response.data);
-    }
+    };
+    const handleDelete = async (id) => {
+        try {
+            await api.delete(`delete/${id}`);
+            fetchStaffs();
+        } catch (error) {
+            console.error("Lỗi khi xóa nhân viên:", error);
+        }
+    };
     useEffect(() => {
         fetchStaffs();
     }, []);
@@ -38,18 +48,29 @@ function manageStaff() {
             dataIndex: "staffDetail",
             key: "staffDetail",
         },
+        {
+            title: "Xóa",
+            key: "delete",
+            render: (text, record) => {
+                return (
+                    <MdDeleteOutline style={{ fontSize: "40px", cursor:"pointer" }}
+                        onClick={() => handleDelete(record.id)}>
+                    </MdDeleteOutline>
+                );
+            }
+        }
     ]
     const title = "Quản lí nhân sự";
-  return (
-    <div>
-        <TableTemplate
-        columns={columns}
-        requests={staffs}
-        title={title}
-        actor="manager">
-        </TableTemplate>
-    </div>
-  )
+    return (
+        <div>
+            <TableTemplate
+                columns={columns}
+                requests={staffs}
+                title={title}
+                actor="manager">
+            </TableTemplate>
+        </div>
+    )
 }
 
 export default manageStaff
