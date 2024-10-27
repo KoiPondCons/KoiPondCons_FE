@@ -60,48 +60,54 @@ const NavDashboard = ({ children, actor }) => {
       { path: "/my-profile", label: "Hồ sơ của tôi" },
     ],
   };
-  return (
-    <div>
-      <div className="authen-template-dashboard">
-        <div className="sidebar">
-          <a href="">
-            <img
-              className="dashboard"
-              src={IMGDashboard} // Sử dụng biến đã nhập
-              alt=""
-            />
-          </a>
-          <ul>
-            {links[actor]?.map((link, index) => (
-              <li key={index}>
-                <Link to={link.path} style={{ textDecoration: "none" }}>
-                  {" "}
-                  {link.label}
-                </Link>
-                {/* <a href={link.path}>
+  if (actor == "customer") return <div>{children}</div>;
+  else {
+    return (
+      <div>
+        <div className="authen-template-dashboard">
+          <div className="sidebar">
+            <a href="">
+              <img
+                className="dashboard"
+                src={IMGDashboard} // Sử dụng biến đã nhập
+                alt=""
+              />
+            </a>
+            <ul>
+              {links[actor]?.map((link, index) => (
+                <li key={index}>
+                  <Link to={link.path} style={{ textDecoration: "none" }}>
+                    {" "}
+                    {link.label}
+                  </Link>
+                  {/* <a href={link.path}>
                   {link.label}
                 </a> */}
-              </li>
-            ))}
-          </ul>
-          <div></div>
-        </div>
-
-        <div className="content">
-          <div className="navbar-admin">
-            <div className="menu-icon">☰</div>
-            <div className="greeting">Xin chào, admin!</div>
-            <div className="icons">
-              <BellOutlined className="icon noti" />
-              <SettingOutlined className="icon setting" />
-              <LogoutOutlined className="icon logout" onClick={handleLogout} />
-            </div>
+                </li>
+              ))}
+            </ul>
+            <div></div>
           </div>
-          {children}
+
+          <div className="content">
+            <div className="navbar-admin">
+              <div className="menu-icon">☰</div>
+              <div className="greeting">Xin chào, admin!</div>
+              <div className="icons">
+                <BellOutlined className="icon noti" />
+                <SettingOutlined className="icon setting" />
+                <LogoutOutlined
+                  className="icon logout"
+                  onClick={handleLogout}
+                />
+              </div>
+            </div>
+            {children}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default NavDashboard;
