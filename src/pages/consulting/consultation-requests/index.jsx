@@ -1,62 +1,91 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Radio } from "antd";
+import { Button, Modal, Radio, Spin } from "antd";
 import "./index.css";
 import TableTemplate from "../../../components/table";
 import api from "../../../config/axios";
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "../../../components/loading";
+
 function ConsultationRequests() {
   const [requests, setRequests] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [selectedServiceType, setSelectedServiceType] =
-    useState("construction");
+  const [selectedServiceType, setSelectedServiceType] = useState("all");
+
   const fetchRequest = async () => {
     setLoading(true);
     try {
-      let response;
-      if (selectedServiceType == "maintenance") {
-        response = await api.get("maintenance/requested-orders");
-      } else {
-        response = await api.get("orders/status", {
-          params: {
-            status: "REQUESTED",
-          },
+      let maintenanceOrder;
+      let constructionOrder;
+      let order;
+
+      if (selectedServiceType === "maintenance") {
+        maintenanceOrder = await api.get("maintenance/requested-orders");
+        setRequests(
+          maintenanceOrder.data.map((req) => ({
+            ...req,
+            serviceType: "Bảo dưỡng",
+          }))
+        );
+      } else if (selectedServiceType === "construction") {
+        constructionOrder = await api.get("orders/status", {
+          params: { status: "REQUESTED" },
         });
+        setRequests(
+          constructionOrder.data.map((req) => ({
+            ...req,
+            serviceType: "Thi công",
+          }))
+        );
+      } else {
+        maintenanceOrder = await api.get("maintenance/requested-orders");
+        constructionOrder = await api.get("orders/status", {
+          params: { status: "REQUESTED" },
+        });
+        order = [
+          ...maintenanceOrder.data.map((req) => ({
+            ...req,
+            serviceType: "Dịch vụ",
+          })),
+          ...constructionOrder.data.map((req) => ({
+            ...req,
+            serviceType: "Thi công",
+          })),
+        ];
+        setRequests(order);
       }
-      console.log(response.data);
-      setRequests(response.data);
+      console.log(maintenanceOrder.data);
+      console.log(constructionOrder.data);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
   };
+
   const handleChangeSelectedServiceType = (e) => {
-    const value = e.target.value;
-    setSelectedServiceType(value);
-    console.log(value);
+    setSelectedServiceType(e.target.value);
   };
+
   useEffect(() => {
     fetchRequest();
   }, []);
+
   useEffect(() => {
     fetchRequest();
   }, [selectedServiceType]);
 
   const showModal = (record) => {
     setSelectedOrder(record);
-    console.log(record);
     setIsModalOpen(true);
   };
+
   const handleOk = async () => {
     selectedOrder.status = "PROCESSING";
-    console.log(selectedOrder);
     await api.put(`orders/consultant/${selectedOrder.id}`);
     await api.put(`orders/${selectedOrder.id}`, selectedOrder);
-    console.log("Update order status success");
     navigate(`/consulting/price-list-staff/${selectedOrder.id}`, {
       state: { actor: "consulting" },
     });
@@ -66,6 +95,7 @@ function ConsultationRequests() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
   const columns = [
     {
       title: "ID",
@@ -93,43 +123,40 @@ function ConsultationRequests() {
       width: 300,
     },
     {
+      title: "Loại dịch vụ",
+      dataIndex: "serviceType",
+      key: "serviceType",
+      width: 100,
+    },
+    {
       title: "",
       key: "actions",
       width: 100,
       render: (_, record) => (
-        <>
-          {selectedServiceType === "construction" ? (
-            <>
-              <Button
-                className="button-template"
-                type="primary"
-                onClick={() => showModal(record)}
-              >
-                Tư vấn
-              </Button>
-              <Modal
-                title="Xác nhận tư vấn"
-                open={isModalOpen && selectedOrder?.id === record.id}
-                onOk={handleOk}
-                onCancel={handleCancel}
-              >
-                <p>Khách: {record.customerName}</p>
-                <p>Số điện thoại: {record.customerPhone}</p>
-              </Modal>
-            </>
-          ) : (
-            <div></div>
-          )}
-        </>
+        <Button
+          className="button-template"
+          type="primary"
+          onClick={() => {
+            navigate(`/consulting/approve-order`, {
+              state: {
+                actor: "consulting",
+                order: record,
+                serviceType: selectedServiceType,
+              },
+            });
+          }}
+        >
+          Tư vấn
+        </Button>
       ),
     },
   ];
+
   const title = "Khách hàng cần tư vấn";
+
   return (
     <div>
-      {loading ? (
-        <LoadingPage />
-      ) : (
+      <Spin spinning={loading} indicator={<LoadingPage />}>
         <TableTemplate
           columns={columns}
           requests={requests}
@@ -139,16 +166,18 @@ function ConsultationRequests() {
           <div className="radio-filter">
             <Radio.Group
               block
-              defaultValue="a"
+              buttonStyle="solid"
+              defaultValue="all"
               size="large"
               onChange={handleChangeSelectedServiceType}
             >
+              <Radio.Button value="all">Tất cả</Radio.Button>
               <Radio.Button value="construction">Thi công</Radio.Button>
               <Radio.Button value="maintenance">Dịch vụ</Radio.Button>
             </Radio.Group>
           </div>
         </TableTemplate>
-      )}
+      </Spin>
     </div>
   );
 }
