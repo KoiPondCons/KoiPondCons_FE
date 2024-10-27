@@ -46,6 +46,7 @@ import PaymentResponse from "./components/payment-response";
 import DesignReview from "./pages/design-review";
 import ConstructionOrderDetail from "./pages/construction-staff/construction-order-detail";
 import ProgressConstructionCustomer from "./pages/customer/progress-construction-customer";
+import ApproveOrder from "./pages/consulting/approve-order";
 
 function App() {
   const router = createBrowserRouter([
@@ -118,6 +119,10 @@ function App() {
     {
       path: "consulting",
       element: <ConsultationRequests />,
+    },
+    {
+      path: "/consulting/approve-order",
+      element: <ApproveOrder />,
     },
     {
       path: "consulting/ongoing-consultation",
