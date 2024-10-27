@@ -97,6 +97,8 @@ function ManageStaff() {
       render: (text, record) => (
         <>
           <BiSolidUserDetail
+            size={30}
+            style={{ cursor: "pointer" }}
             onClick={() => {
               setSelectedStaff(record);
               setShowModal(true);
@@ -120,7 +122,8 @@ function ManageStaff() {
       render: (text, record) => {
         return (
           <MdDeleteOutline
-            style={{ fontSize: "40px", cursor: "pointer" }}
+            size={30}
+            style={{ cursor: "pointer" }}
             onClick={() => handleDeleteConfirmation(record.id)}
           ></MdDeleteOutline>
         );
