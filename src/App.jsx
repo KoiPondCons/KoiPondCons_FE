@@ -12,7 +12,6 @@ import OngoingConsultations from "./pages/consulting/ongoing-consultations";
 import Designer from "./pages/designer";
 //Manager
 import StaffMangager from "./pages/manager/manage-staff";
-import ConstructionOrders from "./pages/manager/construction-orders";
 import ManageDesign from "./pages/manager/manage-design";
 import ManageQuote from "./pages/manager/manage-quote";
 import CustomerProfileManagement from "./pages/manager/customer-profile-management";
@@ -37,16 +36,16 @@ import Order from "./pages/order-detail-staff";
 import MyProfile from "./pages/my-profile";
 import ActiveProject from "./pages/construction-staff/active-project";
 import HistoryConstruction from "./pages/construction-staff/history-construction";
-import OrderManagement from "./pages/manager/manage-order";
 import PriceListStaff from "./pages/consulting/create-price-list";
 import PayFailed from "./pages/general/pay-failed";
 import PaySuccess from "./pages/general/pay-success";
-
 import PaymentResponse from "./components/payment-response";
 import DesignReview from "./pages/design-review";
 import ConstructionOrderDetail from "./pages/construction-staff/construction-order-detail";
 import ProgressConstructionCustomer from "./pages/customer/progress-construction-customer";
 import ApproveOrder from "./pages/consulting/approve-order";
+import Report from "./pages/manager/report";
+import ConstructionOrdersPage from "./pages/manager/construction-orders";
 
 function App() {
   const router = createBrowserRouter([
@@ -165,7 +164,7 @@ function App() {
     },
     {
       path: "manager/construction-orders",
-      element: <ConstructionOrders />,
+      element: <ConstructionOrdersPage />,
     },
     {
       path: "manager/quote-management",
@@ -173,7 +172,7 @@ function App() {
     },
     {
       path: "manager",
-      element: <OrderManagement />,
+      element: <Report />,
     },
     {
       path: "manager/customer-profile-management",
