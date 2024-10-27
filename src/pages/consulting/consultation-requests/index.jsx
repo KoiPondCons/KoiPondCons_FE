@@ -23,6 +23,7 @@ function ConsultationRequests() {
 
       if (selectedServiceType === "maintenance") {
         maintenanceOrder = await api.get("maintenance/requested-orders");
+        console.log(maintenanceOrder.data);
         setRequests(
           maintenanceOrder.data.map((req) => ({
             ...req,
@@ -33,6 +34,7 @@ function ConsultationRequests() {
         constructionOrder = await api.get("orders/status", {
           params: { status: "REQUESTED" },
         });
+        console.log(constructionOrder.data);
         setRequests(
           constructionOrder.data.map((req) => ({
             ...req,
@@ -54,10 +56,10 @@ function ConsultationRequests() {
             serviceType: "Thi công",
           })),
         ];
+        console.log(maintenanceOrder.data);
+        console.log(constructionOrder.data);
         setRequests(order);
       }
-      console.log(maintenanceOrder.data);
-      console.log(constructionOrder.data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -68,11 +70,6 @@ function ConsultationRequests() {
   const handleChangeSelectedServiceType = (e) => {
     setSelectedServiceType(e.target.value);
   };
-
-  useEffect(() => {
-    fetchRequest();
-  }, []);
-
   useEffect(() => {
     fetchRequest();
   }, [selectedServiceType]);
@@ -132,23 +129,41 @@ function ConsultationRequests() {
       title: "",
       key: "actions",
       width: 100,
-      render: (_, record) => (
-        <Button
-          className="button-template"
-          type="primary"
-          onClick={() => {
-            navigate(`/consulting/approve-order`, {
-              state: {
-                actor: "consulting",
-                order: record,
-                serviceType: selectedServiceType,
-              },
-            });
-          }}
-        >
-          Tư vấn
-        </Button>
-      ),
+      render: (_, record) => {
+        const handleAssignConsultant = async () => {
+          try {
+            if (record.serviceType === "Dịch vụ") {
+              record.status = "PENDING";
+              await api.put(`maintenance/set-consultant/${record.id}`);
+              await api.put(`maintenance/${record.id}`, record);
+            } else {
+              record.status = "PROCESSING";
+              await api.put(`orders/consultant/${record.id}`, record);
+              await api.put(`orders/${record.id}`, record);
+            }
+          } catch (error) {
+            console.error("Error updating order:", error);
+          }
+        };
+
+        return (
+          <Button
+            className="button-template"
+            type="primary"
+            onClick={() => {
+              handleAssignConsultant();
+              navigate(`/consulting/approve-order`, {
+                state: {
+                  actor: "consulting",
+                  order: record,
+                },
+              });
+            }}
+          >
+            Tư vấn
+          </Button>
+        );
+      },
     },
   ];
 
