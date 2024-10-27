@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TableTemplate from '../../../components/table'
 import api from '../../../config/axios'
 import { MdDeleteOutline } from "react-icons/md";
+import { Modal } from 'antd';
 
 function manageStaff() {
     const [staffs, setStaffs] = useState([]);
@@ -11,6 +12,16 @@ function manageStaff() {
         setStaffs(response.data);
         console.log(response.data);
     };
+    const handleDeleteConfirmation = (id) => {
+        Modal.confirm({
+            title: 'Xác nhận xóa',
+            content: 'Bạn có chắc chắn muốn xóa không?',
+            okText: 'Xóa',
+            cancelText: 'Hủy',
+            onOk: () => handleDelete(id),
+        });
+    };
+
     const handleDelete = async (id) => {
         try {
             await api.delete(`delete/${id}`);
@@ -53,8 +64,8 @@ function manageStaff() {
             key: "delete",
             render: (text, record) => {
                 return (
-                    <MdDeleteOutline style={{ fontSize: "40px", cursor:"pointer" }}
-                        onClick={() => handleDelete(record.id)}>
+                    <MdDeleteOutline style={{ fontSize: "40px", cursor: "pointer" }}
+                        onClick={() => handleDeleteConfirmation(record.id)}>
                     </MdDeleteOutline>
                 );
             }
