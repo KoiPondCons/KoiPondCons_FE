@@ -111,7 +111,6 @@ function ManageStaff() {
                 address: record.address,
               });
             }}
-            style={{ cursor: "pointer" }}
           />
         </>
       ),
