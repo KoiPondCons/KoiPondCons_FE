@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "../../utils/common.css";
 import { LoadingOutlined } from "@ant-design/icons";
-function OrderInfor({ constructionOrder }) {
+function OrderInfor({ constructionOrder, type }) {
   if (!constructionOrder) {
     return (
       <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
@@ -51,24 +51,45 @@ function OrderInfor({ constructionOrder }) {
             <span> {constructionOrder.statusDescription}</span>
           </div>
         </Col>
-        <Col span={7}>
-          <label>Gói</label>
-          <div className="display-input">
-            <span>
-              {" "}
-              {constructionOrder.quotationResponse?.combo?.name || "N/A"}
-            </span>
-          </div>
-        </Col>
-        <Col span={7}>
-          <label>Thể tích hồ</label>
-          <div className="display-input">
-            <span>
-              {" "}
-              {constructionOrder.quotationResponse?.pondVolume || "N/A"}
-            </span>
-          </div>
-        </Col>
+        {type === "maintenance" ? (
+          <>
+            <Col span={7}>
+              <label>Dịch vụ</label>
+              <div className="display-input">
+                <span>
+                  {constructionOrder?.warranted ? "Bảo hành" : "Bảo dưỡng"}
+                </span>
+              </div>
+            </Col>
+            <Col span={7}>
+              <label>Thể tích hồ</label>
+              <div className="display-input">
+                <span> {constructionOrder?.pondVolume}</span>
+              </div>
+            </Col>
+          </>
+        ) : (
+          <>
+            <Col span={7}>
+              <label>Gói</label>
+              <div className="display-input">
+                <span>
+                  {" "}
+                  {constructionOrder.quotationResponse?.combo?.name || "N/A"}
+                </span>
+              </div>
+            </Col>
+            <Col span={7}>
+              <label>Thể tích hồ</label>
+              <div className="display-input">
+                <span>
+                  {" "}
+                  {constructionOrder.quotationResponse?.pondVolume || "N/A"}
+                </span>
+              </div>
+            </Col>
+          </>
+        )}
       </Row>
     </div>
   );
@@ -84,6 +105,8 @@ OrderInfor.propTypes = {
       }).isRequired,
     }).isRequired,
     pondAddress: PropTypes.string.isRequired,
+    warranted: PropTypes.boolean,
+    pondVolume: PropTypes.number,
     statusDescription: PropTypes.string.isRequired,
     quotationResponse: PropTypes.shape({
       combo: PropTypes.shape({

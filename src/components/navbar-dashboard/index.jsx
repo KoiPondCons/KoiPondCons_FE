@@ -8,6 +8,8 @@ import {
 } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import IMGDashboard from "../../images/Dashboard.png"; // Nhập hình ảnh
+import Header from "../header";
+import Footer from "../footer";
 
 const NavDashboard = ({ children, actor }) => {
   const navigate = useNavigate();
@@ -60,7 +62,14 @@ const NavDashboard = ({ children, actor }) => {
       { path: "/my-profile", label: "Hồ sơ của tôi" },
     ],
   };
-  if (actor == "customer") return <div>{children}</div>;
+  if (actor == "customer")
+    return (
+      <div>
+        <Header />
+        {children}
+        <Footer />
+      </div>
+    );
   else {
     return (
       <div>

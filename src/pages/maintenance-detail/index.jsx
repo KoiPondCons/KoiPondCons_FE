@@ -1,13 +1,9 @@
-import { Col, Form, Input, Modal, Popover, Row, Select, Table } from "antd";
+import { Button, Col, Form, Row, Select, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { Progress } from "antd";
 import api from "../../config/axios";
-import "./index.css";
 import NavDashboard from "../../components/navbar-dashboard";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import "../../components/table/index.css";
-import { AiOutlineFile } from "react-icons/ai";
-import { RiDraftLine } from "react-icons/ri";
 import moment from "moment";
 import OrderInfor from "../../components/order-information";
 function MaintenanceDetail() {
@@ -32,10 +28,9 @@ function MaintenanceDetail() {
   };
   const fetchMaintenanceOrder = async () => {
     try {
-      const response = await api.get(`orders/${id}`);
+      const response = await api.get(`maintenance/${id}`);
       setMaintenanceOrder(response.data);
       console.log(response.data);
-      console.log(actor);
     } catch (err) {
       setError(err);
     } finally {
@@ -53,50 +48,63 @@ function MaintenanceDetail() {
 
   const handleAssignConstructor = async () => {
     if (selectedConstructor) {
-      await api.put(
-        `/api/maintenance/set-constructor/${maintenanceOrder.id}/${selectedConstructor.id}`
-      );
+      await api.put(`maintenance/set-constructor/${id}/${selectedConstructor}`);
       console.log("Lưu constructor với ID:", selectedConstructor);
       fetchMaintenanceOrder();
     } else {
       alert("Vui lòng chọn nhà thiết kế");
     }
   };
+  const columns = [
+    {
+      title: "Nội dung",
+      align: "center",
+      render: () => {
+        return <p>Thanh toán đơn bảo dưỡng</p>;
+      },
+    },
+    {
+      title: "Số tiền cần thanh toán",
+      dataIndex: "price",
+      key: "price",
+      align: "center",
+    },
+    {
+      title: "Thanh toán",
+      align: "center",
+      render: (_, record) => {
+        return record.endDate !== null && record.status === "FINISHED" ? (
+          <>
+            Đã thanh toán vào lúc{" "}
+            {moment(record.endDate).format("DD/MM/YYYY HH:mm:ss")}
+          </>
+        ) : actor === "customer" ? (
+          <Button>Thanh toán</Button>
+        ) : (
+          <p>Chưa thanh toán</p>
+        );
+      },
+    },
+  ];
+  const orders = [maintenanceOrder];
   return (
     <NavDashboard actor={actor}>
-      <div>
-        <OrderInfor constructionOrder={maintenanceOrder} />
-        <h1>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
+      <div style={{ backgroundColor: "white", height: "100vh" }}>
+        <OrderInfor constructionOrder={maintenanceOrder} type="maintenance" />
+        <h1 style={{ textAlign: "center" }}>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
         <Form layout="vertical">
           <Row gutter={24}>
-            <Col span={4}>
-              <div className="progress">
-                <Progress
-                  type="circle"
-                  percent={maintenanceOrder?.constructionProgress}
-                />
-              </div>
-              <h3
-                style={{ textAlign: "center", margin: " 20px 20px 0px 20px" }}
-              >
-                Tiến độ
-              </h3>
-              <Link to="/construction" className="more-detail">
-                Xem chi tiết
-              </Link>
-            </Col>
             <Col span={20}>
               <label>Tư vấn viên</label>
               <div className="display-input">
-                <span>{maintenanceOrder.consultantAccount?.name || "N/A"}</span>
+                <span>{maintenanceOrder?.consultantName || "N/A"}</span>
               </div>
               <Form.Item label="Người chịu trách nhiệm thi công">
-                <div className="display-input">
-                  <span>
-                    {maintenanceOrder.constructorAccount.name || "N/A"}
-                  </span>
-                </div>
-                {actor === "manager" ? (
+                {maintenanceOrder.constructorName ? (
+                  <div className="display-input">
+                    <span>{maintenanceOrder.constructorName}</span>
+                  </div>
+                ) : actor === "manager" ? (
                   <div>
                     <Select
                       placeholder="Chọn người thi công"
@@ -111,21 +119,23 @@ function MaintenanceDetail() {
                         </Select.Option>
                       ))}
                     </Select>
-                    <button onClick={() => handleAssignConstructor()}>
-                      Lưu
-                    </button>
+                    <button onClick={handleAssignConstructor}>Lưu</button>
                   </div>
                 ) : (
                   <div className="display-input">
-                    <span>
-                      {constructionOrder.constructorAccount?.name || "N/A"}
-                    </span>
+                    <span>Chờ chỉ định người thi công</span>
                   </div>
                 )}
               </Form.Item>
             </Col>
           </Row>
         </Form>
+        <Table
+          style={{ margin: "3%" }}
+          columns={columns}
+          dataSource={orders}
+          pagination={false}
+        ></Table>
       </div>
     </NavDashboard>
   );

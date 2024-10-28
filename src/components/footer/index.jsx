@@ -11,7 +11,6 @@ import { IoHomeSharp } from "react-icons/io5";
 
 const Footer = () => {
   const address = "Đường  D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh";
-  const factoryAddress = "cái này ghi gì??";
   const phone = "0823 132 452";
   const fax = "(024) 22202525";
   const email = "koinhathang@gmail.com";
@@ -31,31 +30,38 @@ const Footer = () => {
             </li>
             <li>
               <FaPhone />
-              <p>Điện thoại: {phone}{" "}</p>
+              <p>Điện thoại: {phone} </p>
             </li>
             <li>
               <FaSuitcase />
-              <p>Số Fax: {fax}{" "}</p>
+              <p>Số Fax: {fax} </p>
             </li>
             <li>
               <FaEnvelope />
-              <p>Email: {email}{" "}</p>
+              <p>Email: {email} </p>
             </li>
             <li>
               <FaUserGroup />
-              <p>Mã số doanh nghiệp: {codeBusiness}{" "}</p>
+              <p>Mã số doanh nghiệp: {codeBusiness} </p>
             </li>
           </ul>
         </div>
 
-
         <hr className="footer__hr--vertical"></hr>
-
 
         <div className="footer-nav">
           <ul>
             <li>
-              <a style={{ color: 'white', fontWeight: 'bolder', fontSize: '1.4rem' }} href="homepage">Trang chủ</a>
+              <a
+                style={{
+                  color: "white",
+                  fontWeight: "bolder",
+                  fontSize: "1.4rem",
+                }}
+                href="homepage"
+              >
+                Trang chủ
+              </a>
             </li>
             <li>
               <a href="about">Giới thiệu</a>
@@ -78,22 +84,21 @@ const Footer = () => {
           </ul>
         </div>
 
-
         <hr className="footer__hr--vertical"></hr>
 
-
         <div className="footer-title">
-          <h2 style={{textAlign:'left'}} className="footer-title__text">
+          <h2 style={{ textAlign: "left" }} className="footer-title__text">
             <a href="contact">Nhận báo giá</a>
           </h2>
-          <h2 style={{textAlign:'left'}} className="footer-title__text"><a href="contact">Yêu cầu báo giá</a></h2>
-          <h2 style={{textAlign:'left'}} className="footer-title__text">
+          <h2 style={{ textAlign: "left" }} className="footer-title__text">
+            <a href="contact">Yêu cầu báo giá</a>
+          </h2>
+          <h2 style={{ textAlign: "left" }} className="footer-title__text">
             <a href="contact">Hotline: {phone}</a>
           </h2>
           <p className="footer-description">{description}</p>
         </div>
       </div>
-
 
       <div className="footer-coppyright">
         <h3>KOI TEAM Vietnam 2024 © All Rights Reserved</h3>

@@ -13,16 +13,30 @@ function HistoryPage() {
   const banner =
     "https://images.unsplash.com/photo-1627884849665-8c74468f6037?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   const navigate = useNavigate();
-  const [constructionOrders, setConstructionOrders] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [order, setOrder] = useState();
+  const [isModalConstructionOpen, setIsModalConstructionOpen] = useState(false);
+  const [isModalMaintenanceOpen, setIsModalMaintenanceOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [loading, setLoading] = useState();
   const fecthConstructionOrders = async () => {
     setLoading(true);
     try {
-      const response = await api.get("orders/customer");
-      setConstructionOrders(response.data);
-      console.log(response.data);
+      const maintenanceOrder = await api.get("maintenance/customer");
+      const constructionOrder = await api.get("orders/customer");
+      const order = [
+        ...maintenanceOrder.data.map((req) => ({
+          ...req,
+          serviceType: "Dịch vụ",
+        })),
+        ...constructionOrder.data.map((req) => ({
+          ...req,
+          serviceType: "Thi công",
+        })),
+      ];
+      order.sort((a, b) => new Date(b.requestDate) - new Date(a.requestDate));
+      setOrder(order);
+      console.log(maintenanceOrder.data);
+      console.log(constructionOrder.data);
     } catch (error) {
       console.log("Error at fecthConstructionOrders", error);
     } finally {
@@ -36,11 +50,11 @@ function HistoryPage() {
     try {
       const value = {
         status: "CANCELED",
-        customerName: constructionOrders.customerName,
-        customerPhone: constructionOrders.customerPhone,
-        customerEmail: constructionOrders.customerEmail,
-        pondAddress: constructionOrders.pondAddress,
-        designed: constructionOrders.designed,
+        customerName: order?.customerName,
+        customerPhone: order?.customerPhone,
+        customerEmail: order?.customerEmail,
+        pondAddress: order?.pondAddress,
+        designed: order?.designed,
       };
       await api.put(`orders/${id}`, value);
       console.log("Delete successfully");
@@ -49,64 +63,108 @@ function HistoryPage() {
       console.error(error);
     }
   };
-  const renderButtons = (constructionOrder) => {
-    if (constructionOrder.quotationResponse.status === "CUSTOMER_PENDING") {
+  const renderButtons = (order) => {
+    if (order.serviceType === "Thi công") {
+      if (order?.quotationResponse?.status === "CUSTOMER_PENDING") {
+        return (
+          <Button
+            className="btn"
+            onClick={() => {
+              navigate(`/price-list/${order.id}`, {
+                state: "customer",
+              });
+            }}
+          >
+            Duyệt báo giá
+          </Button>
+        );
+      }
+      if (order?.status === "REQUESTED" || order?.status === "PROCESSING") {
+        return (
+          <Button
+            className="btn"
+            onClick={() => {
+              setSelectedOrderId(order.id);
+              setIsModalConstructionOpen(true);
+            }}
+          >
+            Hủy đơn
+          </Button>
+        );
+      }
+
+      if (order?.designDrawingResponse?.status === "CUSTOMER_PENDING") {
+        return (
+          <Button
+            className="btn"
+            onClick={() => {
+              navigate(`/design-review/${order.id}`, {
+                state: { actor: "customer" },
+              });
+            }}
+          >
+            Duyệt thiết kế
+          </Button>
+        );
+      }
       return (
         <Button
           className="btn"
           onClick={() => {
-            navigate(`/price-list/${constructionOrder.id}`, {
+            navigate(`/order/${order.id}`, {
               state: "customer",
             });
           }}
         >
-          Duyệt báo giá
+          Chi tiết
         </Button>
       );
+    } else if (order.serviceType === "Dịch vụ") {
+      if (order?.status === "REQUESTED" || order?.status === "PENDING") {
+        return (
+          <Button
+            className="btn"
+            onClick={() => {
+              setSelectedOrderId(order.id);
+              setIsModalMaintenanceOpen(true);
+            }}
+          >
+            Hủy đơn
+          </Button>
+        );
+      } else if (order?.status === "PROCESSING") {
+        return (
+          <Button
+            className="btn"
+            onClick={() => {
+              navigate(`/maintenance-detail/${order.id}`, {
+                state: { actor: "customer" },
+              });
+            }}
+          >
+            Chi tiết
+          </Button>
+        );
+      } else if (order?.status === "PROCESSED") {
+        return (
+          <>
+            <Button className="btn" onClick={() => {}}>
+              Thanh toán
+            </Button>
+            <Button
+              className="btn"
+              onClick={() => {
+                navigate(`/maintenance-detail/${order.id}`, {
+                  state: { actor: "customer" },
+                });
+              }}
+            >
+              Chi tiết
+            </Button>
+          </>
+        );
+      }
     }
-    if (
-      constructionOrder.status === "REQUESTED" ||
-      constructionOrder.status === "PROCESSING"
-    ) {
-      return (
-        <Button
-          className="btn"
-          onClick={() => {
-            setSelectedOrderId(constructionOrder.id);
-            setIsModalOpen(true);
-          }}
-        >
-          Hủy đơn
-        </Button>
-      );
-    }
-
-    if (constructionOrder.designDrawingResponse.status === "CUSTOMER_PENDING") {
-      return (
-        <Button
-          className="btn"
-          onClick={() => {
-            navigate(`/design-review/${constructionOrder.id}`, {
-              state: { actor: "customer" },
-            });
-          }}
-        >
-          Duyệt thiết kế
-        </Button>
-      );
-    }
-    return (
-      <Button
-        className="btn"
-        onClick={() => {
-          navigate(`/order/${constructionOrder.id}`, {
-            state: "customer",
-          });
-        }}
-      >
-        Chi tiết
-      </Button>
-    );
   };
   return (
     <div>
@@ -133,8 +191,8 @@ function HistoryPage() {
                   indicator={<LoadingOutlined style={{ fontSize: 48 }} />}
                 />
               </div>
-            ) : constructionOrders && constructionOrders.length > 0 ? (
-              constructionOrders.map((constructionOrder) => (
+            ) : order && order.length > 0 ? (
+              order.map((constructionOrder) => (
                 <Card
                   key={constructionOrder.id}
                   style={{
@@ -158,7 +216,10 @@ function HistoryPage() {
                     <Col span={16}>
                       <div className="history-construction-order-info">
                         <p>Mã đơn: {constructionOrder.id}</p>
-                        <p>Trạng thái: {constructionOrder.statusDescription}</p>
+                        <p>Loại: {constructionOrder.serviceType}</p>
+                        <p>
+                          Trạng thái: {constructionOrder?.statusDescription}
+                        </p>
                         <p>
                           Số tư vấn viên:{" "}
                           {constructionOrder?.consultantAccount?.phone ||
@@ -186,14 +247,25 @@ function HistoryPage() {
         </div>
         <Modal
           title="Hủy đơn hàng"
-          open={isModalOpen}
+          open={isModalConstructionOpen}
           onOk={() => {
             handleDeleteOrder(selectedOrderId);
-            setIsModalOpen(false);
+            setIsModalConstructionOpen(false);
           }}
-          onCancel={() => setIsModalOpen(false)}
+          onCancel={() => setIsModalConstructionOpen(false)}
         >
           <p>Bạn có chắc chắn muốn hủy đơn hàng?</p>
+        </Modal>
+        <Modal
+          title="Hủy đơn hàng"
+          open={isModalMaintenanceOpen}
+          onOk={() => {
+            handleDeleteOrder(selectedOrderId);
+            setIsModalMaintenanceOpen(false);
+          }}
+          onCancel={() => setIsModalMaintenanceOpen(false)}
+        >
+          <p>Bạn có chắc chắn muốn hủy đơn hàng ?</p>
         </Modal>
       </CommonPageTemplate>
     </div>
