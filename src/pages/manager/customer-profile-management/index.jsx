@@ -10,8 +10,20 @@ function customerProfileManagement() {
     const [customer, setCustomer] = useState([]);
     const role = "CUSTOMER";
     const navigate = useNavigate();
+    const fetchCustomer = async () => {
+      try {
+        const response = await api.get(`account/role/${role}`);
+        setCustomer(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching staff data:", error);
+      }
+    };
+    useEffect(() => {
+      fetchCustomer();
+    }, []);
     const handleDelete = async (id) => {
-      await api.delete(`delete/${id}`);
+      await api.delete(`account/delete/${id}`);
       fetchCustomer();
     };
     const handleDeleteConfirmation = (id) => {
@@ -57,18 +69,7 @@ function customerProfileManagement() {
       }
     ]
 
-    const fetchCustomer = async () => {
-      try {
-        const response = await api.get(`role/${role}`);
-        setCustomer(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching staff data:", error);
-      }
-    };
-    useEffect(() => {
-      fetchCustomer();
-    }, []);
+    
   return (
     <div>
         <TableTemplate

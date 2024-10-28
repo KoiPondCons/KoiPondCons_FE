@@ -15,6 +15,7 @@ import StaffMangager from "./pages/manager/manage-staff";
 import CustomerProfileManagement from "./pages/manager/customer-profile-management";
 import MaintenanceOrders from "./pages/manager/maintenance-orders";
 import ConstructionOrdersPage from "./pages/manager/construction-orders";
+import CustomerInformationPageManager from "./pages/customer-information";
 //Customer
 import HistoryPage from "./pages/customer/history";
 import OrderCustomer from "./pages/order-detail-customer";
@@ -174,6 +175,10 @@ function App() {
     {
       path: "manager/customer-profile-management",
       element: <CustomerProfileManagement />,
+    },
+    {
+      path: "manager/customer-profile-management/customer-information/:id",
+      element: <CustomerInformationPageManager />,
     },
     {
       path: "manager/maintenance-orders",

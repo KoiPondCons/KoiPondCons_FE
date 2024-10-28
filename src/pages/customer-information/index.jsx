@@ -16,7 +16,7 @@ function CustomerInformationPageManager() {
   const fetchCustomerData = async () => {
     try {
       setLoading(true);
-      const response = await api.get(`id/${id}`);
+      const response = await api.get(`account/id/${id}`);
       console.log(response.data);
       setCustomerData(response.data);
       setLoading(false);
