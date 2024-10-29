@@ -55,6 +55,16 @@ function MaintenanceDetail() {
       alert("Vui lòng chọn nhà thiết kế");
     }
   };
+  const handlePayment = async () => {
+    try {
+      const linkPayment = await api.post(
+        `submitMaintainOrder/${maintenanceOrder.id}`
+      );
+      window.location.href = linkPayment.data;
+    } catch (error) {
+      console.error("Payment error: ", error);
+    }
+  };
   const columns = [
     {
       title: "Nội dung",
@@ -79,7 +89,7 @@ function MaintenanceDetail() {
             {moment(record.endDate).format("DD/MM/YYYY HH:mm:ss")}
           </>
         ) : actor === "customer" ? (
-          <Button>Thanh toán</Button>
+          <Button onClick={() => handlePayment()}>Thanh toán</Button>
         ) : (
           <p>Chưa thanh toán</p>
         );
@@ -87,6 +97,7 @@ function MaintenanceDetail() {
     },
   ];
   const orders = [maintenanceOrder];
+
   return (
     <NavDashboard actor={actor}>
       <div style={{ backgroundColor: "white", height: "100vh" }}>
