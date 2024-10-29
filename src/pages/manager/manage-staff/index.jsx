@@ -15,7 +15,7 @@ function ManageStaff() {
 
   const fetchStaffs = async () => {
     try {
-      const response = await api.get("role/staff");
+      const response = await api.get("account/role/staff");
       setStaffs(response.data);
       console.log(response.data);
     } catch (error) {
@@ -111,7 +111,6 @@ function ManageStaff() {
                 address: record.address,
               });
             }}
-            style={{ cursor: "pointer" }}
           />
         </>
       ),
