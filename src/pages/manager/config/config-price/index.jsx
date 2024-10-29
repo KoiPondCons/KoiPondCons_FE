@@ -1,22 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import "./index.css";
-import CommonTemplate from '../../../components/common-page-template';
-import { Table } from "antd";
-import api from "../../../config/axios";
-import price from '../../../images/baogia.png';
-import { ConfigProvider } from "antd";
-const title = 'Báo giá';
-const context = 'Trang chủ » Báo giá';
-const banner = 'https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/toby-sakata-lJ62jee7oSM-unsplash.jpg?alt=media&token=92c638c4-75d1-4441-932a-f804c3aacd4e';
+import React from 'react'
+import NavbarDashboard from '../../../../components/navbar-dashboard'
+import { ConfigProvider, Table, InputNumber } from 'antd'
+import { useState, useEffect } from 'react';
+import api from '../../../../config/axios';
 
-function ListProject() {
-  const navigate = useNavigate();
+function ConfigPrice() {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
   const basicId = 1;
   const popularId = 2;
   const premiumId = 3;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,6 +34,25 @@ function ListProject() {
     fetchData();
   }, []);
 
+  const handleUpdatePrice = async (id, newPrice) => {
+    try {
+      // Gọi API để cập nhật giá
+      await api.put(`comboprices/${id}`, { unitPrice: newPrice });
+      // Cập nhật lại dữ liệu sau khi cập nhật thành công
+      fetchData(); // Gọi lại hàm fetchData để lấy dữ liệu mới
+    } catch (error) {
+      console.error("Error updating price:", error);
+    }
+  };
+
+  const handlePriceChange = (id, value) => {
+    // Gọi hàm cập nhật giá với debounce
+    clearTimeout(window.priceUpdateTimeout);
+    window.priceUpdateTimeout = setTimeout(() => {
+      handleUpdatePrice(id, value);
+    }, 1000); // Thời gian debounce 1 giây
+  };
+
   const columns = [
     {
       title: 'Kích thước',
@@ -52,21 +65,36 @@ function ListProject() {
       title: 'Gói cơ bản',
       dataIndex: 'basic',
       key: 'basic',
-      render: (text) => formatNumberWithCommas(text), // Định dạng giá trị
+      render: (text, record) => (
+        <InputNumber
+          defaultValue={text}
+          onChange={(value) => handlePriceChange(basicId, value)} // Cập nhật giá khi thay đổi
+        />
+      ),
       align: 'center',
     },
     {
       title: 'Gói phổ thông',
       dataIndex: 'popular',
       key: 'popular',
-      render: (text) => formatNumberWithCommas(text), // Định dạng giá trị
+      render: (text, record) => (
+        <InputNumber
+          defaultValue={text}
+          onChange={(value) => handlePriceChange(popularId, value)} // Cập nhật giá khi thay đổi
+        />
+      ),
       align: 'center',
     },
     {
       title: 'Gói cao cấp',
       dataIndex: 'premium',
       key: 'premium',
-      render: (text) => formatNumberWithCommas(text), // Định dạng giá trị
+      render: (text, record) => (
+        <InputNumber
+          defaultValue={text}
+          onChange={(value) => handlePriceChange(premiumId, value)} // Cập nhật giá khi thay đổi
+        />
+      ),
       align: 'center',
     },
   ];
@@ -77,23 +105,10 @@ function ListProject() {
     '50 - 100m3',
     '100m3 trở lên',
   ];
-  function formatNumberWithCommas(num) {
-    if (num === 'N/A') return num; // Kiểm tra giá trị không hợp lệ
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
-
-
   return (
-    <div>
-      <CommonTemplate title={title} context={context} banner={banner}>
-        <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", background: "white", padding: "100px 40px" }}>
-          <img style={{ width: "60%", height: "auto" }} src={price} alt="" />
-          <div style={{ marginTop: "2%" }}>
-            <div className="notfound404-shape" style={{ display: "flex", justifyContent: "center", boxShadow: "none" }}>
-              <button onClick={() => navigate('/contact')}>NHẬN TƯ VẤN NGAY</button>
-            </div>
-          </div>
-        </div>
+      <NavbarDashboard
+        actor="manager"
+      >
         {loading ? (
           <p>Loading...</p>
         ) : (
@@ -114,9 +129,8 @@ function ListProject() {
             />
           </ConfigProvider>
         )}
-      </CommonTemplate>
-    </div>
-  );
+      </NavbarDashboard>
+  )
 }
 
-export default ListProject;
+export default ConfigPrice;

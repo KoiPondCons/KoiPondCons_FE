@@ -52,9 +52,13 @@ const NavDashboard = ({ children, actor }) => {
     ],
     manager: [
       { path: "/manager", label: "Báo cáo doanh thu" },
-      { path: "/manager/staff-management", label: "Quản lý nhân sự" },
       { path: "/manager/construction-orders", label: "Đơn hàng thi công" },
       { path: "/manager/maintenance-orders", label: "Đơn hàng bảo dưỡng" },
+      {
+        path: "/manager/config-price",
+        label: "Quản lý báo giá",
+      },
+      { path: "/manager/staff-management", label: "Quản lý nhân sự" },  
       {
         path: "/manager/customer-profile-management",
         label: "Quản lý hồ sơ khách hàng",
@@ -89,9 +93,6 @@ const NavDashboard = ({ children, actor }) => {
                     {" "}
                     {link.label}
                   </Link>
-                  {/* <a href={link.path}>
-                  {link.label}
-                </a> */}
                 </li>
               ))}
             </ul>
