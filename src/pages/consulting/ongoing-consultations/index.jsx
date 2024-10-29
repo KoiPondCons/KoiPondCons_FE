@@ -1,34 +1,45 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { AiOutlineUnorderedList } from "react-icons/ai";
-import { MdOutlinePriceChange } from "react-icons/md";
+import { MdFactCheck, MdOutlinePriceChange } from "react-icons/md";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import TableTemplate from "../../../components/table";
 import api from "../../../config/axios";
 import LoadingPage from "../../../components/loading";
-import { Spin } from "antd";
+import { Radio, Spin } from "antd";
 function OngoingConsultations() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [type, setType] = useState("construction");
   const fetchConsultationRequests = async () => {
     setLoading(true);
     try {
-      const response = await api.get("orders/consultant");
-      setRequests(response.data);
-      console.log(response.data);
+      let response;
+      if (type === "construction") {
+        response = await api.get("orders/consultant");
+      } else if (type === "maintenance") {
+        response = await api.get("maintenance/consultant");
+      }
+      const requestsWithServiceType = response.data.map((req) => ({
+        ...req,
+        serviceType: type === "construction" ? "construction" : "maintenance",
+      }));
+      setRequests(requestsWithServiceType);
+      console.log(requestsWithServiceType);
     } catch (error) {
       console.error("Error fetching consultation requests:", error);
     } finally {
       setLoading(false);
     }
   };
-
+  const handleChangeType = (e) => {
+    setType(e.target.value);
+  };
   useEffect(() => {
     fetchConsultationRequests();
-  }, []);
+  }, [type]);
   const columns = [
     {
       title: "ID",
@@ -55,34 +66,42 @@ function OngoingConsultations() {
           textAlign: "center",
         };
 
-        if (record.status === "PROCESSING") {
+        if (record.serviceType === "construction") {
+          if (record?.status === "PROCESSING") {
+            return (
+              <div style={textStyle}>
+                {record?.quotationResponse &&
+                record?.quotationResponse?.statusDescription ? (
+                  <p>{record?.quotationResponse?.statusDescription} báo giá</p>
+                ) : (
+                  <p>Không có thông tin báo giá, hãy tạo báo giá</p>
+                )}
+              </div>
+            );
+          } else if (record?.status === "DESIGNING") {
+            return (
+              <div style={textStyle}>
+                {record?.designDrawResponse &&
+                record?.designDrawResponse?.statusDescription ? (
+                  <p>
+                    {record?.designDrawResponse?.statusDescription} bản thiết kế
+                  </p>
+                ) : (
+                  <p>Chờ chỉ định nhà thiết kế</p>
+                )}
+              </div>
+            );
+          } else {
+            return (
+              <div style={textStyle}>
+                <p>{record?.statusDescription}</p>
+              </div>
+            );
+          }
+        } else if (record.serviceType === "maintenance") {
           return (
             <div style={textStyle}>
-              {record.quotationResponse &&
-              record.quotationResponse.statusDescription ? (
-                <p>{record.quotationResponse.statusDescription} báo giá</p>
-              ) : (
-                <p>Không có thông tin báo giá, hãy tạo báo giá</p>
-              )}
-            </div>
-          );
-        } else if (record.status === "DESIGNING") {
-          return (
-            <div style={textStyle}>
-              {record.designDrawResponse &&
-              record.designDrawResponse.statusDescription ? (
-                <p>
-                  {record.designDrawResponse.statusDescription} bản thiết kế
-                </p>
-              ) : (
-                <p>Chờ chỉ định nhà thiết kế</p>
-              )}
-            </div>
-          );
-        } else {
-          return (
-            <div style={textStyle}>
-              <p>{record.statusDescription}</p>
+              <p>{record?.statusDescription}</p>
             </div>
           );
         }
@@ -92,16 +111,54 @@ function OngoingConsultations() {
       title: "",
       key: "",
       render: (record) => {
-        if (
-          record.quotationResponse.status === "PROCESSING" ||
-          record.quotationResponse.status === "MANAGER_REJECTED" ||
-          record.quotationResponse.status === "CUSTOMER_REJECTED"
-        ) {
-          return (
-            <div style={{ textAlign: "center", cursor: "pointer" }}>
-              <MdOutlinePriceChange
-                style={{ cursor: "pointer" }}
-                size={30}
+        if (record.serviceType === "construction") {
+          if (
+            record?.quotationResponse?.status === "PROCESSING" ||
+            record?.quotationResponse?.status === "MANAGER_REJECTED" ||
+            record?.quotationResponse?.status === "CUSTOMER_REJECTED"
+          ) {
+            return (
+              <div style={{ textAlign: "center", cursor: "pointer" }}>
+                <MdOutlinePriceChange
+                  style={{ cursor: "pointer" }}
+                  size={30}
+                  onClick={() => {
+                    navigate(`/consulting/approve-order`, {
+                      state: {
+                        actor: "consulting",
+                        order: record,
+                      },
+                    });
+                  }}
+                />
+                <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                  Tạo báo giá
+                </p>
+              </div>
+            );
+          } else {
+            return (
+              <div style={{ textAlign: "center", cursor: "pointer" }}>
+                <AiOutlineUnorderedList
+                  style={{ cursor: "pointer" }}
+                  size={30}
+                  onClick={() =>
+                    navigate(`/order-detail/${record.id}`, {
+                      state: "consulting",
+                    })
+                  }
+                />
+                <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                  Chi tiết
+                </p>
+              </div>
+            );
+          }
+        } else if (record.serviceType === "maintenance") {
+          if (record.status === "PENDING") {
+            return (
+              <div
+                style={{ textAlign: "center", cursor: "pointer" }}
                 onClick={() => {
                   navigate(`/consulting/approve-order`, {
                     state: {
@@ -110,27 +167,14 @@ function OngoingConsultations() {
                     },
                   });
                 }}
-              />
-              <p style={{ fontSize: "10px", fontStyle: "italic" }}>
-                Tạo báo giá
-              </p>
-            </div>
-          );
-        } else {
-          return (
-            <div style={{ textAlign: "center", cursor: "pointer" }}>
-              <AiOutlineUnorderedList
-                style={{ cursor: "pointer" }}
-                size={30}
-                onClick={() =>
-                  navigate(`/order-detail/${record.id}`, {
-                    state: "consulting",
-                  })
-                }
-              />
-              <p style={{ fontSize: "10px", fontStyle: "italic" }}>Chi tiết</p>
-            </div>
-          );
+              >
+                <MdFactCheck size={30} />
+                <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                  Chốt đơn hàng
+                </p>
+              </div>
+            );
+          }
         }
       },
     },
@@ -144,7 +188,19 @@ function OngoingConsultations() {
           requests={requests}
           title={title}
           actor="consulting"
-        />
+        >
+          <Radio.Group
+            block
+            buttonStyle="solid"
+            defaultValue="all"
+            size="large"
+            onChange={handleChangeType}
+          >
+            <Radio.Button value="all">Tất cả</Radio.Button>
+            <Radio.Button value="construction">Thi công</Radio.Button>
+            <Radio.Button value="maintenance">Dịch vụ</Radio.Button>
+          </Radio.Group>
+        </TableTemplate>
       </Spin>
     </div>
   );
