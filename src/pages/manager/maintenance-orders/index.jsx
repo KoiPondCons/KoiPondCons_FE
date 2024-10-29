@@ -3,7 +3,9 @@ import TableTemplate from "../../../components/table";
 import "./index.css";
 import { Button, Radio } from "antd";
 import api from "../../../config/axios";
+import { useNavigate } from "react-router-dom";
 function maintenanceOrders() {
+  const navigate = useNavigate();
   const title = "Quản lí đơn bảo trì";
   const [maintenanceOrders, setMaintenanceOrders] = useState();
   const [selectedType, setSelectedType] = useState("all");
@@ -73,7 +75,14 @@ function maintenanceOrders() {
       key: "actions",
       width: 100,
       render: (_, record) => (
-        <Button type="primary">
+        <Button
+          type="primary"
+          onClick={() => {
+            navigate(`/maintenance-detail/${record.id}`, {
+              state: { actor: "manager" },
+            });
+          }}
+        >
           {record.constructorName === null ? "Chỉ định xây dựng" : "Chi tiết"}
         </Button>
       ),
