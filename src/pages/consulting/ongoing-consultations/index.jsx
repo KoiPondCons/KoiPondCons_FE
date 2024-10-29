@@ -144,7 +144,7 @@ function OngoingConsultations() {
                   size={30}
                   onClick={() =>
                     navigate(`/order-detail/${record.id}`, {
-                      state: "consulting",
+                      state: { actor: "consulting" },
                     })
                   }
                 />

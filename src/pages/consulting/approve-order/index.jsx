@@ -151,15 +151,17 @@ function ApproveOrder() {
             )}
           </Row>
         </Form>
-        <Button
-          onClick={() => {
-            navigate(`/consulting`);
-          }}
-        >
-          Tạm hoãn
-        </Button>
-        <Button onClick={handleApprovedOrder}>Xác nhận đơn hàng</Button>
-        <Button onClick={handleCanceledOrder}>Hủy đơn hàng</Button>
+        <div style={{display: "flex", justifyContent: "center", gap: "10px"}}>
+          <Button
+            onClick={() => {
+              navigate(`/consulting`);
+            }}
+          >
+            Tạm hoãn
+          </Button>
+          <Button onClick={handleApprovedOrder}>Xác nhận đơn hàng</Button>
+          <Button onClick={handleCanceledOrder}>Hủy đơn hàng</Button>
+        </div>
       </div>
     </NavDashboard>
   );

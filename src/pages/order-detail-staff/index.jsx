@@ -141,7 +141,7 @@ function Order() {
     <NavDashboard actor={actor}>
       <div>
         <OrderInfor constructionOrder={constructionOrder} />
-        <h1>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
+        <h1 style={{textAlign: "center"}}>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
         <Form layout="vertical">
           <Row gutter={24}>
             <Col span={4}>
