@@ -17,7 +17,7 @@ function ApproveOrder() {
     console.log(order);
   }, []);
   const handleCanceledOrder = async () => {
-    if (order.serviceType === "Dịch vụ") {
+    if (order.serviceType === "maintenance") {
       order.status = "CANCELED";
       console.log(order);
       await api.put(`maintenance/set-consultant/${order.id}`);
@@ -37,7 +37,7 @@ function ApproveOrder() {
         values.pondVolumeMaintenance || values.ponVolumeConstruction;
       order.status = "PROCESSING";
 
-      if (order.serviceType === "Dịch vụ") {
+      if (order.serviceType === "maintenance") {
         await api.put(`maintenance/${order.id}`, order);
         navigate(`/consulting`, {
           state: { actor: "consulting" },
@@ -109,7 +109,7 @@ function ApproveOrder() {
                 <span> {order?.statusDescription}</span>
               </div>
             </Col>
-            {order.serviceType === "Dịch vụ" ? (
+            {order.serviceType === "maintenance" ? (
               <>
                 <Col span={7}>
                   <label>Dịch vụ</label>

@@ -38,7 +38,7 @@ function ConsultationRequests() {
         setRequests(
           constructionOrder.data.map((req) => ({
             ...req,
-            serviceType: "Thi công",
+            serviceType: "construction",
           }))
         );
       } else {
@@ -49,11 +49,11 @@ function ConsultationRequests() {
         order = [
           ...maintenanceOrder.data.map((req) => ({
             ...req,
-            serviceType: "Dịch vụ",
+            serviceType: "maintenance",
           })),
           ...constructionOrder.data.map((req) => ({
             ...req,
-            serviceType: "Thi công",
+            serviceType: "construction",
           })),
         ];
         console.log(maintenanceOrder.data);
@@ -121,9 +121,11 @@ function ConsultationRequests() {
     },
     {
       title: "Loại dịch vụ",
-      dataIndex: "serviceType",
-      key: "serviceType",
       width: 100,
+      render: (record) => {
+        if (record.serviceType === "construction") return <p>Thi công</p>;
+        else return <p>Dịch vụ</p>;
+      },
     },
     {
       title: "",
@@ -132,7 +134,7 @@ function ConsultationRequests() {
       render: (_, record) => {
         const handleAssignConsultant = async () => {
           try {
-            if (record.serviceType === "Dịch vụ") {
+            if (record.serviceType === "maintenance") {
               record.status = "PENDING";
               await api.put(`maintenance/set-consultant/${record.id}`);
               await api.put(`maintenance/${record.id}`, record);
