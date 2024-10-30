@@ -184,7 +184,7 @@ function App() {
       element: <Combo />,
     },
     {
-      path: "combo/:id",
+      path: "combo/:comboId",
       element: <ComboDetail />,
     },
     {
