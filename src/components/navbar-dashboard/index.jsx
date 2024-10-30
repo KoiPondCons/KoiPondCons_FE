@@ -49,7 +49,7 @@ const NavDashboard = ({ children, actor }) => {
   const itemsManager = [
     {
       key: "/manager",
-      label: <Link to="/manager">Báo cáo doanh thu</Link>,
+      label: <Link to="/manager">Bảng điều khiển</Link>,
     },
     {
       key: "manage-order",
