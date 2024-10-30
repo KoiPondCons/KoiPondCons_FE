@@ -212,14 +212,17 @@ function Promotion() {
       <Modal
         open={isShowModalUpdateOpen}
         onCancel={() => setIsShowModalUpdateOpen(false)}
-        initialValues={{
-          content: selectedPromotion?.content,
-          discountPercent: selectedPromotion?.discountPercent,
-          pointsAvailable: selectedPromotion?.pointsAvailable,
-        }}
         footer={null}
       >
-        <Form onFinish={handleUpdatePromotion} form={form}>
+        <Form
+          onFinish={handleUpdatePromotion}
+          form={form}
+          initialValues={{
+            content: selectedPromotion?.content,
+            discountPercent: selectedPromotion?.discountPercent,
+            pointsAvailable: selectedPromotion?.pointsAvailable,
+          }}
+        >
           <h3>Chi tiết khuyến mãi - {selectedPromotion?.id} </h3>
           <FormItem
             label="Nội dung khuyến mãi"
