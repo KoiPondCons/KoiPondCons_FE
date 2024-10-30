@@ -195,7 +195,6 @@ function ConstructionOrdersPage() {
           requests={constructionOrders}
           title={title}
           actor="manager"
-          loading={loading}
         />
       </Spin>
     </div>
