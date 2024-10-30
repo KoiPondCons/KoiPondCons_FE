@@ -49,6 +49,7 @@ import Report from "./pages/manager/report";
 import MaintenanceDetail from "./pages/maintenance-detail";
 import Promotion from "./pages/manager/promotion";
 import Combo from "./pages/manager/combo";
+import ComboDetail from "./pages/combo-detail";
 
 function App() {
   const router = createBrowserRouter([
@@ -181,6 +182,10 @@ function App() {
     {
       path: "manager/combo",
       element: <Combo />,
+    },
+    {
+      path: "combo/:id",
+      element: <ComboDetail />,
     },
     {
       path: "manager/customer-profile-management",
