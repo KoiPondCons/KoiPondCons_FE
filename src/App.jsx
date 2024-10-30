@@ -16,6 +16,7 @@ import CustomerProfileManagement from "./pages/manager/customer-profile-manageme
 import MaintenanceOrders from "./pages/manager/maintenance-orders";
 import ConstructionOrdersPage from "./pages/manager/construction-orders";
 import CustomerInformationPageManager from "./pages/customer-information";
+import ConfigPrice from "./pages/manager/config/config-price";
 //Customer
 import HistoryPage from "./pages/customer/history";
 import OrderCustomer from "./pages/order-detail-customer";
@@ -183,6 +184,10 @@ function App() {
     {
       path: "manager/maintenance-orders",
       element: <MaintenanceOrders />,
+    },
+    {
+      path: "manager/config-price",
+      element: <ConfigPrice />,
     },
     //PAYMENT
     {
