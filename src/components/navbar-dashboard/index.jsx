@@ -38,14 +38,6 @@ const NavDashboard = ({ children, actor }) => {
       case "designer":
         setItems(itemsDesigner);
         break;
-      case "customer":
-        return (
-          <div>
-            <Header />
-            {children}
-            <Footer />
-          </div>
-        );
     }
   }, [actor]);
   const handleLogout = () => {
@@ -94,8 +86,8 @@ const NavDashboard = ({ children, actor }) => {
       label: "Quản lý báo giá",
       children: [
         {
-          key: "/manager/promotion",
-          label: <Link to="/manager/promotion">Khuyến mãi</Link>,
+          key: "/manager/promotions",
+          label: <Link to="/manager/promotions">Khuyến mãi</Link>,
         },
         {
           key: "/manager/combo",
@@ -146,7 +138,14 @@ const NavDashboard = ({ children, actor }) => {
     //   label: <Link to="/my-profile">Hồ sơ của tôi</Link>,
     // },
   ];
-
+  if (actor === "customer")
+    return (
+      <div>
+        <Header />
+        {children}
+        <Footer />
+      </div>
+    );
   return (
     <div>
       <div className="authen-template-dashboard">
