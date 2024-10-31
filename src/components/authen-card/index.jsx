@@ -3,6 +3,7 @@ import { Card, Pagination } from 'antd';
 import './index.css';
 import { Link } from 'react-router-dom'; // Thêm import này
 import { createClient } from "contentful";
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer'; // Thêm import này
 
 function AuthenCardList({ cardData }) { // Nhận cardData từ props
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,7 +45,9 @@ function AuthenCardList({ cardData }) { // Nhận cardData từ props
                       <img src={post.fields.image.fields.file.url} alt={post.fields.title} className='authen-card-image' style={{ width: '100%', height: '400px', objectFit: 'cover' }} />
                       <div className='authen-card-content'>
                         <h3 className='authen-card-title' style={{ textAlign: 'center', margin: 0 }}>{post.fields.tittle}</h3>
-                        <p className='authen-card-description' style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>{post.fields.blog}</p>
+                        <p className='authen-card-description' style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+                          {post.fields.blogIntro}
+                        </p>
                       </div>
                     </Card>
                   </Link>
