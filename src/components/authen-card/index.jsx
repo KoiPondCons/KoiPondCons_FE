@@ -17,17 +17,17 @@ function AuthenCardList({ cardData }) { // Nhận cardData từ props
   };
 
   return (
-    <div className='background'>
+    <div className='authen-card-background'>
       <div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div className='authen-card-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
           {currentCards.map(card => (
-            <div key={card.id} style={{ width: '26%' }}>
-              <Link to={`/article/${card.id}`}> 
-                <Card bordered={false}>
-                  <img src={card.imageUrl} alt={card.title} style={{ width: '100%', height: '400px', objectFit: 'cover' }} />
-                  <div className='card-content'>
-                    <h3 style={{ textAlign: 'center', margin: 0 }}>{card.title}</h3>
-                    <p style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>{card.description}</p>
+            <div key={card.id} className='authen-card-item' style={{ width: '27%' }}>
+              <Link to={`/article/${card.id}`} style={{ textDecoration: 'none' }}>
+                <Card bordered={false} className='authen-card'>
+                  <img src={card.imageUrl} alt={card.title} className='authen-card-image' style={{ width: '100%', height: '400px', objectFit: 'cover' }} />
+                  <div className='authen-card-content'>
+                    <h3 className='authen-card-title' style={{ textAlign: 'center', margin: 0 }}>{card.title}</h3>
+                    <p className='authen-card-description' style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>{card.description}</p>
                   </div>
                 </Card>
               </Link>
