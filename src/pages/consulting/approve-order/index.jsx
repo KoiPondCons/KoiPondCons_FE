@@ -32,7 +32,7 @@ function ApproveOrder() {
   const handleApprovedOrder = async () => {
     try {
       const values = await form.validateFields();
-      order.pondAddress = values.pondAddress;
+      // order.pondAddress = values.pondAddress;
       order.pondVolume =
         values.pondVolumeMaintenance || values.ponVolumeConstruction;
       order.status = "PROCESSING";
@@ -151,7 +151,7 @@ function ApproveOrder() {
             )}
           </Row>
         </Form>
-        <div style={{display: "flex", justifyContent: "center", gap: "10px"}}>
+        <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
           <Button
             onClick={() => {
               navigate(`/consulting`);

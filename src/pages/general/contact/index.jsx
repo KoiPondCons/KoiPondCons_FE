@@ -32,7 +32,6 @@ function ContactPage() {
       form.setFieldsValue({
         customerName: response.data.name,
         customerPhone: response.data.phone,
-        pondAddress: response.data.address,
       });
     } catch (error) {
       console.error(error);
@@ -94,8 +93,6 @@ function ContactPage() {
                 form={form}
                 onFinish={handleSubmitOrder}
                 initialValues={{
-                  pondAddress: customerInformation?.address || "",
-
                   customerName: customerInformation?.name || "",
 
                   customerPhone: customerInformation?.phone || "",

@@ -107,6 +107,21 @@ function HistoryPage() {
           </Button>
         );
       }
+      if (order?.status === "CONSTRUCTED") {
+        return (
+          <Button
+            className="btn"
+            onClick={() => {
+              navigate(`/order/${order.id}`, {
+                state: { scrollToPayment: true },
+              });
+            }}
+          >
+            Thanh toán
+          </Button>
+        );
+      }
+
       return (
         <Button
           className="btn"
