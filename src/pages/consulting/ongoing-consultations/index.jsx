@@ -108,8 +108,8 @@ function OngoingConsultations() {
       },
     },
     {
-      title: "",
-      key: "",
+      title: "Chức nănng",
+      key: "function",
       render: (record) => {
         if (record.serviceType === "construction") {
           if (

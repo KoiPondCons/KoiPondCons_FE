@@ -10,12 +10,13 @@ import { DoubleRightOutlined, LoadingOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
 import FormItem from "antd/es/form/FormItem";
+import LoadingPage from "../../../components/loading";
 // import format from 'date-fns';
 
 function ActiveProject() {
   const [order, setOrder] = useState(null);
   const [taskList, setTaskList] = useState([]);
-  const [buttonLoading, setButtonLoading] = useState(false);
+  const [loadingStates, setLoadingStates] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
   const [isOrderFetched, setOrderFetched] = useState(false);
@@ -74,7 +75,11 @@ function ActiveProject() {
   }, [order]);
 
   const handleUpdate = async (detailId, newValues) => {
-    setButtonLoading(true);
+    setLoadingStates((prev) => ({
+      ...prev,
+      [detailId]: true,
+    }));
+
     setConfirmLoading(true);
     try {
       const response = await api.put(
@@ -92,7 +97,11 @@ function ActiveProject() {
 
       await fetchOrder();
       await fetchTaskList(order.id);
-      setButtonLoading(false);
+      setLoadingStates((prev) => ({
+        ...prev,
+        [detailId]: false,
+      }));
+
       setConfirmLoading(false);
     } catch (error) {
       console.log(error.response.data);
@@ -133,9 +142,7 @@ function ActiveProject() {
   };
 
   if (!isOrderFetched) {
-    return (
-      <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
-    );
+    return <LoadingPage />;
   }
   const handleUpdatePriceMaintenance = async (value) => {
     try {
@@ -225,13 +232,11 @@ function ActiveProject() {
                     </Col>
                     <Col span={8}>
                       <div>
-                        {!task.dateStart &&
-                        (!taskList[index - 1] ||
-                          taskList[index - 1].finished) ? (
+                        {!task.dateStart ? (
                           <Button
                             className="button-template"
                             style={{ margin: "10px" }}
-                            loading={buttonLoading}
+                            loading={loadingStates[task.id]}
                             onClick={() => {
                               const updateData = {
                                 constructionItem: task.constructionItem,
@@ -243,8 +248,6 @@ function ActiveProject() {
                                 finished: task.finished,
                                 id: task.id,
                               };
-                              console.log(updateData, "data của tui");
-                              console.log(task, "task của tui");
                               handleUpdate(task.id, updateData);
                             }}
                           >
@@ -254,7 +257,7 @@ function ActiveProject() {
                           <Button
                             className="button-template"
                             style={{ margin: "10px" }}
-                            loading={buttonLoading}
+                            loading={loadingStates[task.id]}
                             onClick={() => {
                               const updateData = {
                                 constructionItem: task.constructionItem,
@@ -268,13 +271,16 @@ function ActiveProject() {
                                 Modal.confirm({
                                   title: "Xác nhận",
                                   content: "Nhấn OK để hoàn thành thi công!",
-                                  okButtonProps: { confirmLoading },
+                                  okButtonProps: {
+                                    loading: confirmLoading,
+                                  },
                                   onOk() {
-                                    handleUpdate(task.id, updateData);
-                                    handleConstructed();
+                                    handleUpdate(task.id, updateData, true);
                                   },
                                 });
-                              } else handleUpdate(task.id, updateData);
+                              } else {
+                                handleUpdate(task.id, updateData);
+                              }
                             }}
                           >
                             Nhấn hoàn thành
