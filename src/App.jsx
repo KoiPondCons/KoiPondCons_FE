@@ -45,7 +45,7 @@ import ConstructionOrderDetail from "./pages/construction-staff/construction-ord
 import ProgressConstructionCustomer from "./pages/customer/progress-construction-customer";
 import ApproveOrder from "./pages/consulting/approve-order";
 import Report from "./pages/manager/report";
-
+import BlogPage from "./pages/general/blog-page";
 import MaintenanceDetail from "./pages/maintenance-detail";
 import Promotion from "./pages/manager/promotion";
 import Combo from "./pages/manager/combo";
@@ -88,6 +88,10 @@ function App() {
     {
       path: "blog",
       element: <Blog />,
+    },
+    {
+      path: "article/:id",
+      element: <BlogPage />,
     },
     {
       path: "homepage",
