@@ -36,24 +36,22 @@ function AuthenCardList({ cardData }) { // Nhận cardData từ props
   return (
     <div>
       {blogPosts?.items?.map((post) => (
-        <div className='authen-card-background post' key={post.sys.id}>
-            <div className='authen-card-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {currentCards.map(card => (
-                <div key={card.id} className='authen-card-item' style={{ width: '27%' }}>
-                  <Link to={`/article/${post.sys.id}`} style={{ textDecoration: 'none' }}>
-                    <Card bordered={false} className='authen-card'>
-                      <img src={post.fields.image.fields.file.url} alt={post.fields.title} className='authen-card-image' style={{ width: '100%', height: '400px', objectFit: 'cover' }} />
-                      <div className='authen-card-content'>
-                        <h3 className='authen-card-title' style={{ textAlign: 'center', margin: 0 }}>{post.fields.tittle}</h3>
-                        <p className='authen-card-description' style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
-                          {post.fields.blogIntro}
-                        </p>
-                      </div>
-                    </Card>
-                  </Link>
+        <div className='authen-card-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' ,backgroundColor: 'white'}} key={post.sys.id}>
+          {currentCards.map(card => (
+            <div key={card.id} className='authen-card-item' style={{ width: '80%' }}>
+              <Link to={`/article/${post.sys.id}`} style={{ textDecoration: 'none' }}>
+                <div style={{display: 'flex',justifyContent: 'center',marginBottom: '10px',backgroundColor: '#f0f0f0',padding: '10px', borderRadius: '10px' }}>
+                  <img src={post.fields.image.fields.file.url} alt={post.fields.title} className='authen-card-image' style={{ width: '200px', height: '100px', objectFit: 'cover' }} />
+                  <div className='authen-card-content' style={{width: '100%',marginLeft: '20px'}}>
+                    <h3 className='authen-card-title' style={{ textAlign: 'justify', margin: 0 }}>{post.fields.tittle}</h3>
+                    <p className='authen-card-description' style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+                      {post.fields.blogIntro}
+                    </p>
+                  </div>
                 </div>
-              ))}
+              </Link>
             </div>
+          ))}
         </div>
       ))}
     </div>
