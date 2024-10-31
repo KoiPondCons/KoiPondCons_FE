@@ -189,9 +189,9 @@ function HistoryPage() {
                 />
               </div>
             ) : order && order.length > 0 ? (
-              order.map((constructionOrder) => (
+              order.map((order) => (
                 <Card
-                  key={constructionOrder.id}
+                  key={order.id}
                   style={{
                     backgroundColor: "#f0f4f8",
                     borderRadius: "8px",
@@ -212,26 +212,23 @@ function HistoryPage() {
                     </Col>
                     <Col span={16}>
                       <div className="history-construction-order-info">
-                        <p>Mã đơn: {constructionOrder.id}</p>
-                        <p>Loại: {constructionOrder.serviceType}</p>
-                        <p>
-                          Trạng thái: {constructionOrder?.statusDescription}
-                        </p>
+                        <p>Mã đơn: {order.id}</p>
+                        <p>Loại: {order.serviceType}</p>
+                        <p>Trạng thái: {order?.statusDescription}</p>
                         <p>
                           Số tư vấn viên:{" "}
-                          {constructionOrder?.consultantAccount?.phone ||
+                          {order?.consultantAccount?.phone ||
+                            order?.consultantPhone ||
                             "Chưa có tư vấn viên được chỉ định"}
                         </p>
-                        <p>Địa chỉ: {constructionOrder?.pondAddress}</p>
-                        <time dateTime={constructionOrder.requestDate}>
+                        <p>Địa chỉ: {order?.pondAddress}</p>
+                        <time dateTime={order.requestDate}>
                           Ngày gửi đơn:{" "}
-                          {moment(constructionOrder.requestDate).format(
-                            "DD/MM/YYYY"
-                          )}
+                          {moment(order.requestDate).format("DD/MM/YYYY")}
                         </time>
                       </div>
                     </Col>
-                    <Col span={4}>{renderButtons(constructionOrder)}</Col>
+                    <Col span={4}>{renderButtons(order)}</Col>
                   </Row>
                 </Card>
               ))
