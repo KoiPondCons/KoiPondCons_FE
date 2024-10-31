@@ -10,6 +10,7 @@ import { AiOutlineFile } from "react-icons/ai";
 import { RiDraftLine } from "react-icons/ri";
 import moment from "moment";
 import OrderInfor from "../../components/order-information";
+import LoadingPage from "../../components/loading";
 function Order() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -71,7 +72,7 @@ function Order() {
     setIsModalVisible(false);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <LoadingPage />;
   if (error) return <div>Error fetching data: {error.message}</div>;
 
   const handleAssignConstructor = async () => {
@@ -141,7 +142,7 @@ function Order() {
     <NavDashboard actor={actor}>
       <div>
         <OrderInfor constructionOrder={constructionOrder} />
-        <h1 style={{textAlign: "center"}}>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
+        <h1 style={{ textAlign: "center" }}>ĐẢM NHẬN VÀ TIẾN ĐỘ THI CÔNG</h1>
         <Form layout="vertical">
           <Row gutter={24}>
             <Col span={4}>
