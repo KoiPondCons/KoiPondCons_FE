@@ -39,6 +39,11 @@ function Combo() {
       align: "center",
     },
     {
+      title: "Mô  tả",
+      key: "description",
+      dataIndex: "description",
+    },
+    {
       title: "Chi tiết",
       key: "detail",
       render: (record) => {
