@@ -148,9 +148,6 @@ function HistoryPage() {
       } else if (order?.status === "PROCESSED") {
         return (
           <>
-            <Button className="btn" onClick={() => {}}>
-              Thanh toán
-            </Button>
             <Button
               className="btn"
               onClick={() => {
@@ -159,7 +156,7 @@ function HistoryPage() {
                 });
               }}
             >
-              Chi tiết
+              Thanh toán
             </Button>
           </>
         );
