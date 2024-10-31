@@ -15,8 +15,8 @@ const cardData = [
 function Service() {
   return (
     <div>
-      <CommonTemplate title={title} context={context} banner={banner}>
-        <div style={{ margin: '40px' }}>
+      <CommonTemplate title={title} context={context} banner={banner} style={{backgroundColor:'#f0f0f0'}}>
+        <div style={{ margin: '50px 0px'}}>
           <AuthenCardList cardData={cardData} /> {/* Truyền cardData vào component */}
         </div>
       </CommonTemplate>
