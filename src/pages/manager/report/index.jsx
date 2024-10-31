@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import NavDashboard from "../../../components/navbar-dashboard";
 import api from "../../../config/axios";
 import { Button, Card, Col, Row, Select, Statistic } from "antd";
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import {
   Bar,
   BarChart,
@@ -53,7 +53,7 @@ function Report() {
 
   const handleYearChange = (value) => {
     console.log(value);
-    const selectedRevenue = revenue.find(yearInfo => yearInfo.year === value);
+    const selectedRevenue = revenue.find((yearInfo) => yearInfo.year === value);
     if (selectedRevenue) {
       setSelectedYear(value);
       setDataBar(selectedRevenue.monthlyRevenue);
@@ -62,35 +62,34 @@ function Report() {
 
   const exportRevenueReport = () => {
     const doc = new jsPDF();
-  
+
     doc.setFont("Helvetica");
     doc.setFontSize(20);
     doc.text(`Báo cáo doanh thu năm ${selectedYear}`, 14, 20);
     doc.setFontSize(12);
-  
+
     const columns = [
-      { header: 'Tháng', dataKey: 'month' },
-      { header: 'Doanh thu (VNĐ)', dataKey: 'revenue' },
+      { header: "Tháng", dataKey: "month" },
+      { header: "Doanh thu (VNĐ)", dataKey: "revenue" },
     ];
-  
-    const data = formatData.map(item => ({
+
+    const data = formatData.map((item) => ({
       month: item.month,
-      revenue: new Intl.NumberFormat('vi-VN').format(item.revenue),
+      revenue: new Intl.NumberFormat("vi-VN").format(item.revenue),
     }));
-  
+
     doc.autoTable({
       columns,
       body: data,
       startY: 30,
-      theme: 'grid',
+      theme: "grid",
       styles: {
-        font: 'Helvetica',
+        font: "Helvetica",
       },
     });
-  
+
     doc.save(`Doanh_thu_nam_${selectedYear}.pdf`);
   };
-  
 
   useEffect(() => {
     fetchStats();
@@ -98,10 +97,12 @@ function Report() {
   }, []);
 
   useEffect(() => {
-    setFormatData(dataBar.map((item) => ({
-      month: `Tháng ${item.month}`,
-      revenue: item.revenue
-    })));
+    setFormatData(
+      dataBar.map((item) => ({
+        month: `Tháng ${item.month}`,
+        revenue: item.revenue,
+      }))
+    );
   }, [dataBar]);
 
   return (
@@ -109,7 +110,7 @@ function Report() {
       <NavDashboard actor="manager">
         <h1 style={{ textAlign: "center" }}>{title}</h1>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={6}>
             <Card bordered={false}>
               <Statistic
                 title="Tài khoản khách hàng"
@@ -120,10 +121,10 @@ function Report() {
               />
             </Card>
           </Col>
-          <Col span={12}>
-            <Card bordered={false} >
+          <Col span={6}>
+            <Card bordered={false}>
               <Statistic
-                title="Khách hàng sử dụng dịch vụ"
+                title="Khách hàng dùng dịch vụ"
                 value={stats?.totalCustomersUsedService}
                 valueStyle={{
                   color: "#3f8600",
@@ -131,11 +132,8 @@ function Report() {
               />
             </Card>
           </Col>
-          
-        </Row>
-        <Row gutter={16} style={{marginTop: 30}}>
-        <Col span={12}>
-            <Card bordered={false} >
+          <Col span={6}>
+            <Card bordered={false}>
               <Statistic
                 title="Đơn hàng thi công"
                 value={stats?.totalConstructionProjects}
@@ -145,8 +143,8 @@ function Report() {
               />
             </Card>
           </Col>
-          <Col span={12}>
-            <Card bordered={false} >
+          <Col span={6}>
+            <Card bordered={false}>
               <Statistic
                 title="Đơn hàng bảo dưỡng"
                 value={stats?.totalMaintenanceOrders}
@@ -157,6 +155,7 @@ function Report() {
             </Card>
           </Col>
         </Row>
+
         <div
           style={{
             display: "flex",
@@ -193,7 +192,6 @@ function Report() {
                 onChange={handleYearChange}
                 style={{ width: 90, margin: 16 }}
               >
-
                 {revenue.map((yearInfo, index) => (
                   <Option key={index} value={yearInfo.year} />
                 ))}
@@ -213,14 +211,19 @@ function Report() {
                 }
               />
               <Tooltip
-                formatter={(value) => [`${new Intl.NumberFormat("vi-VN").format(value)} VNĐ`, "Doanh thu"]}
+                formatter={(value) => [
+                  `${new Intl.NumberFormat("vi-VN").format(value)} VNĐ`,
+                  "Doanh thu",
+                ]}
               />
-              <Legend formatter={() => "Doanh thu tháng (VNĐ)"}/>
-              <Bar dataKey="revenue" fill="#8884d8" barSize={100}/>
+              <Legend formatter={() => "Doanh thu tháng (VNĐ)"} />
+              <Bar dataKey="revenue" fill="#8884d8" barSize={100} />
             </BarChart>
           </div>
         </div>
-        <Button style={{ float: 'right' }} onClick={exportRevenueReport}>Xuất báo cáo</Button>
+        <Button style={{ float: "right" }} onClick={exportRevenueReport}>
+          Xuất báo cáo
+        </Button>
       </NavDashboard>
     </div>
   );
