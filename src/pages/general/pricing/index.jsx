@@ -1,119 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from 'react-router-dom';
-import "./index.css";
+import "./price.css";
 import CommonTemplate from '../../../components/common-page-template';
-import { Table } from "antd";
-import api from "../../../config/axios";
-import price from '../../../images/baogia.png';
-import { ConfigProvider } from "antd";
+import { Link } from 'react-router-dom';
 const title = 'Báo giá';
 const context = 'Trang chủ » Báo giá';
 const banner = 'https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/toby-sakata-lJ62jee7oSM-unsplash.jpg?alt=media&token=92c638c4-75d1-4441-932a-f804c3aacd4e';
 
 function ListProject() {
   const navigate = useNavigate();
-  const [dataSource, setDataSource] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const basicId = 1;
-  const popularId = 2;
-  const premiumId = 3;
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const responseBasic = await api.get(`comboprices/combo/${basicId}`); // API cho Gói cơ bản
-        const responsePopular = await api.get(`comboprices/combo/${popularId}`); // API cho Gói phổ thông
-        const responsePremium = await api.get(`comboprices/combo/${premiumId}`); // API cho Gói cao cấp
-        const formattedData = responseBasic.data.map((item, index) => ({
-          basic: item.unitPrice, // Gói cơ bản
-          popular: responsePopular.data[index]?.unitPrice || 'N/A', // Gói phổ thông
-          premium: responsePremium.data[index]?.unitPrice || 'N/A', // Gói cao cấp
-        }));
-        setDataSource(formattedData);
-        console.log(formattedData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const columns = [
-    {
-      title: 'Kích thước',
-      dataIndex: 'size',
-      key: 'size',
-      render: (_, __, index) => sizes[index],
-      align: 'center',
-    },
-    {
-      title: 'Gói cơ bản',
-      dataIndex: 'basic',
-      key: 'basic',
-      render: (text) => formatNumberWithCommas(text), // Định dạng giá trị
-      align: 'center',
-    },
-    {
-      title: 'Gói phổ thông',
-      dataIndex: 'popular',
-      key: 'popular',
-      render: (text) => formatNumberWithCommas(text), // Định dạng giá trị
-      align: 'center',
-    },
-    {
-      title: 'Gói cao cấp',
-      dataIndex: 'premium',
-      key: 'premium',
-      render: (text) => formatNumberWithCommas(text), // Định dạng giá trị
-      align: 'center',
-    },
-  ];
-  const sizes = [
-    '8 - 10m3',
-    '10 - 20m3',
-    '20 - 50m3',
-    '50 - 100m3',
-    '100m3 trở lên',
-  ];
-  function formatNumberWithCommas(num) {
-    if (num === 'N/A') return num; // Kiểm tra giá trị không hợp lệ
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
 
 
   return (
     <div>
       <CommonTemplate title={title} context={context} banner={banner}>
-        <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", background: "white", padding: "100px 40px" }}>
-          <img style={{ width: "60%", height: "auto" }} src={price} alt="" />
-          <div style={{ marginTop: "2%" }}>
-            <div className="notfound404-shape" style={{ display: "flex", justifyContent: "center", boxShadow: "none" }}>
-              <button onClick={() => navigate('/contact')}>NHẬN TƯ VẤN NGAY</button>
-            </div>
+        <div className="pricing-body">
+          <div class="card">
+            <Link class="card1" to="/">
+              <p>Gói cơ bản</p>
+              <p class="small">Gói Cơ Bản: Phù hợp cho hồ Koi nhỏ, trang trí đơn giản. Bao gồm bê tông đáy, 1 lớp kè đá cuối vân mây, lọc thô 4 ngăn, thiết bị và bơm từ Đài Loan. Giá từ 7.100.000 – 10.000.000 đ/m³ tùy dung tích hồ.</p>
+              <div class="go-corner">
+                <div class="go-arrow">
+                  →
+                </div>
+              </div>
+            </Link>
+            <Link class="card1" to="/">
+              <p>Gói phổ thông</p>
+              <p class="small">Gói Phổ Thông: Phù hợp cho hồ Koi cỡ trung bình, cảnh quan phức tạp hơn. Có chống thấm Epoxy, 2 lớp kè đá, lọc Drum sạch 90%, thiết bị và bơm từ Nhật Bản. Giá từ 8.000.000 – 12.000.000 đ/m³.</p>
+              <div class="go-corner">
+                <div class="go-arrow">
+                  →
+                </div>
+              </div>
+            </Link>
+            <Link class="card1" to="/">
+              <p>Gói cao cấp</p>
+              <p class="small">Gói Phổ Thông: Phù hợp cho hồ Koi cỡ trung bình, cảnh quan phức tạp hơn. Có chống thấm Epoxy, 2 lớp kè đá, lọc Drum sạch 90%, thiết bị và bơm từ Nhật Bản. Giá từ 8.000.000 – 12.000.000 đ/m³.</p>
+              <div class="go-corner">
+                <div class="go-arrow">
+                  →
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <ConfigProvider
-            theme={{
-              components: {
-                Table: {
-                  fontSize: 20,
-                },
-              },
-            }}
-          >
-            <Table
-              columns={columns}
-              dataSource={dataSource}
-              style={{ background: "white", margin: "0px 40px" }}
-              pagination={false}
-            />
-          </ConfigProvider>
-        )}
       </CommonTemplate>
     </div>
   );
