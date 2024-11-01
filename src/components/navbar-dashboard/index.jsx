@@ -95,10 +95,10 @@ const NavDashboard = ({ children, actor }) => {
         },
       ],
     },
-    {
-      key: "/manager/blog",
-      label: <Link to="/manager/blog">Quản lý blog</Link>,
-    },
+    // {
+    //   key: "/manager/blog",
+    //   label: <Link to="/manager/blog">Quản lý blog</Link>,
+    // },
   ];
   const itemsConsulting = [
     {
@@ -140,7 +140,7 @@ const NavDashboard = ({ children, actor }) => {
   ];
   if (actor === "customer")
     return (
-      <div>
+      <div style={{ backgroundColor: "white" }}>
         <Header />
         {children}
         <Footer />

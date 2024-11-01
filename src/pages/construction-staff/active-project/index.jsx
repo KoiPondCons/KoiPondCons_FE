@@ -276,6 +276,7 @@ function ActiveProject() {
                                   },
                                   onOk() {
                                     handleUpdate(task.id, updateData, true);
+                                    handleConstructed();
                                   },
                                 });
                               } else {

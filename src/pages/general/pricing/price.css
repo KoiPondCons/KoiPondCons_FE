@@ -54,6 +54,7 @@
   text-decoration: none;
   z-index: 0;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .card1:before {

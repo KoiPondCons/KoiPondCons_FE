@@ -79,13 +79,24 @@ function DesignReview() {
   };
   const handleManagerApproveDesignDrawing = async () => {
     try {
-      await api.put(
-        `design-drawings/${constructionOrder.designDrawingResponse?.id}`,
-        {
-          ...designDrawingValue,
-          status: "CUSTOMER_PENDING",
-        }
-      );
+      if (constructionOrder.designed) {
+        await api.put(
+          `design-drawings/${constructionOrder.designDrawingResponse?.id}`,
+          {
+            ...designDrawingValue,
+            status: "CUSTOMER_CONFIRMED",
+          }
+        );
+      } else {
+        await api.put(
+          `design-drawings/${constructionOrder.designDrawingResponse?.id}`,
+          {
+            ...designDrawingValue,
+            status: "CUSTOMER_PENDING",
+          }
+        );
+      }
+
       console.log("Design drawing updated successfully");
       navigate("/manager");
     } catch (error) {
