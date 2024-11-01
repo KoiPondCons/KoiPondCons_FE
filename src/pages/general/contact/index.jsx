@@ -1,16 +1,15 @@
-import React, { useState } from "react"; // Import useState
+import React, { useEffect, useState } from "react"; // Import useState
 import "./index.css";
 import CommonPageTemplate from "../../../components/common-page-template";
 import { Form, Input, Select, Row, Col, Button, Radio } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import { LuMapPin, LuMail, LuPhone } from "react-icons/lu";
-import { useForm } from "antd/es/form/Form";
 import { toast } from "react-toastify";
 // import api from "../../config/axios";
 import api from "../../../config/axios";
 import { useNavigate } from "react-router-dom";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
-
+import LoadingPage from "../../../components/loading/index";
 const { TextArea } = Input;
 
 function ContactPage() {
@@ -24,6 +23,23 @@ function ContactPage() {
     "https://images.unsplash.com/photo-1670879919941-b939366624c5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   const [isRequested, setRequested] = useState(false);
   const [isConstruction, setIsConstruction] = useState(null);
+  const [customerInformation, setCustomerInformation] = useState();
+  const [form] = Form.useForm();
+  const fetchData = async () => {
+    try {
+      const response = await api.get("account/current");
+      setCustomerInformation(response.data); // Lưu thông tin vào state
+      form.setFieldsValue({
+        customerName: response.data.name,
+        customerPhone: response.data.phone,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   const handleSubmitOrder = async (value) => {
     try {
       if (isConstruction) {
@@ -42,6 +58,7 @@ function ContactPage() {
     setIsConstruction(value);
     console.log("Chọn dịch vụ: " + value);
   };
+
   return (
     <CommonPageTemplate context={context} title={title} banner={banner}>
       {isRequested ? (
@@ -72,7 +89,15 @@ function ContactPage() {
         <Row justify="center" align="middle" style={{ width: "100%" }}>
           <Col span={9}>
             <div className="container-input">
-              <Form onFinish={handleSubmitOrder}>
+              <Form
+                form={form}
+                onFinish={handleSubmitOrder}
+                initialValues={{
+                  customerName: customerInformation?.name || "",
+
+                  customerPhone: customerInformation?.phone || "",
+                }}
+              >
                 <h3>Đăng ký nhận báo giá ngay hôm nay!</h3>
                 <Row gutter={[20]}>
                   <Col span={12}>

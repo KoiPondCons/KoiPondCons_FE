@@ -73,26 +73,6 @@ function ConsultationRequests() {
   useEffect(() => {
     fetchRequest();
   }, [selectedServiceType]);
-
-  const showModal = (record) => {
-    setSelectedOrder(record);
-    setIsModalOpen(true);
-  };
-
-  const handleOk = async () => {
-    selectedOrder.status = "PROCESSING";
-    await api.put(`orders/consultant/${selectedOrder.id}`);
-    await api.put(`orders/${selectedOrder.id}`, selectedOrder);
-    navigate(`/consulting/price-list-staff/${selectedOrder.id}`, {
-      state: { actor: "consulting" },
-    });
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
   const columns = [
     {
       title: "ID",
@@ -128,7 +108,7 @@ function ConsultationRequests() {
       },
     },
     {
-      title: "",
+      title: "Chức năng",
       key: "actions",
       width: 100,
       render: (_, record) => {

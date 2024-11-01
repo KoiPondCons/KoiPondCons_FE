@@ -16,6 +16,7 @@ import CustomerProfileManagement from "./pages/manager/customer-profile-manageme
 import MaintenanceOrders from "./pages/manager/maintenance-orders";
 import ConstructionOrdersPage from "./pages/manager/construction-orders";
 import CustomerInformationPageManager from "./pages/customer-information";
+import ConfigPrice from "./pages/manager/config-price";
 //Customer
 import HistoryPage from "./pages/customer/history";
 import OrderCustomer from "./pages/order-detail-customer";
@@ -44,8 +45,11 @@ import ConstructionOrderDetail from "./pages/construction-staff/construction-ord
 import ProgressConstructionCustomer from "./pages/customer/progress-construction-customer";
 import ApproveOrder from "./pages/consulting/approve-order";
 import Report from "./pages/manager/report";
-
+import BlogPage from "./pages/general/blog-page";
 import MaintenanceDetail from "./pages/maintenance-detail";
+import Promotion from "./pages/manager/promotion";
+import Combo from "./pages/manager/combo";
+import ComboDetail from "./pages/combo-detail";
 
 function App() {
   const router = createBrowserRouter([
@@ -84,6 +88,10 @@ function App() {
     {
       path: "blog",
       element: <Blog />,
+    },
+    {
+      path: "article/:id",
+      element: <BlogPage />,
     },
     {
       path: "homepage",
@@ -158,7 +166,10 @@ function App() {
       element: <Designer />,
     },
     //Manager
-
+    {
+      path: "manager/promotions",
+      element: <Promotion />,
+    },
     {
       path: "manager/staff-management",
       element: <StaffMangager />,
@@ -173,6 +184,14 @@ function App() {
       element: <Report />,
     },
     {
+      path: "manager/combo",
+      element: <Combo />,
+    },
+    {
+      path: "combo/:comboId",
+      element: <ComboDetail />,
+    },
+    {
       path: "manager/customer-profile-management",
       element: <CustomerProfileManagement />,
     },
@@ -183,6 +202,10 @@ function App() {
     {
       path: "manager/maintenance-orders",
       element: <MaintenanceOrders />,
+    },
+    {
+      path: "manager/config-price",
+      element: <ConfigPrice />,
     },
     //PAYMENT
     {

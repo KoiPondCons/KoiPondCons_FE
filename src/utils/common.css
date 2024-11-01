@@ -18,6 +18,16 @@
     font-family:  'Inter';
     font-size: 0.8rem;
     font-weight: 300;
+}.button-template2 {
+    padding: 8px;
+    background-color: #1a2b47;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
 }
 h1{
     margin-bottom: 15px;

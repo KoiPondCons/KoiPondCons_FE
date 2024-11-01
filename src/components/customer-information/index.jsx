@@ -4,12 +4,16 @@ import PropTypes from "prop-types";
 import "../../utils/common.css";
 import { LoadingOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
+import { LiaUserEditSolid } from "react-icons/lia";
+import LoadingPage from "../loading";
 
-function CustomerInformation({ constructionOrder, userRole, onFetchCustomerData }) {
+function CustomerInformation({
+  constructionOrder,
+  userRole,
+  onFetchCustomerData,
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({});
-
-  // Khởi tạo dữ liệu edit khi bắt đầu chỉnh sửa
   const handleEdit = () => {
     setEditedData({
       name: constructionOrder.name,
@@ -19,57 +23,55 @@ function CustomerInformation({ constructionOrder, userRole, onFetchCustomerData 
     });
     setIsEditing(true);
   };
-
-  // Xử lý khi thay đổi input
   const handleInputChange = (field, value) => {
     setEditedData({
       ...editedData,
-      [field]: value
+      [field]: value,
     });
   };
-
-  // Xử lý khi lưu
   const handleSave = async () => {
     try {
-      // Gọi API để cập nhật thông tin
-      await api.put(`${constructionOrder.id}`, editedData); // Cập nhật thông tin
+      await api.put(`${constructionOrder.id}`, editedData);
       setIsEditing(false);
       onFetchCustomerData();
     } catch (error) {
-      console.error('Lỗi khi cập nhật:', error);
+      console.error("Lỗi khi cập nhật:", error);
     }
   };
 
   if (!constructionOrder) {
-    return (
-      <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
-    );
+    return <Spin indicator={<LoadingPage />} />;
   }
 
   const displayValue = (value) => value || "N/A";
 
   return (
     <div style={{ margin: "0 3%", backgroundColor: "#fff" }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <h1 style={{ textAlign: "center", paddingTop: "10px" }}>
           THÔNG TIN KHÁCH HÀNG
         </h1>
-        {userRole === 'manager' && !isEditing && (
+        {userRole === "manager" && !isEditing && (
           <Button type="primary" onClick={handleEdit}>
+            <LiaUserEditSolid />
             Chỉnh sửa
           </Button>
         )}
       </div>
-
       <Row gutter={24}>
-        {/* Personal Information */}
         <Col span={8}>
           <label>Họ tên</label>
           <div className="display-input">
             {isEditing ? (
               <Input
                 value={editedData.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
+                onChange={(e) => handleInputChange("name", e.target.value)}
               />
             ) : (
               <span>{displayValue(constructionOrder.name)}</span>
@@ -82,7 +84,7 @@ function CustomerInformation({ constructionOrder, userRole, onFetchCustomerData 
             {isEditing ? (
               <Input
                 value={editedData.phone}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
+                onChange={(e) => handleInputChange("phone", e.target.value)}
               />
             ) : (
               <span>{displayValue(constructionOrder.phone)}</span>
@@ -95,22 +97,20 @@ function CustomerInformation({ constructionOrder, userRole, onFetchCustomerData 
             {isEditing ? (
               <Input
                 value={editedData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
+                onChange={(e) => handleInputChange("email", e.target.value)}
               />
             ) : (
               <span>{displayValue(constructionOrder.email)}</span>
             )}
           </div>
         </Col>
-
-        {/* Address & Requirements */}
         <Col span={24}>
           <label>Địa chỉ</label>
           <div className="display-input">
             {isEditing ? (
               <Input
                 value={editedData.address}
-                onChange={(e) => handleInputChange('address', e.target.value)}
+                onChange={(e) => handleInputChange("address", e.target.value)}
               />
             ) : (
               <span>{displayValue(constructionOrder.address)}</span>
@@ -118,10 +118,12 @@ function CustomerInformation({ constructionOrder, userRole, onFetchCustomerData 
           </div>
         </Col>
       </Row>
-
       {isEditing && (
-        <div style={{ marginTop: '20px', textAlign: 'right' }}>
-          <Button onClick={() => setIsEditing(false)} style={{ marginRight: '10px' }}>
+        <div style={{ marginTop: "20px", textAlign: "right" }}>
+          <Button
+            onClick={() => setIsEditing(false)}
+            style={{ marginRight: "10px" }}
+          >
             Hủy
           </Button>
           <Button type="primary" onClick={handleSave}>

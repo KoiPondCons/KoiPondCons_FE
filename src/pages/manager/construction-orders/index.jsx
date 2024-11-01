@@ -12,6 +12,7 @@ import { Spin } from "antd";
 import LoadingPage from "../../../components/loading";
 import { RiDraftLine } from "react-icons/ri";
 import { FaSquareCheck } from "react-icons/fa6";
+import { FaUserTag } from "react-icons/fa";
 function ConstructionOrdersPage() {
   const navigate = useNavigate();
   const actor = "manager";
@@ -104,7 +105,7 @@ function ConstructionOrdersPage() {
         } else if (record.status === "CONSTRUCTING") {
           return (
             <div style={textStyle}>
-              {!record.constructorAccount && <p>Chờ chỉ định nhà thiết kế</p>}
+              {!record.constructorAccount && <p>Chờ chỉ định nhà thi công</p>}
             </div>
           );
         } else {
@@ -117,8 +118,8 @@ function ConstructionOrdersPage() {
       },
     },
     {
-      title: "",
-      key: "",
+      title: "Chức năng",
+      key: "function",
       render: (record) => {
         if (record.quotationResponse.status === "MANAGER_PENDING") {
           return (
@@ -137,6 +138,26 @@ function ConstructionOrdersPage() {
               </p>
             </div>
           );
+        } else if (
+          record.designDrawingResponse.status === "DESIGNING" &&
+          record.status === "DESIGNING"
+        ) {
+          return (
+            <div style={{ textAlign: "center", cursor: "pointer" }}>
+              <FaUserTag
+                style={{ cursor: "pointer" }}
+                size={30}
+                onClick={() =>
+                  navigate(`/order-detail/${record.id}`, {
+                    state: { actor },
+                  })
+                }
+              />
+              <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                Chỉ định nhà thiết kế
+              </p>
+            </div>
+          );
         } else if (record.designDrawingResponse.status === "MANAGER_PENDING") {
           return (
             <div style={{ textAlign: "center", cursor: "pointer" }}>
@@ -151,6 +172,26 @@ function ConstructionOrdersPage() {
               />
               <p style={{ fontSize: "10px", fontStyle: "italic" }}>
                 Duyệt bản thiết kế
+              </p>
+            </div>
+          );
+        } else if (
+          record.constructorAccount == null &&
+          record.status === "CONSTRUCTING"
+        ) {
+          return (
+            <div style={{ textAlign: "center", cursor: "pointer" }}>
+              <FaUserTag
+                style={{ cursor: "pointer" }}
+                size={30}
+                onClick={() =>
+                  navigate(`/order-detail/${record.id}`, {
+                    state: { actor },
+                  })
+                }
+              />
+              <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                Chỉ định nhà thi công
               </p>
             </div>
           );
@@ -195,7 +236,6 @@ function ConstructionOrdersPage() {
           requests={constructionOrders}
           title={title}
           actor="manager"
-          loading={loading}
         />
       </Spin>
     </div>
