@@ -279,40 +279,54 @@ function ComboDetail() {
   ];
   return (
     <NavDashboard actor={actor}>
-      <h1 style={{ textAlign: "center" }}>Bảng giá gói - {comboName}</h1>
+      <h1 style={{ textAlign: "center", marginTop: "1%" }}>
+        Bảng giá gói - {comboName}
+      </h1>
+      <div style={{ textAlign: "right", margin: "0px 5px 5px 5px" }}>
+        {actor === "manager" && (
+          <Button
+            type="primary"
+            style={{ marginRight: "5%" }}
+            onClick={() => {
+              setShowModalCreateComboPrice(true);
+            }}
+          >
+            Tạo thêm giá
+          </Button>
+        )}
+      </div>
       <Spin spinning={loadingComboPriceList} indicator={Spin}>
         <Table
           columns={columnsComboPriceList}
           dataSource={comboPriceList}
           pagination={false}
+          style={{ margin: "2% 5% 2% 5%" }}
         />
       </Spin>
-      {actor === "manager" && (
-        <Button
-          onClick={() => {
-            setShowModalCreateComboPrice(true);
-          }}
-        >
-          Tạo thêm giá
-        </Button>
-      )}
+
       <h1 style={{ textAlign: "center" }}>Chi tiết hạng mục</h1>
+      <div style={{ textAlign: "right", margin: "0px 5px 5px 5px" }}>
+        {actor === "manager" && (
+          <Button
+            type="primary"
+            style={{ marginRight: "5%" }}
+            onClick={() => {
+              setShowModalCreateComboItem(true);
+            }}
+          >
+            Tạo thêm hạng mục
+          </Button>
+        )}
+      </div>
       <Spin spinning={loadingComboPriceList} indicator={Spin}>
         <Table
           columns={columnsComboConstructionItems}
           dataSource={comboConstructionItems}
           pagination={false}
+          style={{ margin: "2% 5% 2% 5%" }}
         />
       </Spin>
-      {actor === "manager" && (
-        <Button
-          onClick={() => {
-            setShowModalCreateComboItem(true);
-          }}
-        >
-          Tạo thêm hạng mục
-        </Button>
-      )}
+
       <Modal
         title="Xác nhận xóa giá gói"
         open={showModalDeleteComboPrice}
