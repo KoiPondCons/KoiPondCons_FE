@@ -140,7 +140,7 @@ const NavDashboard = ({ children, actor }) => {
   ];
   if (actor === "customer")
     return (
-      <div>
+      <div style={{ backgroundColor: "white" }}>
         <Header />
         {children}
         <Footer />
