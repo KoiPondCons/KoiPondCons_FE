@@ -95,10 +95,10 @@ const NavDashboard = ({ children, actor }) => {
         },
       ],
     },
-    {
-      key: "/manager/blog",
-      label: <Link to="/manager/blog">Quản lý blog</Link>,
-    },
+    // {
+    //   key: "/manager/blog",
+    //   label: <Link to="/manager/blog">Quản lý blog</Link>,
+    // },
   ];
   const itemsConsulting = [
     {
