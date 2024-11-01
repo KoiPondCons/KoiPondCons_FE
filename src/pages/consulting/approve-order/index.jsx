@@ -33,8 +33,8 @@ function ApproveOrder() {
     try {
       const values = await form.validateFields();
       // order.pondAddress = values.pondAddress;
-      order.pondVolume =
-        values.pondVolumeMaintenance || values.ponVolumeConstruction;
+      // order.pondVolume =
+      //   values.pondVolumeMaintenance || values.ponVolumeConstruction;
       order.status = "PROCESSING";
 
       if (order.serviceType === "maintenance") {
