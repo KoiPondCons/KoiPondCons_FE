@@ -44,7 +44,7 @@ function AuthenCardList({ cardData }) { // Nhận cardData từ props
                   <img src={post.fields.image.fields.file.url} alt={post.fields.title} className='authen-card-image' style={{ width: '200px', height: '100px', objectFit: 'cover' }} />
                   <div className='authen-card-content' style={{width: '100%',marginLeft: '20px'}}>
                     <h3 className='authen-card-title' style={{ textAlign: 'justify', margin: 0 }}>{post.fields.tittle}</h3>
-                    <p className='authen-card-description' style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+                    <p className='authen-card-description' style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'normal', maxWidth: '100%' }}>
                       {post.fields.blogIntro}
                     </p>
                   </div>
