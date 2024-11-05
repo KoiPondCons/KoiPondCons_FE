@@ -32,6 +32,7 @@ function ContactPage() {
       form.setFieldsValue({
         customerName: response.data.name,
         customerPhone: response.data.phone,
+        customerEmail: response.data.email,
       });
     } catch (error) {
       console.error(error);
@@ -87,7 +88,7 @@ function ContactPage() {
         </div>
       ) : (
         <Row justify="center" align="middle" style={{ width: "100%" }}>
-          <Col span={9}>
+          <Col span={11}>
             <div className="container-input">
               <Form
                 form={form}
@@ -100,7 +101,7 @@ function ContactPage() {
               >
                 <h3>Đăng ký nhận báo giá ngay hôm nay!</h3>
                 <Row gutter={[20]}>
-                  <Col span={12}>
+                  <Col span={8}>
                     <FormItem
                       label="Họ và tên"
                       name="customerName"
@@ -115,7 +116,7 @@ function ContactPage() {
                       <Input />
                     </FormItem>
                   </Col>
-                  <Col span={12}>
+                  <Col span={8}>
                     <FormItem
                       label="Số điện thoại"
                       name="customerPhone"
@@ -128,6 +129,21 @@ function ContactPage() {
                         {
                           pattern: "^(84|0)+[3|5|7|8|9]\\d{8}$",
                           message: "Số điện thoại không hợp lệ!",
+                        },
+                      ]}
+                    >
+                      <Input />
+                    </FormItem>
+                  </Col>
+                  <Col span={8}>
+                    <FormItem
+                      label="Email"
+                      name="customerEmail"
+                      labelCol={{ span: 24 }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập số điện thoại!",
                         },
                       ]}
                     >
