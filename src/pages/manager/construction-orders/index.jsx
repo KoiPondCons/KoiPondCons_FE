@@ -36,14 +36,9 @@ function ConstructionOrdersPage() {
   const handleCloseOrder = async (constructionOrder) => {
     const value = {
       status: "CLOSED",
-      customerName: constructionOrder.customerName,
-      customerPhone: constructionOrder.customerPhone,
-      customerEmail: constructionOrder.customerEmail,
-      pondAddress: constructionOrder.pondAddress,
-      designed: constructionOrder.designed,
     };
     try {
-      await api.put(`orders/${constructionOrder.id}`, value);
+      await api.put(`orders/status/${constructionOrder.id}`, value);
       await fetchConstructionOrders();
       console.log("Update status order: " + constructionOrder.status);
     } catch (error) {
