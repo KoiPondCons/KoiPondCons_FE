@@ -50,13 +50,8 @@ function HistoryPage() {
     try {
       const value = {
         status: "CANCELED",
-        customerName: order?.customerName,
-        customerPhone: order?.customerPhone,
-        customerEmail: order?.customerEmail,
-        pondAddress: order?.pondAddress,
-        designed: order?.designed,
       };
-      await api.put(`orders/${id}`, value);
+      await api.put(`orders/status/${id}`, value);
       console.log("Delete successfully");
       fecthConstructionOrders();
     } catch (error) {
