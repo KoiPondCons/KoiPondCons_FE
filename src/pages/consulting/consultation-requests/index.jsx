@@ -31,9 +31,7 @@ function ConsultationRequests() {
           }))
         );
       } else if (selectedServiceType === "construction") {
-        constructionOrder = await api.get("orders/status", {
-          params: { status: "REQUESTED" },
-        });
+        constructionOrder = await api.get("orders/requested");
         console.log(constructionOrder.data);
         setRequests(
           constructionOrder.data.map((req) => ({
@@ -43,9 +41,7 @@ function ConsultationRequests() {
         );
       } else {
         maintenanceOrder = await api.get("maintenance/requested-orders");
-        constructionOrder = await api.get("orders/status", {
-          params: { status: "REQUESTED" },
-        });
+        constructionOrder = await api.get("orders/requested");
         order = [
           ...maintenanceOrder.data.map((req) => ({
             ...req,

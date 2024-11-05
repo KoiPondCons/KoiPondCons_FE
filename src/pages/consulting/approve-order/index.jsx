@@ -63,7 +63,7 @@ function ApproveOrder() {
           initialValues={{
             pondAddress: order?.pondAddress,
             pondVolumeMaintenance: order?.pondVolume,
-            ponVolumeContrucstion: order?.quotationResponse?.pondVolume,
+            ponVolumeContrucstion: order?.quotation?.pondVolume,
           }}
         >
           <Row gutter={24}>
@@ -82,10 +82,7 @@ function ApproveOrder() {
             <Col span={8}>
               <label>Email</label>
               <div className="display-input">
-                <span>
-                  {" "}
-                  {order?.reccord?.customer?.account?.email || "N/A"}
-                </span>
+                <span> {order?.customerEmail || "N/A"}</span>
               </div>
             </Col>
             <Col span={24}>
@@ -132,10 +129,7 @@ function ApproveOrder() {
                 <Col span={7}>
                   <label>Gói</label>
                   <div className="display-input">
-                    <span>
-                      {" "}
-                      {order?.quotationResponse?.combo?.name || "N/A"}
-                    </span>
+                    <span>N/A</span>
                   </div>
                 </Col>
                 <Col span={7}>
