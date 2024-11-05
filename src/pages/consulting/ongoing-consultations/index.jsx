@@ -70,9 +70,8 @@ function OngoingConsultations() {
           if (record?.status === "PROCESSING") {
             return (
               <div style={textStyle}>
-                {record?.quotationResponse &&
-                record?.quotationResponse?.statusDescription ? (
-                  <p>{record?.quotationResponse?.statusDescription} báo giá</p>
+                {record?.quotation && record?.quotation?.statusDescription ? (
+                  <p>{record?.quotation?.statusDescription} báo giá</p>
                 ) : (
                   <p>Không có thông tin báo giá, hãy tạo báo giá</p>
                 )}
@@ -81,11 +80,9 @@ function OngoingConsultations() {
           } else if (record?.status === "DESIGNING") {
             return (
               <div style={textStyle}>
-                {record?.designDrawResponse &&
-                record?.designDrawResponse?.statusDescription ? (
-                  <p>
-                    {record?.designDrawResponse?.statusDescription} bản thiết kế
-                  </p>
+                {record?.designDrawing &&
+                record?.designDrawing?.statusDescription ? (
+                  <p>{record?.designDrawing?.statusDescription} bản thiết kế</p>
                 ) : (
                   <p>Chờ chỉ định nhà thiết kế</p>
                 )}
@@ -113,9 +110,9 @@ function OngoingConsultations() {
       render: (record) => {
         if (record.serviceType === "construction") {
           if (
-            record?.quotationResponse?.status === "PROCESSING" ||
-            record?.quotationResponse?.status === "MANAGER_REJECTED" ||
-            record?.quotationResponse?.status === "CUSTOMER_REJECTED"
+            record?.quotation?.status === "PROCESSING" ||
+            record?.quotation?.status === "MANAGER_REJECTED" ||
+            record?.quotation?.status === "CUSTOMER_REJECTED"
           ) {
             return (
               <div style={{ textAlign: "center", cursor: "pointer" }}>
