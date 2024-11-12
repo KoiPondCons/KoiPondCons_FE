@@ -13,7 +13,6 @@ import Footer from "../footer";
 import { Menu } from "antd";
 
 const NavDashboard = ({ children, actor }) => {
-<<<<<<< HEAD
   const location = useLocation();
   const currentPath = location.pathname;
   const navigate = useNavigate();
@@ -147,44 +146,6 @@ const NavDashboard = ({ children, actor }) => {
         <Footer />
       </div>
     );
-=======
-  const links = {
-    consulting: [
-      {
-        path: "/consulting",
-        label: "Khách hàng cần tư vấn",
-      },
-      {
-        path: "/consulting/ongoing-consultation",
-        label: "Khách hàng đang tư vấn",
-      },
-      { path: "/consulting/created-orders", label: "Đơn hàng đã tạo" },
-      { path: "/my-profile", label: "Hồ sơ của tôi" },
-    ],
-    construction: [
-      { path: "/construction", label: "Dự án đang thực hiện" },
-      { path: "/construction/history-construction", label: "Lịch sử dự án" },
-      { path: "/my-profile", label: "Hồ sơ của tôi" },
-    ],
-    designer: [
-      { path: "/designer", label: "Xem đơn thiết kế" },
-      { path: "/my-profile", label: "Hồ sơ của tôi" },
-    ],
-    manager: [
-      { path: "/manager", label: "Báo cáo doanh thu" },
-      { path: "/manager/design-management", label: "Quản lý mẫu thiết kế" },
-      { path: "/manager/staff-management", label: "Quản lý nhân sự" },
-      { path: "/manager/quote-management", label: "Quản lý báo giá" },
-      { path: "/manager/construction-orders", label: "Đơn hàng thi công" },
-      { path: "/manager/maintenance-orders", label: "Đơn hàng bảo dưỡng" },
-      {
-        path: "/manager/customer-profile-management",
-        label: "Quản lý hồ sơ khách hàng",
-      },
-      { path: "/my-profile", label: "Hồ sơ của tôi" },
-    ],
-  };
->>>>>>> 2fed02ac601756c781904e219409bb9fbb9381a6
   return (
     <div>
       <div className="authen-template-dashboard">
@@ -196,7 +157,6 @@ const NavDashboard = ({ children, actor }) => {
               alt=""
             />
           </a>
-<<<<<<< HEAD
           <Menu
             style={{ width: 256 }}
             defaultSelectedKeys={["1"]}
@@ -205,15 +165,6 @@ const NavDashboard = ({ children, actor }) => {
             items={items}
             selectedKeys={currentPath}
           />
-=======
-          <ul>
-            {links[actor]?.map((link, index) => (
-              <li key={index}>
-                <a href={link.path}>{link.label}</a>
-              </li>
-            ))}
-          </ul>
->>>>>>> 2fed02ac601756c781904e219409bb9fbb9381a6
           <div></div>
         </div>
 
