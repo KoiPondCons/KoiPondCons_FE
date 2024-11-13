@@ -47,11 +47,13 @@ const PaymentResponse = () => {
       }
     };
 
-    if (ref.current) {
-      sendPaymentResponse();
-    } else {
-      ref.current = true;
-    }
+    sendPaymentResponse();
+
+    // if (ref.current) {
+    //   sendPaymentResponse();
+    // } else {
+    //   ref.current = true;
+    // }
   }, []);
   if (loading) return <LoadingPage />;
   return (
@@ -68,8 +70,18 @@ const PaymentResponse = () => {
             </p>
             <p>Trở về trang chủ hoặc xem lịch sử đơn hàng.</p>
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <button style={{ backgroundColor: "#23c483", color: "white" }} onClick={() => navigate('/homepage')}>VỀ TRANG CHỦ</button>
-              <button style={{ backgroundColor: "#23c483", color: "white" }} onClick={() => navigate('/history')}>XEM LỊCH SỬ ĐƠN HÀNG</button>
+              <button
+                style={{ backgroundColor: "#23c483", color: "white" }}
+                onClick={() => navigate("/homepage")}
+              >
+                VỀ TRANG CHỦ
+              </button>
+              <button
+                style={{ backgroundColor: "#23c483", color: "white" }}
+                onClick={() => navigate("/history")}
+              >
+                XEM LỊCH SỬ ĐƠN HÀNG
+              </button>
             </div>
           </div>
         </div>
