@@ -8,7 +8,6 @@ import NotFound from "./pages/general/not-found"; // Thêm import cho NotFound
 // Staff page
 //Consulting
 import ConsultationRequests from "./pages/consulting/consultation-requests";
-import CreatedOrders from "./pages/consulting/created-orders";
 import OngoingConsultations from "./pages/consulting/ongoing-consultations";
 //Construction
 
@@ -232,10 +231,6 @@ function App() {
           <OngoingConsultations />
         </ProtectedRouteConsultant>
       ),
-    },
-    {
-      path: "consulting/created-orders",
-      element: <CreatedOrders />,
     },
     {
       path: "consulting/price-list-staff/:id",
