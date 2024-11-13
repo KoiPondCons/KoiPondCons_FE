@@ -12,7 +12,7 @@
     height: 100%;
     flex: 1;
     overflow: hidden;
-    cursor: pointer;
+    /* cursor: pointer; */
     border-radius: 2px;
     transition: all .5s;
     display: flex;

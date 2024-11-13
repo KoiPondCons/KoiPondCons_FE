@@ -158,7 +158,7 @@ function Combo() {
       },
     },
   ];
-  const title = "Quản lý gói";
+  const title = "QUẢN LÍ GÓI";
   return (
     <>
       <Spin spinning={loading} indicator={<LoadingPage />}>

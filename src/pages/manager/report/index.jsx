@@ -20,7 +20,7 @@ import {
 const { Option } = Select;
 
 function Report() {
-  const title = "Bảng Điều Khiển";
+  const title = "BẢNG ĐIỀU KHIỂN";
   const [stats, setStats] = useState();
   const [revenue, setRevenue] = useState([]);
   const [selectedYear, setSelectedYear] = useState();

@@ -6,7 +6,7 @@ import api from "../../../config/axios";
 import { useNavigate } from "react-router-dom";
 function maintenanceOrders() {
   const navigate = useNavigate();
-  const title = "Quản lí đơn bảo trì";
+  const title = "QUẢN LÍ ĐƠN BẢO TRÌ";
   const [maintenanceOrders, setMaintenanceOrders] = useState();
   const [selectedType, setSelectedType] = useState("all");
   const fetchMaintenanceOrders = async () => {
