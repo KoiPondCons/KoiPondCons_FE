@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NavDashboard from "../../../components/navbar-dashboard";
 import {
   Button,
@@ -50,24 +50,29 @@ function PriceListStaff() {
   const [imageSrc, setImageSrc] = useState("");
   const [newPondVolume, setNewPondVolume] = useState();
   const [imageUrl, setImageUrl] = useState("N/A");
+  const totalDiscountPercent = useRef(0.0);
   var isDesigned = false;
   const [consOrderPayment, setConsOrderPayment] = useState();
-  const fecthConsOrder = async () => {
+  const fetchConsOrderPayment = async () => {
     const value = {
       comboId: selectedCombo,
       pondVolume: constructionOrder?.quotationResponse?.pondVolume,
       designed: constructionOrder?.designed,
+      percentDiscount: totalDiscountPercent.current,
     };
+
     try {
       const response = await api.get(`cons-order-payment/demo`, {
         params: value,
       });
       setConsOrderPayment(response.data);
-      console.log(response.data);
+      console.log("Load demo payment success");
+      console.log("Response data:", response.data);
     } catch (error) {
-      console.error(error);
+      console.error("Lỗi load demo payment:", error.response || error.message);
     }
   };
+
   const handleUploadChange = ({ fileList: newFileList }) =>
     setFileList(newFileList);
 
@@ -122,7 +127,7 @@ function PriceListStaff() {
     },
   ];
 
-  const fecthCombo = async () => {
+  const fetchCombo = async () => {
     setLoading(true);
     try {
       const response = await api.get("combos");
@@ -141,6 +146,7 @@ function PriceListStaff() {
       setConstructionOrder(response.data);
       setDesigned(response.data.designed);
       isDesigned = response.data.designed;
+      handleTotalDiscountPercent(response.data.quotationResponse.promotions);
       console.log(response.data, "trong fetch");
     } catch (err) {
       console.log(err);
@@ -149,13 +155,13 @@ function PriceListStaff() {
     }
   };
   useEffect(() => {
-    fecthCombo();
+    fetchCombo();
     fetchConstructionOrder();
   }, []);
 
   const handleUpdateOrder = async (orderId, order) => {
     try {
-      const response = await api.put(`/orders/${orderId}`, order);
+      await api.put(`/orders/${orderId}`, order);
     } catch (error) {
       console.log(error.response);
     }
@@ -198,7 +204,7 @@ function PriceListStaff() {
     }
   };
 
-  const fecthPromotionList = async () => {
+  const fetchPromotionList = async () => {
     setLoading(true);
     try {
       const response = await api.get(
@@ -208,12 +214,12 @@ function PriceListStaff() {
       console.log("Promotion:");
       console.log(response.data);
     } catch (error) {
-      console.log("Bug at fecthPromotion, " + error);
+      console.log("Bug at fetchPromotion, " + error);
     } finally {
       setLoading(false);
     }
   };
-  const fecthPromotions = async () => {
+  const fetchPromotions = async () => {
     try {
       const response = await api.get(
         `promotions/customer/${constructionOrder.customer.id}`
@@ -227,11 +233,12 @@ function PriceListStaff() {
   useEffect(() => {
     fetchConstructionItems();
     fetchComboPrice();
-    fecthPromotionList();
-    fecthPromotions();
-    fecthConsOrder();
-    console.log(constructionOrder, "haha");
-    console.log(isDesigned, "biến trong fetch");
+    fetchPromotionList();
+    fetchPromotions();
+    fetchConsOrderPayment();
+
+    console.log(constructionOrder);
+    console.log(isDesigned);
   }, [selectedCombo]);
 
   const isComboSelected = selectedCombo !== null;
@@ -296,6 +303,20 @@ function PriceListStaff() {
       console.error(error);
     }
   };
+  const handleTotalDiscountPercent = (promotions) => {
+    let total = 0.0;
+    if (promotions?.length > 0) {
+      promotions.forEach((promotion) => {
+        total += promotion.discountPercent;
+      });
+    }
+    totalDiscountPercent.current = total;
+    console.log("Kết quả tính discount percent: " + total);
+    console.log(
+      "Kết quả totalDiscountPercent: " + totalDiscountPercent.current
+    );
+  };
+
   const onFinish = async (values) => {
     var url = constructionOrder.designDrawingResponse.designFile;
     if (fileList.length > 0) {
@@ -315,10 +336,10 @@ function PriceListStaff() {
     try {
       await handleUpdatePondVolume();
       await handlePromotion(values.promotionIds || []);
-      await fecthPromotionList();
+      await fetchPromotionList();
       await fetchComboPrice();
-      await fecthConsOrder();
-      // await fetchConstructionOrder();
+      await fetchConstructionOrder();
+      await fetchConsOrderPayment();
       constructionOrder.designDrawingResponse.designFile = url;
 
       if (url !== "N/A") {
@@ -509,42 +530,45 @@ function PriceListStaff() {
 
       {isComboSelected && (
         <>
-          <div className="price-list-staff-result">
-            <h1>Chi tiết hạng mục</h1>
-            <Table
-              className="table-template"
-              dataSource={comboConstructionItems}
-              columns={columnsPackage}
-              pagination={false}
-            />
-          </div>
-          {comboPrice && constructionOrder && (
-            <div className="container-bill">
-              <Bill
-                constructionOrder={constructionOrder}
-                actor={actor}
-                unitPrice={comboPrice.unitPrice}
-                onPromotionDeleted={fecthPromotionList}
-                selectCombo={selectedCombo}
-                consOrderPayment={consOrderPayment}
+          <Spin spinning={loading}>
+            <div className="price-list-staff-result">
+              <h1>Chi tiết hạng mục</h1>
+              <Table
+                className="table-template"
+                dataSource={comboConstructionItems}
+                columns={columnsPackage}
+                pagination={false}
               />
             </div>
-          )}
-          <Modal
-            title="Hình ảnh bản vẽ"
-            visible={isModalVisible}
-            onCancel={handleCancel}
-            footer={null}
-            width={800}
-            height={700}
-          >
-            <img
-              alt="Design"
-              src={imageSrc}
-              style={{ width: "100%", height: "auto" }}
-            />
-            <Button>Download</Button>
-          </Modal>
+            {comboPrice && constructionOrder && (
+              <div className="container-bill">
+                <Bill
+                  constructionOrder={constructionOrder}
+                  actor={actor}
+                  unitPrice={comboPrice.unitPrice}
+                  onPromotionDeleted={fetchConstructionOrder}
+                  fetchConsOrderPayment={fetchConsOrderPayment}
+                  selectCombo={selectedCombo}
+                  consOrderPayment={consOrderPayment}
+                />
+              </div>
+            )}
+            <Modal
+              title="Hình ảnh bản vẽ"
+              visible={isModalVisible}
+              onCancel={handleCancel}
+              footer={null}
+              width={800}
+              height={700}
+            >
+              <img
+                alt="Design"
+                src={imageSrc}
+                style={{ width: "100%", height: "auto" }}
+              />
+              <Button>Download</Button>
+            </Modal>
+          </Spin>
         </>
       )}
     </NavDashboard>

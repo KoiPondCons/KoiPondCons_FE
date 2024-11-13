@@ -10,6 +10,7 @@ function Bill({
   unitPrice,
   actor,
   onPromotionDeleted,
+  fetchConsOrderPayment,
   selectCombo,
   constructionOrder,
   consOrderPayment,
@@ -117,6 +118,9 @@ function Bill({
       case "manager":
         return (
           <>
+            {constructionOrder?.quotationResponse?.status ==
+              "CUSTOMER_CONFIRMED"}{" "}
+            ? () : (
             <button
               className="btn"
               onClick={() => setIsManagerApproveModalOpen(true)}
@@ -129,6 +133,7 @@ function Bill({
             >
               Từ chối
             </button>
+            )
           </>
         );
       case "consulting":
@@ -140,6 +145,9 @@ function Bill({
       case "customer":
         return (
           <>
+            {constructionOrder?.quotationResponse?.status ==
+              "CUSTOMER_CONFIRMED"}{" "}
+            ? () : (
             <button
               className="btn"
               onClick={() => setIsCustomerApproveModalOpen(true)}
@@ -152,6 +160,7 @@ function Bill({
             >
               Từ chối
             </button>
+            )
           </>
         );
       default:
@@ -164,7 +173,8 @@ function Bill({
         `quotations/promo/${constructionOrder.quotationResponse.id}/${promotionId}`
       );
       console.log("Delete promotion success");
-      onPromotionDeleted();
+      await onPromotionDeleted();
+      await fetchConsOrderPayment();
       setIsDeletePromotionOpen(false);
     } catch (error) {
       console.error(error);
@@ -185,9 +195,11 @@ function Bill({
     },
     {
       title: "Số tiền cần thanh toán",
-      dataIndex: "amount",
       key: "amount",
       align: "center",
+      render: (record) => {
+        return <>{new Intl.NumberFormat("vi-VN").format(record.amount)} VND</>;
+      },
     },
   ];
   return (
@@ -382,6 +394,7 @@ function Bill({
 Bill.propTypes = {
   actor: PropTypes.string.isRequired,
   onPromotionDeleted: PropTypes.func.isRequired,
+  fetchConsOrderPayment: PropTypes.func.isRequired,
   unitPrice: PropTypes.number.isRequired,
   selectCombo: PropTypes.number.isRequired,
   constructionOrder: PropTypes.shape({
