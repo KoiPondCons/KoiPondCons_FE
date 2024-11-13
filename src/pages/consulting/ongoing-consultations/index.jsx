@@ -186,17 +186,18 @@ function OngoingConsultations() {
           title={title}
           actor="consulting"
         >
-          <Radio.Group
-            block
-            buttonStyle="solid"
-            defaultValue="all"
-            size="large"
-            onChange={handleChangeType}
-          >
-            <Radio.Button value="all">Tất cả</Radio.Button>
-            <Radio.Button value="construction">Thi công</Radio.Button>
-            <Radio.Button value="maintenance">Dịch vụ</Radio.Button>
-          </Radio.Group>
+          <div className="radio-filter">
+            <Radio.Group
+              block
+              buttonStyle="solid"
+              defaultValue="construction"
+              size="large"
+              onChange={handleChangeType}
+            >
+              <Radio.Button value="construction">Thi công</Radio.Button>
+              <Radio.Button value="maintenance">Dịch vụ</Radio.Button>
+            </Radio.Group>
+          </div>
         </TableTemplate>
       </Spin>
     </div>

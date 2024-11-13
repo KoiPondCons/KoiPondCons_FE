@@ -27,7 +27,7 @@ function ConsultationRequests() {
         setRequests(
           maintenanceOrder.data.map((req) => ({
             ...req,
-            serviceType: "Bảo dưỡng",
+            serviceType: "maintenance",
           }))
         );
       } else if (selectedServiceType === "construction") {
@@ -39,23 +39,10 @@ function ConsultationRequests() {
             serviceType: "construction",
           }))
         );
-      } else {
-        maintenanceOrder = await api.get("maintenance/requested-orders");
-        constructionOrder = await api.get("orders/requested");
-        order = [
-          ...maintenanceOrder.data.map((req) => ({
-            ...req,
-            serviceType: "maintenance",
-          })),
-          ...constructionOrder.data.map((req) => ({
-            ...req,
-            serviceType: "construction",
-          })),
-        ];
-        console.log(maintenanceOrder.data);
-        console.log(constructionOrder.data);
-        setRequests(order);
       }
+      console.log(maintenanceOrder.data);
+      console.log(constructionOrder.data);
+      setRequests(order);
     } catch (error) {
       console.error(error);
     } finally {
@@ -160,11 +147,10 @@ function ConsultationRequests() {
             <Radio.Group
               block
               buttonStyle="solid"
-              defaultValue="all"
+              defaultValue="construction"
               size="large"
               onChange={handleChangeSelectedServiceType}
             >
-              <Radio.Button value="all">Tất cả</Radio.Button>
               <Radio.Button value="construction">Thi công</Radio.Button>
               <Radio.Button value="maintenance">Dịch vụ</Radio.Button>
             </Radio.Group>

@@ -142,8 +142,7 @@ const NavDashboard = ({ children, actor }) => {
     //   label: <Link to="/my-profile">Hồ sơ của tôi</Link>,
     // },
   ];
-  if (actor === null)
-    return <Navigate to="/homepage" />;
+  if (actor === null) return <Navigate to="/homepage" />;
 
   if (actor === "customer")
     return (
@@ -153,8 +152,6 @@ const NavDashboard = ({ children, actor }) => {
         <Footer />
       </div>
     );
-  
-  
 
   return (
     <div>
@@ -181,7 +178,7 @@ const NavDashboard = ({ children, actor }) => {
         <div className="content">
           <div className="navbar-admin">
             <div className="menu-icon">☰</div>
-            <div className="greeting">Xin chào, admin!</div>
+            <div className="greeting">Xin chào!</div>
             <div className="icons">
               {/* <BellOutlined className="icon noti" />
               <SettingOutlined className="icon setting" /> */}
