@@ -50,7 +50,12 @@ import MaintenanceDetail from "./pages/maintenance-detail";
 import Promotion from "./pages/manager/promotion";
 import Combo from "./pages/manager/combo";
 import ComboDetail from "./pages/combo-detail";
+<<<<<<< HEAD
+import VerifyEmail from "./pages/general/verify";
+
+=======
 import { useSelector } from "react-redux";
+>>>>>>> 8feea5d3e76c0812ecf06af07c79e2d8c5d10061
 
 function App() {
 
@@ -134,6 +139,10 @@ function App() {
     {
       path: "register",
       element: <RegisterPage />,
+    },
+    {
+      path:"verify",
+      element:<VerifyEmail/>
     },
     {
       path: "about",
@@ -354,10 +363,7 @@ function App() {
         <DesignReview />
       </ProtectedRouteAuth>,
     },
-    {
-      path:"verify",
-      element:<verifyEmail/>
-    },
+    
   ]);
 
   return <RouterProvider router={router} />;
