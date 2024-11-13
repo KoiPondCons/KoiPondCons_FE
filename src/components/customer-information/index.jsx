@@ -11,6 +11,7 @@ function CustomerInformation({
   constructionOrder,
   userRole,
   onFetchCustomerData,
+  children,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({});
@@ -131,6 +132,7 @@ function CustomerInformation({
           </Button>
         </div>
       )}
+      {children}
     </div>
   );
 }
