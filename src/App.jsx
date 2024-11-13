@@ -54,6 +54,7 @@ import Promotion from "./pages/manager/promotion";
 import Combo from "./pages/manager/combo";
 import ComboDetail from "./pages/combo-detail";
 import VerifyEmail from "./pages/general/verify";
+
 import { useSelector } from "react-redux";
 
 function App() {
@@ -70,41 +71,66 @@ function App() {
     if (user && user.role === "MANAGER") {
       return children;
     }
-    return <Navigate to="/homepage" />;
+    return <Navigate to="/" />;
   };
 
   const ProtectedRouteConsultant = ({ children }) => {
     if (user && user.role === "CONSULTANT") {
       return children;
     }
-    return <Navigate to="/homepage" />;
+    return <Navigate to="/" />;
   };
 
   const ProtectedRouteDesigner = ({ children }) => {
     if (user && user.role === "DESIGNER") {
       return children;
     }
-    return <Navigate to="/homepage" />;
+    return <Navigate to="/" />;
   };
 
   const ProtectedRouteConstructor = ({ children }) => {
     if (user && user.role === "CONSTRUCTOR") {
       return children;
     }
-    return <Navigate to="/homepage" />;
+    return <Navigate to="/" />;
   };
 
   const ProtectedRouteCustomer = ({ children }) => {
     if (user && user.role === "CUSTOMER") {
       return children;
     }
-    return <Navigate to="/homepage" />;
+    return <Navigate to="/" />;
+  };
+
+  const Filter = ({ children }) => {
+    if (!user) {
+      return children;
+    }
+    if (user && user.role === "MANAGER") {
+      return <Navigate to="/manager" />;
+    }
+    if (user && user.role === "CONSULTANT") {
+      return <Navigate to="/consulting" />;
+    }
+    if (user && user.role === "DESIGNER") {
+      return <Navigate to="/designer" />;
+    }
+    if (user && user.role === "CONSTRUCTOR") {
+      return <Navigate to="/construction" />;
+    }
+    if (user && user.role === "CUSTOMER") {
+      return <Navigate to="/homepage" />;
+    }
   };
 
   const router = createBrowserRouter([
     {
       path: "", //trang mặc định
-      element: <HomePage />,
+      element: (
+        <Filter>
+          <HomePage />
+        </Filter>
+      ),
     },
     {
       path: "login",
@@ -231,6 +257,10 @@ function App() {
           <OngoingConsultations />
         </ProtectedRouteConsultant>
       ),
+    },
+    {
+      path: "consulting/created-orders",
+      element: <CreatedOrders />,
     },
     {
       path: "consulting/price-list-staff/:id",
