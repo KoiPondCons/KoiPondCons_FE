@@ -108,10 +108,10 @@ function HomePage() {
         <div>
           <a className="project-header">DỰ ÁN TIÊU BIỂU</a>
           <div className="view-all-button">
-            <Link to="/projects
-            "> {/* Thay đổi đường dẫn đến trang bạn muốn */}
+            {/* <Link to="/projects
+            "> 
               <button>XEM TẤT CẢ</button>
-            </Link>
+            </Link> */}
           </div>
         </div>
         <CardContent />

@@ -50,6 +50,8 @@ import MaintenanceDetail from "./pages/maintenance-detail";
 import Promotion from "./pages/manager/promotion";
 import Combo from "./pages/manager/combo";
 import ComboDetail from "./pages/combo-detail";
+//Verify Email
+import verifyEmail from "./components/verify-account";
 
 function App() {
   const router = createBrowserRouter([
@@ -227,6 +229,10 @@ function App() {
     {
       path: "design-review/:id",
       element: <DesignReview />,
+    },
+    {
+      path:"verify",
+      element:<verifyEmail/>
     },
   ]);
 
