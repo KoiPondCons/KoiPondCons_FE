@@ -7,16 +7,20 @@ import { useForm } from "antd/es/form/Form";
 import { toast } from "react-toastify";
 import FormItem from "antd/es/form/FormItem";
 import api from "../../../config/axios";
+import { useDispatch } from "react-redux";
+import { login } from "../../../redux/features/userSlice";
 
 function LoginPage() {
   const navigate = useNavigate();
   const [form] = useForm();
+  const dispatch = useDispatch();
 
   const handleLogin = async (value) => {
     try {
       const response = await api.post("login", value);
       const { role, token } = response.data;
       localStorage.setItem("token", token);
+      dispatch(login(response.data));
       if (role === "CUSTOMER") {
         navigate("/");
       } else if (role === "CONSULTANT") {
