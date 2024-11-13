@@ -6,7 +6,7 @@ function verifyEmail() {
   return (
     <div>
         <Header></Header>
-        <div></div>
+        <div>Hi</div>
         <Footer></Footer>
     </div>
   )

@@ -50,8 +50,8 @@ import MaintenanceDetail from "./pages/maintenance-detail";
 import Promotion from "./pages/manager/promotion";
 import Combo from "./pages/manager/combo";
 import ComboDetail from "./pages/combo-detail";
-//Verify Email
-import verifyEmail from "./components/verify-account";
+import VerifyEmail from "./pages/general/verify";
+
 
 function App() {
   const router = createBrowserRouter([
@@ -66,6 +66,10 @@ function App() {
     {
       path: "register",
       element: <RegisterPage />,
+    },
+    {
+      path:"verify",
+      element:<VerifyEmail/>
     },
     {
       path: "about",
@@ -230,10 +234,7 @@ function App() {
       path: "design-review/:id",
       element: <DesignReview />,
     },
-    {
-      path:"verify",
-      element:<verifyEmail/>
-    },
+    
   ]);
 
   return <RouterProvider router={router} />;
