@@ -149,7 +149,11 @@ function Order() {
               <div className="progress">
                 <Progress
                   type="circle"
-                  percent={constructionOrder?.constructionProgress}
+                  percent={
+                    constructionOrder?.constructionProgress == "NaN"
+                      ? 0
+                      : constructionOrder?.constructionProgress
+                  }
                 />
               </div>
               <h3

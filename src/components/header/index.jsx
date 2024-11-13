@@ -4,11 +4,14 @@ import Logo from "../../images/LogoKoiTeam.png"
 import { FaBell, FaRegUser } from "react-icons/fa";
 import { Dropdown, message, Space } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/features/userSlice";
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (token !== null) {
@@ -19,6 +22,7 @@ function Header() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem("token");
+    dispatch(logout());
     navigate("/");
   };
   const handleButtonClick = (e) => {
