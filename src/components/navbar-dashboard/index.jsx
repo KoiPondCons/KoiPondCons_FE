@@ -6,11 +6,13 @@ import {
   SettingOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import IMGDashboard from "../../images/Dashboard.png"; // Nhập hình ảnh
 import Header from "../header";
 import Footer from "../footer";
 import { Menu } from "antd";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/features/userSlice";
 
 const NavDashboard = ({ children, actor }) => {
   const location = useLocation();
@@ -19,6 +21,7 @@ const NavDashboard = ({ children, actor }) => {
   const token = localStorage.getItem("token");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [items, setItems] = useState();
+  const dispatch = useDispatch();
   useEffect(() => {
     if (token !== null) {
       setIsLoggedIn(true);
@@ -43,6 +46,7 @@ const NavDashboard = ({ children, actor }) => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem("token");
+    dispatch(logout());
     navigate("/");
   };
 
@@ -138,6 +142,9 @@ const NavDashboard = ({ children, actor }) => {
     //   label: <Link to="/my-profile">Hồ sơ của tôi</Link>,
     // },
   ];
+  if (actor === null)
+    return <Navigate to="/homepage" />;
+
   if (actor === "customer")
     return (
       <div style={{ backgroundColor: "white" }}>
@@ -146,6 +153,9 @@ const NavDashboard = ({ children, actor }) => {
         <Footer />
       </div>
     );
+  
+  
+
   return (
     <div>
       <div className="authen-template-dashboard">
