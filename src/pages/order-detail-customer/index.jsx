@@ -197,13 +197,22 @@ function OrderCustomer() {
     },
   ];
   return (
-    <div style={{
-      background: "linear-gradient(rgba(199, 209, 217, 0.9), rgba(199, 209, 217, 0.9)), " +
-        "linear-gradient(rgba(1, 0, 0, 0.16), rgba(8, 0, 0, 0.16)), " +
-        "url('https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg?alt=media&token=d7d55fab-e34f-483f-9125-b61b199abbf2')"
-    }}>
+    <div
+      style={{
+        background:
+          "linear-gradient(rgba(199, 209, 217, 0.9), rgba(199, 209, 217, 0.9)), " +
+          "linear-gradient(rgba(1, 0, 0, 0.16), rgba(8, 0, 0, 0.16)), " +
+          "url('https://firebasestorage.googleapis.com/v0/b/koi-pond-cons.appspot.com/o/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg?alt=media&token=d7d55fab-e34f-483f-9125-b61b199abbf2')",
+      }}
+    >
       <Header />
-      <div style={{ backgroundColor: "white", padding: "30px 0", margin: "0px 15%" }}>
+      <div
+        style={{
+          backgroundColor: "white",
+          padding: "30px 0",
+          margin: "0px 15%",
+        }}
+      >
         <div>
           <OrderInfor constructionOrder={constructionOrder} />
           <h1 style={{ textAlign: "center", margin: "40px 0 10px" }}>
@@ -215,7 +224,11 @@ function OrderCustomer() {
                 <div className="progress">
                   <Progress
                     type="circle"
-                    percent={constructionOrder?.constructionProgress || 0}
+                    percent={
+                      constructionOrder?.constructionProgress == "NaN"
+                        ? 0
+                        : constructionOrder?.constructionProgress
+                    }
                   />
                 </div>
                 <h3
