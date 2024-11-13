@@ -1,5 +1,5 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import NotFound from "./pages/general/not-found"; // Thêm import cho NotFound
 // Staff page
 //Consulting
@@ -50,8 +50,54 @@ import MaintenanceDetail from "./pages/maintenance-detail";
 import Promotion from "./pages/manager/promotion";
 import Combo from "./pages/manager/combo";
 import ComboDetail from "./pages/combo-detail";
+import { useSelector } from "react-redux";
 
 function App() {
+
+  const user = useSelector((store) => store.user);
+
+  const ProtectedRouteAuth = ({ children }) => {
+    if (user) {
+      return children;
+    }
+    return <Navigate to="/homepage" />;
+  }
+
+  const ProtectedRouteManager = ({ children }) => {
+    if (user && user.role === "MANAGER") {
+      return children;
+    }
+    return <Navigate to="/homepage" />;
+  }
+
+  const ProtectedRouteConsultant = ({ children }) => {
+    if (user && user.role === "CONSULTANT") {
+      return children;
+    }
+    return <Navigate to="/homepage" />;
+  }
+
+  const ProtectedRouteDesigner = ({ children }) => {
+    if (user && user.role === "DESIGNER") {
+      return children;
+    }
+    return <Navigate to="/homepage" />;
+  }
+
+  const ProtectedRouteConstructor = ({ children }) => {
+    if (user && user.role === "CONSTRUCTOR") {
+      return children;
+    }
+    return <Navigate to="/homepage" />;
+  }
+
+  const ProtectedRouteCustomer = ({ children }) => {
+    if (user && user.role === "CUSTOMER") {
+      return children;
+    }
+    return <Navigate to="/homepage" />;
+  }
+
   const router = createBrowserRouter([
     {
       path: "", //trang mặc định
@@ -99,45 +145,65 @@ function App() {
     },
     {
       path: "my-profile",
-      element: <MyProfile />,
+      element: <ProtectedRouteAuth>
+        <MyProfile />
+      </ProtectedRouteAuth>,
     },
     {
       path: "order/:id",
-      element: <OrderCustomer />,
+      element: <ProtectedRouteCustomer>
+        <OrderCustomer />
+      </ProtectedRouteCustomer>,
     },
     {
       path: "history",
-      element: <HistoryPage />,
+      element: <ProtectedRouteCustomer>
+        <HistoryPage />
+      </ProtectedRouteCustomer>,
     },
     {
       path: "price-list/:id",
-      element: <PriceListCustomer />,
+      element: <ProtectedRouteCustomer>
+        <PriceListCustomer />
+      </ProtectedRouteCustomer>,
     },
     {
       path: "history/progress-construction-customer/:id",
-      element: <ProgressConstructionCustomer />,
+      element: <ProtectedRouteCustomer>
+        <ProgressConstructionCustomer />
+      </ProtectedRouteCustomer>,
     },
     {
       path: "maintenance-detail/:id",
-      element: <MaintenanceDetail />,
+      element: <ProtectedRouteAuth>
+        <MaintenanceDetail />
+      </ProtectedRouteAuth>,
     },
     //Staff
     {
       path: "order-detail/:id",
-      element: <Order />,
+      element: <ProtectedRouteAuth>
+        <Order />
+      </ProtectedRouteAuth>,
     },
     //Consulting-staff
     {
       path: "consulting",
-      element: <ConsultationRequests />,
+      element: <ProtectedRouteConsultant>
+        <ConsultationRequests />
+      </ProtectedRouteConsultant>,
     },
     {
       path: "/consulting/approve-order",
-      element: <ApproveOrder />,
+      element: <ProtectedRouteConsultant>
+        <ApproveOrder />
+      </ProtectedRouteConsultant>,
     },
     {
       path: "consulting/ongoing-consultation",
-      element: <OngoingConsultations />,
+      element: <ProtectedRouteConsultant>
+        <OngoingConsultations />
+      </ProtectedRouteConsultant>,
     },
     {
       path: "consulting/created-orders",
@@ -145,47 +211,67 @@ function App() {
     },
     {
       path: "consulting/price-list-staff/:id",
-      element: <PriceListStaff />,
+      element: <ProtectedRouteAuth>
+        <PriceListStaff />
+      </ProtectedRouteAuth>,
     },
     //Construction-staff
     {
       path: "construction",
-      element: <ActiveProject />,
+      element: <ProtectedRouteConstructor>
+        <ActiveProject />
+      </ProtectedRouteConstructor>,
     },
     {
       path: "construction/history-construction",
-      element: <HistoryConstruction />,
+      element: <ProtectedRouteConstructor>
+        <HistoryConstruction />
+      </ProtectedRouteConstructor>,
     },
     {
       path: "construction/history-construction/construction-order-detail/:id",
-      element: <ConstructionOrderDetail />,
+      element: <ProtectedRouteAuth>
+        <ConstructionOrderDetail />
+      </ProtectedRouteAuth>,
     },
     //Designer
     {
       path: "designer",
-      element: <Designer />,
+      element: <ProtectedRouteDesigner>
+        <Designer />
+      </ProtectedRouteDesigner>,
     },
     //Manager
     {
       path: "manager/promotions",
-      element: <Promotion />,
+      element: <ProtectedRouteManager>
+        <Promotion />
+      </ProtectedRouteManager>,
     },
     {
       path: "manager/staff-management",
-      element: <StaffMangager />,
+      element: <ProtectedRouteManager>
+        <StaffMangager />
+      </ProtectedRouteManager>,
     },
     {
       path: "manager/construction-orders",
-      element: <ConstructionOrdersPage />,
+      element: <ProtectedRouteManager>
+        <ConstructionOrdersPage />
+      </ProtectedRouteManager>,
     },
 
     {
       path: "manager",
-      element: <Report />,
+      element: <ProtectedRouteManager>
+        <Report />
+      </ProtectedRouteManager>,
     },
     {
       path: "manager/combo",
-      element: <Combo />,
+      element: <ProtectedRouteManager>
+        <Combo />
+      </ProtectedRouteManager>,
     },
     {
       path: "combo/:comboId",
@@ -193,32 +279,46 @@ function App() {
     },
     {
       path: "manager/customer-profile-management",
-      element: <CustomerProfileManagement />,
+      element: <ProtectedRouteManager>
+        <CustomerProfileManagement />
+      </ProtectedRouteManager>,
     },
     {
       path: "manager/customer-profile-management/customer-information/:id",
-      element: <CustomerInformationPageManager />,
+      element: <ProtectedRouteManager>
+        <CustomerInformationPageManager />
+      </ProtectedRouteManager>,
     },
     {
       path: "manager/maintenance-orders",
-      element: <MaintenanceOrders />,
+      element: <ProtectedRouteManager>
+        <MaintenanceOrders />
+      </ProtectedRouteManager>,
     },
     {
       path: "manager/config-price",
-      element: <ConfigPrice />,
+      element: <ProtectedRouteManager>
+        <ConfigPrice />
+      </ProtectedRouteManager>,
     },
     //PAYMENT
     {
       path: "payment-response",
-      element: <PaymentResponse />,
+      element: <ProtectedRouteAuth>
+        <PaymentResponse />
+      </ProtectedRouteAuth>,
     },
     {
       path: "payment-failed",
-      element: <PayFailed />,
+      element: <ProtectedRouteAuth>
+        <PayFailed />
+      </ProtectedRouteAuth>,
     },
     {
       path: "payment-success",
-      element: <PaySuccess />,
+      element: <ProtectedRouteAuth>
+        <PaySuccess />
+      </ProtectedRouteAuth>,
     },
     {
       path: "*", // Route cho các đường dẫn không tồn tại
@@ -226,8 +326,11 @@ function App() {
     },
     {
       path: "design-review/:id",
-      element: <DesignReview />,
+      element: <ProtectedRouteAuth>
+        <DesignReview />
+      </ProtectedRouteAuth>,
     },
+    
   ]);
 
   return <RouterProvider router={router} />;
