@@ -54,10 +54,17 @@ function PriceListCustomer() {
     }
   };
   const fecthConsOrder = async () => {
+    let total = 0.0;
+    if (constructionOrder?.quotationResponse?.promotions?.length > 0) {
+      constructionOrder?.quotationResponse?.promotions.forEach((promotion) => {
+        total += promotion.discountPercent;
+      });
+    }
     const value = {
       comboId: constructionOrder?.quotationResponse?.combo?.id,
       pondVolume: constructionOrder?.quotationResponse?.pondVolume,
       designed: constructionOrder?.designed,
+      percentDiscount: total,
     };
     try {
       const response = await api.get(`cons-order-payment/demo`, {
@@ -117,11 +124,6 @@ function PriceListCustomer() {
           unitPrice={comboPrice?.unitPrice}
           selectCombo={constructionOrder?.quotationResponse?.combo?.id}
           consOrderPayment={consOrderPayment}
-          // pondVolume={constructionOrder.quotationResponse.pondVolume}
-          // promotionList={promotionList}
-          // comboId={selectedCombo}
-          // quotationId={constructionOrder.quotationResponse.id}
-          // onPromotionDeleted={fecthPromotionList}
         />
         <Footer />
       </div>
