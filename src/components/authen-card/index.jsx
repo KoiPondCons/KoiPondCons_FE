@@ -46,7 +46,6 @@ function AuthenCardList({ cardData }) {
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
-            backgroundColor: "white",
           }}
           key={post.sys.id}
         >
@@ -54,11 +53,11 @@ function AuthenCardList({ cardData }) {
             <div
               key={card.id}
               className="authen-card-item"
-              style={{ width: "80%" }}
+              style={{ width: "70%" }}
             >
               <Link
                 to={`/article/${post.sys.id}`}
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: "none",color:"black" }}
               >
                 <div
                   style={{
@@ -75,8 +74,8 @@ function AuthenCardList({ cardData }) {
                     alt={post.fields.title}
                     className="authen-card-image"
                     style={{
-                      width: "200px",
-                      height: "100px",
+                      width: "400px",
+                      height: "200px",
                       objectFit: "cover",
                     }}
                   />
@@ -86,7 +85,7 @@ function AuthenCardList({ cardData }) {
                   >
                     <h3
                       className="authen-card-title"
-                      style={{ textAlign: "justify", margin: 0 }}
+                      style={{fontSize:"1.8rem", textAlign: "justify", margin: 0,color:"black" }}
                     >
                       {post.fields.tittle}
                     </h3>
@@ -94,10 +93,14 @@ function AuthenCardList({ cardData }) {
                       className="authen-card-description"
                       style={{
                         margin: 0,
+                        fontSize:"1.5rem",
+                        lineHeight:"2.2rem",
+                        fontWeight:"lighter",
                         overflow: "hidden",
+                        textAlign:"justify",
                         textOverflow: "ellipsis",
                         whiteSpace: "normal",
-                        padding: "10px 40px 0px 0px",
+                        padding: "10px 10% 0px 0px",
                         maxWidth: "100%",
                       }}
                     >

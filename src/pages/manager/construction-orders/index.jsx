@@ -227,7 +227,7 @@ function ConstructionOrdersPage() {
       },
     },
   ];
-  const title = "Quản lý đơn hàng";
+  const title = "QUẢN LÍ ĐƠN HÀNG";
   return (
     <div>
       <Spin spinning={loading} indicator={<LoadingPage />}>

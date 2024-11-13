@@ -34,13 +34,13 @@ function Header() {
     console.log("click", e);
   };
   const items = [
-    {
-      label: "Hồ sơ cá nhân",
-      onClick: () => {
-        window.location.href = "/profile";
-      },
-      key: "1",
-    },
+    // {
+    //   label: "Hồ sơ cá nhân",
+    //   onClick: () => {
+    //     window.location.href = "/profile";
+    //   },
+    //   key: "1",
+    // },
     {
       label: "Lịch sử",
       onClick: () => {
@@ -48,13 +48,13 @@ function Header() {
       },
       key: "2",
     },
-    {
-      label: "Khuyến mãi tích điểm",
-      onClick: () => {
-        window.location.href = "/promotion";
-      },
-      key: "3",
-    },
+    // {
+    //   label: "Khuyến mãi tích điểm",
+    //   onClick: () => {
+    //     window.location.href = "/promotion";
+    //   },
+    //   key: "3",
+    // },
     {
       label: "Đăng xuất",
       onClick: handleLogout,
@@ -76,9 +76,9 @@ function Header() {
           <li>
             <Link to="/about">GIỚI THIỆU</Link>
           </li>
-          <li>
-            <Link to="/projects">DỰ ÁN</Link>
-          </li>
+          {/* <li>
+            <Link to="/projects">DỰ ÁN</Link>   
+          </li> */}
           <li>
             <Link to="/services">DỊCH VỤ</Link>
           </li>
@@ -97,7 +97,7 @@ function Header() {
           {" "}
           {isLoggedIn ? (
             <>
-              <FaBell style={{ color: "white", marginRight: "10px" }} />
+              {/* <FaBell style={{ color: "white", marginRight: "10px" }} /> */}
               <Dropdown menu={{ items }} trigger={["click"]}>
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>

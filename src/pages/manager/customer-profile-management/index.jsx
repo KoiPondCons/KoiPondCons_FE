@@ -8,7 +8,7 @@ import { BiSolidUserDetail } from "react-icons/bi";
 import { MdDeleteOutline } from "react-icons/md";
 
 function customerProfileManagement() {
-  const title = "Quản lí hồ sơ khách hàng";
+  const title = "QUẢN LÍ HỒ SƠ KHÁCH HÀNG";
   const [customer, setCustomer] = useState([]);
   const role = "CUSTOMER";
   const navigate = useNavigate();

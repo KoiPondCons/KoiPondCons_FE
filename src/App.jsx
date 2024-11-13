@@ -330,7 +330,10 @@ function App() {
         <DesignReview />
       </ProtectedRouteAuth>,
     },
-    
+    {
+      path:"verify",
+      element:<verifyEmail/>
+    },
   ]);
 
   return <RouterProvider router={router} />;

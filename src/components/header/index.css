@@ -35,9 +35,9 @@
     text-transform: uppercase;
     font-weight: 400;
   }
-  .navbar-auth a {
+  /* .navbar-auth a {
 
-  }
+  } */
   
   .navbar-menu a:hover {
     text-decoration: underline;

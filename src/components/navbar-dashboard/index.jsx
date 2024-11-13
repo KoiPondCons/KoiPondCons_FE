@@ -183,8 +183,8 @@ const NavDashboard = ({ children, actor }) => {
             <div className="menu-icon">☰</div>
             <div className="greeting">Xin chào, admin!</div>
             <div className="icons">
-              <BellOutlined className="icon noti" />
-              <SettingOutlined className="icon setting" />
+              {/* <BellOutlined className="icon noti" />
+              <SettingOutlined className="icon setting" /> */}
               <LogoutOutlined className="icon logout" onClick={handleLogout} />
             </div>
           </div>

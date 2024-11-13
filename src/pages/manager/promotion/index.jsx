@@ -142,7 +142,7 @@ function Promotion() {
       },
     },
   ];
-  const title = "Quản lý khuyến mãi";
+  const title = "QUẢN LÍ KHUYẾN MÃI";
   return (
     <>
       <Spin spinning={loading} indicator={<LoadingPage />}>

@@ -169,7 +169,7 @@ function ManageStaff() {
     },
   ];
 
-  const title = "Quản lí nhân sự";
+  const title = "QUẢN LÍ NHÂN SỰ";
 
   return (
     <div>
