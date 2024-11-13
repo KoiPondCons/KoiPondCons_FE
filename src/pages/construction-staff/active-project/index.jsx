@@ -267,7 +267,7 @@ function ActiveProject() {
                                 finished: true,
                                 id: task.id,
                               };
-                              if (index === taskList.length - 1) {
+                              if (taskList.filter(t => !t.finished).length === 1) {
                                 Modal.confirm({
                                   title: "Xác nhận",
                                   content: "Nhấn OK để hoàn thành thi công!",
@@ -279,7 +279,8 @@ function ActiveProject() {
                                     handleConstructed();
                                   },
                                 });
-                              } else {
+                              }
+                              else {
                                 handleUpdate(task.id, updateData);
                               }
                             }}
