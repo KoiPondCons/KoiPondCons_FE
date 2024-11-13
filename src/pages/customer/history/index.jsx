@@ -60,7 +60,7 @@ function HistoryPage() {
   };
   const renderButtons = (order) => {
     if (order.serviceType === "Thi công") {
-      if (order?.quotationResponse?.status === "CUSTOMER_PENDING") {
+      if (order?.quotation?.status === "CUSTOMER_PENDING") {
         return (
           <Button
             className="btn"
@@ -71,6 +71,23 @@ function HistoryPage() {
             }}
           >
             Duyệt báo giá
+          </Button>
+        );
+      }
+      if (
+        order?.status === "PROCESSING" &&
+        order?.quotation?.status === "CUSTOMER_CONFIRMED"
+      ) {
+        return (
+          <Button
+            className="btn"
+            onClick={() => {
+              navigate(`/order/${order.id}`, {
+                state: { scrollToPayment: true },
+              });
+            }}
+          >
+            Thanh toán đợt 1
           </Button>
         );
       }
@@ -88,7 +105,7 @@ function HistoryPage() {
         );
       }
 
-      if (order?.designDrawingResponse?.status === "CUSTOMER_PENDING") {
+      if (order?.designDrawing?.status === "CUSTOMER_PENDING") {
         return (
           <Button
             className="btn"
