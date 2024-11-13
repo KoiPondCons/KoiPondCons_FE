@@ -259,10 +259,6 @@ function App() {
       ),
     },
     {
-      path: "consulting/created-orders",
-      element: <CreatedOrders />,
-    },
-    {
       path: "consulting/price-list-staff/:id",
       element: (
         <ProtectedRouteAuth>
