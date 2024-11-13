@@ -11,6 +11,7 @@ import { RiDraftLine } from "react-icons/ri";
 import moment from "moment";
 import OrderInfor from "../../components/order-information";
 import LoadingPage from "../../components/loading";
+import { BsCashCoin } from "react-icons/bs";
 function Order() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -124,19 +125,63 @@ function Order() {
       align: "center",
     },
     {
-      title: "Thanh toán",
-      align: "center",
+      title: "Trạng thái",
+      key: "status",
       render: (record) => {
-        return record.paid ? (
-          <>
-            Đã thanh toán vào lúc{" "}
-            {moment(record.paidAt).format("DD/MM/YYYY HH:mm:ss")}
-          </>
-        ) : (
-          <p>Chưa thanh toán</p>
-        );
+        if (record.paid && record.paymentMethod == "TRANSFER") {
+          return (
+            <p>
+              Thanh toán chuyển khoản vào lúc{" "}
+              {moment(record.paidAt).format("DD/MM/YYYY HH:mm:ss")}
+            </p>
+          );
+        } else if (record.paid && record.paymentMethod == "CASH") {
+          return (
+            <p>
+              Thanh toán tiền mặt vào lúc{" "}
+              {moment(record.paidAt).format("DD/MM/YYYY HH:mm:ss")}
+            </p>
+          );
+        } else {
+          return <p>Chưa thanh toán</p>;
+        }
       },
     },
+
+    ...(actor === "manager"
+      ? [
+          {
+            title: "Cập nhật",
+            align: "center",
+            render: (record) => {
+              const paidByCash = async () => {
+                await api.put(
+                  `cons-order-payment/pay-success-cash/${record.id}`
+                );
+              };
+              if (record.paid) {
+                return null;
+              } else {
+                return (
+                  <div style={{ textAlign: "center", cursor: "pointer" }}>
+                    <BsCashCoin
+                      style={{ cursor: "pointer" }}
+                      size={30}
+                      onClick={() => {
+                        paidByCash();
+                        fetchConstructionOrder();
+                      }}
+                    />
+                    <p style={{ fontSize: "10px", fontStyle: "italic" }}>
+                      Đã nhận tiền mặt
+                    </p>
+                  </div>
+                );
+              }
+            },
+          },
+        ]
+      : []),
   ];
   return (
     <NavDashboard actor={actor}>
