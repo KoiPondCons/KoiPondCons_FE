@@ -240,7 +240,7 @@ function ContactPage() {
                           ]}
                         >
                           <Radio.Group>
-                            <Radio value={true}>Bảo hành</Radio>
+                            {/* <Radio value={true}>Bảo hành</Radio> */}
                             <Radio value={false}>Bảo dưỡng</Radio>
                           </Radio.Group>
                         </FormItem>
