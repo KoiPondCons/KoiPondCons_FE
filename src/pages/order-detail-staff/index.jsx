@@ -120,9 +120,11 @@ function Order() {
     },
     {
       title: "Số tiền cần thanh toán",
-      dataIndex: "amount",
       key: "amount",
       align: "center",
+      render: (record) => {
+        return `${new Intl.NumberFormat("vi-VN").format(record.amount)} VND`;
+      },
     },
     {
       title: "Trạng thái",
