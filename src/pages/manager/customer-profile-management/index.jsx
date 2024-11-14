@@ -71,7 +71,14 @@ function customerProfileManagement() {
               size={30}
               style={{ cursor: "pointer" }}
               onClick={() => {
-                navigate(`customer-information/${record.id}`);
+                navigate(
+                  `/manager/customer-profile-management/customer-information/${record.id}`,
+                  {
+                    state: {
+                      actor: "manager",
+                    },
+                  }
+                );
               }}
             />
             <p style={{ fontSize: "10px", fontStyle: "italic" }}>Chi tiết</p>

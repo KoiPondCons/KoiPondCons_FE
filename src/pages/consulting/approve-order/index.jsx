@@ -95,9 +95,15 @@ function ApproveOrder() {
                 title="Lịch sử đơn hàng"
                 valueRender={() => (
                   <Button
-                    type="link"
                     onClick={() => {
-                      navigate(`customer-information/${record.id}`);
+                      navigate(
+                        `/manager/customer-profile-management/customer-information/${order?.customerAccountId}`,
+                        {
+                          state: {
+                            actor: "manager",
+                          },
+                        }
+                      );
                     }}
                   >
                     Xem chi tiết

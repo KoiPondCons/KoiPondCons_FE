@@ -3,7 +3,7 @@ import NavDashboard from "../../components/navbar-dashboard";
 import { Spin, Table, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CustomerInformation from "../../components/customer-information"; // Import the component
 import moment from "moment";
 import { AiOutlineUnorderedList } from "react-icons/ai";
@@ -14,6 +14,8 @@ function CustomerInformationPageManager() {
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { actor } = location.state;
   const { id } = useParams();
   const fetchCustomerData = async () => {
     try {
@@ -107,7 +109,7 @@ function CustomerInformationPageManager() {
     },
   ];
   return (
-    <NavDashboard actor="manager">
+    <NavDashboard actor={actor}>
       <div>
         <CustomerInformation
           constructionOrder={customerData}

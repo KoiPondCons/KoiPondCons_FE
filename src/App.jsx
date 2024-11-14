@@ -357,9 +357,9 @@ function App() {
     {
       path: "manager/customer-profile-management/customer-information/:id",
       element: (
-        <ProtectedRouteManager>
+        <ProtectedRouteAuth>
           <CustomerInformationPageManager />
-        </ProtectedRouteManager>
+        </ProtectedRouteAuth>
       ),
     },
     {
