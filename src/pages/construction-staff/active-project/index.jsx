@@ -1,7 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./index.css";
 import TableTemplate from "../../../components/table";
-import { Button, Col, Form, Input, Modal, Progress, Row, Spin } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+  Progress,
+  Row,
+  Spin,
+} from "antd";
 import NavDashboard from "../../../components/navbar-dashboard";
 import { RiDraftLine } from "react-icons/ri";
 import api from "../../../config/axios";
@@ -149,9 +159,12 @@ function ActiveProject() {
       await api.put(`maintenance/${order.id}`, {
         ...order,
         price: value.price,
+        maintenanceDescription: value.maintenanceDescription,
       });
       fetchOrder();
+      message.success("Lưu thông tin thành công");
     } catch (error) {
+      message.error("Lưu thông tin thất bại, vui lòng thử lại");
       console.error(error);
     }
   };
@@ -267,7 +280,9 @@ function ActiveProject() {
                                 finished: true,
                                 id: task.id,
                               };
-                              if (taskList.filter(t => !t.finished).length === 1) {
+                              if (
+                                taskList.filter((t) => !t.finished).length === 1
+                              ) {
                                 Modal.confirm({
                                   title: "Xác nhận",
                                   content: "Nhấn OK để hoàn thành thi công!",
@@ -279,8 +294,7 @@ function ActiveProject() {
                                     handleConstructed();
                                   },
                                 });
-                              }
-                              else {
+                              } else {
                                 handleUpdate(task.id, updateData);
                               }
                             }}
@@ -317,6 +331,13 @@ function ActiveProject() {
                           type="Number"
                           placeholder="Nhập số tiền bảo dưỡng khách cần thanh toán"
                         ></Input>
+                      </FormItem>
+                      <FormItem
+                        name="maintenanceDescription"
+                        label="Nội dung dịch vụ"
+                        labelCol={{ span: 24 }}
+                      >
+                        <Input.TextArea placeholder="Nhập nội dung dịch vụ" />
                       </FormItem>
                     </Col>
                     <Button
