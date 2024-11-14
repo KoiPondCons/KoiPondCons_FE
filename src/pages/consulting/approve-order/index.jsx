@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import OrderInfor from "../../../components/order-information";
-import { Button, Col, Form, Input, message, Row } from "antd";
+import { Button, Card, Col, Form, Input, message, Row, Statistic } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import NavDashboard from "../../../components/navbar-dashboard";
 import api from "../../../config/axios";
@@ -11,7 +11,19 @@ function ApproveOrder() {
   const { actor, order } = location.state;
   const navigate = useNavigate();
   const typeMaintenance = order.warranted ? "Bảo hành" : "Bảo dưỡng";
-
+  const [freeStaffs, setFreeStaffs] = useState();
+  const fetchFreeStaffs = async () => {
+    try {
+      const response = await api.get("account/free-staff-statistic");
+      console.log(response.data);
+      setFreeStaffs(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchFreeStaffs();
+  }, []);
   useEffect(() => {
     form.setFieldsValue({
       pondAddress: order?.pondAddress,
@@ -76,6 +88,47 @@ function ApproveOrder() {
         <h1 style={{ textAlign: "center", paddingTop: "10px" }}>
           THÔNG TIN ĐƠN HÀNG
         </h1>
+        <Row gutter={16}>
+          <Col span={8}>
+            <Card bordered={false}>
+              <Statistic
+                title="Lịch sử đơn hàng"
+                valueRender={() => (
+                  <Button
+                    type="link"
+                    onClick={() => {
+                      navigate(`customer-information/${record.id}`);
+                    }}
+                  >
+                    Xem chi tiết
+                  </Button>
+                )}
+              ></Statistic>
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card bordered={false}>
+              <Statistic
+                title="Nhà thiết kế rảnh"
+                value={freeStaffs?.freeDesigner}
+                valueStyle={{
+                  color: "#3f8600",
+                }}
+              />
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card bordered={false}>
+              <Statistic
+                title="Nhà thi công rảnh"
+                value={freeStaffs?.freeConstructor}
+                valueStyle={{
+                  color: "#3f8600",
+                }}
+              />
+            </Card>
+          </Col>
+        </Row>
         <Form
           initialValues={{
             pondAddress: order?.pondAddress,
