@@ -374,7 +374,7 @@ function Bill({
         }}
         onCancel={() => setIsCustomerApproveModalOpen(false)}
       >
-        <p>Bạn có chắc chắn chấp thuận báo giá này chứ??</p>
+        <p>Bạn có chắc chắn chấp thuận báo giá này chứ?</p>
       </Modal>
 
       <Modal
