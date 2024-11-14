@@ -12,7 +12,8 @@ function ConsultationRequests() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [selectedServiceType, setSelectedServiceType] = useState("all");
+  const [selectedServiceType, setSelectedServiceType] =
+    useState("construction");
 
   const fetchRequest = async () => {
     setLoading(true);
@@ -53,6 +54,9 @@ function ConsultationRequests() {
   const handleChangeSelectedServiceType = (e) => {
     setSelectedServiceType(e.target.value);
   };
+  useEffect(() => {
+    fetchRequest();
+  }, []);
   useEffect(() => {
     fetchRequest();
   }, [selectedServiceType]);
