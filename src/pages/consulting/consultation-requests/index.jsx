@@ -18,37 +18,60 @@ function ConsultationRequests() {
   const fetchRequest = async () => {
     setLoading(true);
     try {
-      let maintenanceOrder;
-      let constructionOrder;
-      let order;
-
-      if (selectedServiceType === "maintenance") {
-        maintenanceOrder = await api.get("maintenance/requested-orders");
-        console.log(maintenanceOrder.data);
-        setRequests(
-          maintenanceOrder.data.map((req) => ({
-            ...req,
-            serviceType: "maintenance",
-          }))
-        );
-      } else if (selectedServiceType === "construction") {
-        constructionOrder = await api.get("orders/requested");
-        console.log(constructionOrder.data);
-        setRequests(
-          constructionOrder.data.map((req) => ({
-            ...req,
-            serviceType: "construction",
-          }))
-        );
+      let response;
+      if (selectedServiceType === "construction") {
+        response = await api.get("orders/requested");
+      } else if (selectedServiceType === "maintenance") {
+        response = await api.get("maintenance/requested-orders");
       }
-      console.log(maintenanceOrder.data);
-      console.log(constructionOrder.data);
-      setRequests(order);
+      const requestsWithServiceType = response.data.map((req) => ({
+        ...req,
+        serviceType:
+          selectedServiceType === "construction"
+            ? "construction"
+            : "maintenance",
+      }));
+      setRequests(requestsWithServiceType);
+      console.log(requestsWithServiceType);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching consultation requests:", error);
     } finally {
       setLoading(false);
     }
+    // //
+    // setLoading(true);
+    // try {
+    //   let maintenanceOrder;
+    //   let constructionOrder;
+    //   let order;
+
+    //   if (selectedServiceType === "maintenance") {
+    //     maintenanceOrder = await api.get("maintenance/requested-orders");
+    //     console.log(maintenanceOrder.data);
+    //     setRequests(
+    //       maintenanceOrder.data.map((req) => ({
+    //         ...req,
+    //         serviceType: "maintenance",
+    //       }))
+    //     );
+    //   } else if (selectedServiceType === "construction") {
+    //     constructionOrder = await api.get("orders/requested");
+    //     console.log(constructionOrder.data);
+    //     setRequests(
+    //       constructionOrder.data.map((req) => ({
+    //         ...req,
+    //         serviceType: "construction",
+    //       }))
+    //     );
+    //   }
+    //   console.log(maintenanceOrder.data);
+    //   console.log(constructionOrder.data);
+    //   setRequests(order);
+    // } catch (error) {
+    //   console.error(error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const handleChangeSelectedServiceType = (e) => {
