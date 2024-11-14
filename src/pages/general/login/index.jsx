@@ -65,9 +65,9 @@ function LoginPage() {
         >
           <Input.Password placeholder="Mật khẩu" />
         </FormItem>
-        <p className="forgot-password">
+        {/* <p className="forgot-password">
           <a>Quên mật khẩu?</a>
-        </p>
+        </p> */}
         <button className="login-button">Đăng nhập</button>
         <p className="prompt">
           Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
