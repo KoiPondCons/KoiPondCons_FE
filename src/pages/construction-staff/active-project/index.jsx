@@ -356,7 +356,41 @@ function ActiveProject() {
                   </Row>
                 </Form>
               </div>
-            ) : null}
+            ) : (
+              <div>
+                <Form
+                  onFinish={handleUpdatePriceMaintenance}
+                  initialValues={{
+                    price: 0,
+                  }}
+                >
+                  <Row>
+                    <Col span={22}>
+                      <FormItem
+                        name="maintenanceDescription"
+                        label="Nội dung dịch vụ"
+                        labelCol={{ span: 24 }}
+                      >
+                        <Input.TextArea placeholder="Nhập nội dung dịch vụ" />
+                      </FormItem>
+                    </Col>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      style={{ width: "40%", marginRight: "12%" }}
+                    >
+                      Lưu
+                    </Button>
+                    <Button
+                      style={{ width: "40%" }}
+                      onClick={() => handleFinishedMaintenance()}
+                    >
+                      Hoàn thành
+                    </Button>
+                  </Row>
+                </Form>
+              </div>
+            )}
 
             <Modal
               title="Hình ảnh bản vẽ"

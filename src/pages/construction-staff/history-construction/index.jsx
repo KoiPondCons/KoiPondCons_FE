@@ -32,7 +32,7 @@ function HistoryConstruction() {
   const handleClick = (id) => {
     navigate(`construction-order-detail/${id}`);
   };
-  
+
   const columns = [
     {
       title: "Mã dự án",
@@ -52,8 +52,11 @@ function HistoryConstruction() {
       key: "confirmedDate",
       width: "200px",
       render: (text) => {
-        return `${dayjs(text).format('DD/MM/YYYY')}`;
-    },
+        if (text === null) {
+          return null;
+        }
+        return `${dayjs(text).format("DD/MM/YYYY")}`;
+      },
     },
     {
       title: "Thao tác",
