@@ -41,11 +41,14 @@ function RegisterPage() {
         >
           <Input placeholder="Email" />
         </Form.Item>
-        <Form.Item 
+        <Form.Item
           name="phone"
           rules={[
             { required: true, message: "Vui lòng nhập số điện thoại!" },
-            { pattern: "^(84|0)+[3|5|7|8|9]\\d{8}$", message: "Số điện thoại không hợp lệ!" },
+            {
+              pattern: "^(84|0)+[3|5|7|8|9]\\d{8}$",
+              message: "Số điện thoại không hợp lệ!",
+            },
           ]}
         >
           <Input placeholder="Số điện thoại" />
@@ -79,13 +82,12 @@ function RegisterPage() {
         <p className="prompt">
           Bạn đã có tài khoản? <a href="login">Đăng nhập</a>
         </p>
-        <div className="divider">
+        {/* <div className="divider">
           <hr className="left" />
           <span>hoặc</span>
           <hr className="right" />
-        </div>
+        </div> */}
       </Form>
-
     </AuthenTemplate>
   );
 }

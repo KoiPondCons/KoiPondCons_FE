@@ -72,11 +72,11 @@ function LoginPage() {
         <p className="prompt">
           Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
         </p>
-        <div className="divider">
+        {/* <div className="divider">
           <hr className="left" />
           <span>hoặc</span>
           <hr className="right" />
-        </div>
+        </div> */}
       </Form>
     </AuthenTemplate>
   );

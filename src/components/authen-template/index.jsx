@@ -36,14 +36,14 @@ function AuthenTemplate({ children }) {
       <div className="authen-template">
         <div className="authen-template__form">
           {children}
-          <button onClick={handleLoginWithGoogle} className="google-button">
+          {/* <button onClick={handleLoginWithGoogle} className="google-button">
             <img
               src="https://cdn4.iconfinder.com/data/icons/logos-brands-7/512/google_logo-google_icongoogle-512.png"
               alt="Google logo"
               style={{ width: "20px", marginRight: "8px" }}
             />
             Tiếp tục với Google
-          </button>
+          </button> */}
         </div>
       </div>
       <Footer />

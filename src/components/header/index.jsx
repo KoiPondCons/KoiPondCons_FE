@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
-import Logo from "../../images/LogoKoiTeam.png"
+import Logo from "../../images/LogoKoiTeam.png";
 import { FaBell, FaRegUser } from "react-icons/fa";
 import { Dropdown, message, Space } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 
 function Header() {
@@ -12,7 +12,7 @@ function Header() {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const user = useSelector((store) => store.user);
   useEffect(() => {
     if (token !== null) {
       setIsLoggedIn(true);
@@ -98,6 +98,18 @@ function Header() {
           {isLoggedIn ? (
             <>
               {/* <FaBell style={{ color: "white", marginRight: "10px" }} /> */}
+              <div
+                style={{
+                  color: "white",
+                  padding: "5px",
+                  fontSize: "1rem",
+                  fontStyle: "italic",
+                  marginRight: "5px",
+                  width: "100%",
+                }}
+              >
+                Xin chào, {user.name}
+              </div>
               <Dropdown menu={{ items }} trigger={["click"]}>
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
