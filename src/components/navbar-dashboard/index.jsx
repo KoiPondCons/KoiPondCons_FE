@@ -11,7 +11,7 @@ import IMGDashboard from "../../images/Dashboard.png"; // Nhập hình ảnh
 import Header from "../header";
 import Footer from "../footer";
 import { Menu } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 
 const NavDashboard = ({ children, actor }) => {
@@ -22,6 +22,7 @@ const NavDashboard = ({ children, actor }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [items, setItems] = useState();
   const dispatch = useDispatch();
+  const user = useSelector((store) => store.user);
   useEffect(() => {
     if (token !== null) {
       setIsLoggedIn(true);
@@ -178,7 +179,7 @@ const NavDashboard = ({ children, actor }) => {
         <div className="content">
           <div className="navbar-admin">
             <div className="menu-icon">☰</div>
-            <div className="greeting">Xin chào!</div>
+            <div className="greeting">Xin chào, {user.name}!</div>
             <div className="icons">
               {/* <BellOutlined className="icon noti" />
               <SettingOutlined className="icon setting" /> */}
