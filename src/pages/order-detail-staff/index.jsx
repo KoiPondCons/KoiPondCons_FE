@@ -127,6 +127,7 @@ function Order() {
     {
       title: "Trạng thái",
       key: "status",
+      align: "center",
       render: (record) => {
         if (record.paid && record.paymentMethod == "TRANSFER") {
           return (
